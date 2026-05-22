@@ -180,12 +180,12 @@ body {
     pointer-events: none;
 }
 
-.transaction-list-container {
+.display-panel {
     margin-top: 1rem;
 
 }
 
-.transaction-subtitle {
+.dynamicTitle {
      color: #696969;
     font-size: 1rem;
     display: flex;
@@ -199,7 +199,7 @@ body {
     margin-top: 1rem;
 }
 
-.transaction-item {
+.transaction-item, .event-item, .saving-item{
     height: 70px;
     width: 100%;
     background-color: white;
@@ -208,6 +208,7 @@ body {
     display:flex;
     align-items: center;
     gap: 1rem;
+    margin-bottom: 5px;
 }
 
 @keyframes liftCard {
@@ -221,6 +222,9 @@ body {
   }
 }
 
+.event-item:hover {
+  animation: liftCard 0.25s ease forwards;
+}
 
 .transaction-item:hover {
   animation: liftCard 0.25s ease forwards;
@@ -232,7 +236,8 @@ body {
     padding: 5px;
     font-weight: bold;
     border-radius: 10px;
-    transition: all 0.15s ease-in-out;
+    width: 100%;
+    transition: all 1s ease-in-out;
 }
 
 .add-transaction:hover {

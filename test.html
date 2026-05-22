@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Smart Dashboard: Transactions · Events · Savings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', 'Inter', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f4f7fc 0%, #e9eef4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1.5rem;
+        }
+
+        /* main card container */
+        .dashboard {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(2px);
+            border-radius: 2.5rem;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        /* header area */
+        .header {
+            padding: 1.5rem 2rem;
+            background: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #1f2b3c, #2c3e50);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .header p {
+            color: #5b6e8c;
+            margin-top: 0.3rem;
+            font-size: 0.95rem;
+        }
+
+        /* THREE DIVS (clickable categories) */
+        .categories-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            padding: 1.8rem 2rem 1rem 2rem;
+            background: white;
+            border-bottom: 1px solid #eef2f8;
+        }
+
+        .category-div {
+            flex: 1;
+            min-width: 130px;
+            background: #f8fafd;
+            border-radius: 1.6rem;
+            padding: 1.1rem 0.8rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #1e2f41;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            backdrop-filter: blur(2px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+
+        .category-div span:first-child {
+            font-size: 1.4rem;
+        }
+
+        .category-div:hover {
+            background: #eef3fc;
+            transform: translateY(-3px);
+            border-color: #cbdde9;
+            box-shadow: 0 10px 18px -8px rgba(0, 0, 0, 0.12);
+        }
+
+        /* active category styling */
+        .category-div.active {
+            background: #1f3a4b;
+            border-color: #1f3a4b;
+            color: white;
+            box-shadow: 0 10px 18px -6px rgba(26, 67, 113, 0.3);
+        }
+
+        .category-div.active span:first-child {
+            filter: brightness(1.1);
+        }
+
+        /* DISPLAY AREA — one place for list */
+        .display-panel {
+            padding: 1.8rem 2rem 2.4rem 2rem;
+            background: #ffffff;
+        }
+
+        .list-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #2c5b7c;
+            padding-left: 1rem;
+        }
+
+        .list-header h3 {
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: #0f2c3b;
+            letter-spacing: -0.2px;
+        }
+
+        .list-header .badge {
+            background: #eef2f9;
+            padding: 0.25rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #2c5b7c;
+        }
+
+        /* dynamic list container */
+        .list-container {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            transition: all 0.2s;
+        }
+
+        /* shared list item styles */
+        .list-item {
+            background: #fefefe;
+            border: 1px solid #eef2f5;
+            border-radius: 1.2rem;
+            margin-bottom: 0.8rem;
+            padding: 1rem 1.2rem;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+
+        .list-item:hover {
+            background: #fafcff;
+            border-color: #d4e2ec;
+            transform: translateX(4px);
+        }
+
+        /* transaction row (flex) */
+        .trans-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .trans-desc {
+            font-weight: 600;
+            color: #1f2f3e;
+            font-size: 1rem;
+        }
+
+        .trans-amount {
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.2px;
+        }
+
+        .positive {
+            color: #2b7e3a;
+            background: #e9f6ec;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+        }
+
+        .negative {
+            color: #bc4e2c;
+            background: #ffeae3;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+        }
+
+        /* event row style */
+        .event-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .event-name {
+            font-weight: 600;
+            color: #1a4c6e;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .event-date {
+            font-size: 0.85rem;
+            background: #eef3fa;
+            padding: 0.25rem 0.8rem;
+            border-radius: 30px;
+            color: #2c627c;
+        }
+
+        /* saving card style */
+        .saving-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .saving-goal {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #1f3a4b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .saving-progress {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #2c5a73;
+            margin-top: 4px;
+        }
+
+        .progress-bar-bg {
+            background: #e2e8f0;
+            border-radius: 40px;
+            height: 8px;
+            width: 100%;
+            margin: 8px 0 4px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #2c7a4d;
+            width: 0%;
+            height: 100%;
+            border-radius: 40px;
+            transition: width 0.2s ease;
+        }
+
+        .saving-numbers {
+            font-weight: 500;
+        }
+
+        hr {
+            margin: 6px 0;
+            border-color: #eef2f5;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 2.5rem;
+            background: #fafcff;
+            border-radius: 1.5rem;
+            color: #8ba0b5;
+            font-weight: 500;
+        }
+
+        footer {
+            font-size: 0.7rem;
+            text-align: center;
+            padding: 1rem;
+            border-top: 1px solid #e6edf4;
+            background: white;
+            color: #6e8aa8;
+        }
+
+        @media (max-width: 640px) {
+            .categories-row {
+                gap: 0.8rem;
+                padding: 1.2rem 1rem;
+            }
+
+            .category-div {
+                font-size: 0.95rem;
+                padding: 0.8rem 0.4rem;
+            }
+
+            .display-panel {
+                padding: 1.2rem;
+            }
+
+            .list-header h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <div class="header">
+        <h1>📋 Interactive Dashboard</h1>
+        <p>Click any category — transaction, event or saving — to see detailed list in the panel below.</p>
+    </div>
+
+    <!-- THREE DIVS: transaction, event, saving (exactly as requested) -->
+    <div class="categories-row">
+        <div id="divTransaction" class="category-div active">
+            <span>💰</span> <span>Transaction</span>
+        </div>
+        <div id="divEvent" class="category-div">
+            <span>🎉</span> <span>Event</span>
+        </div>
+        <div id="divSaving" class="category-div">
+            <span>🏦</span> <span>Saving</span>
+        </div>
+    </div>
+
+    <!-- ONE PLACE where list will be displayed dynamically -->
+    <div class="display-panel">
+        <div class="list-header">
+            <h3 id="dynamicTitle">📄 Transaction records</h3>
+            <span class="badge" id="recordCount">3 items</span>
+        </div>
+        <div id="listContainer" class="list-container">
+            <!-- Dynamic content injected via JS -->
+            <div class="list-item">Loading data...</div>
+        </div>
+    </div>
+    <footer>⚡ Click on any card — lists update instantly | Real-time data</footer>
+</div>
+
+<script>
+    // ---------- MOCK DATA (realistic & structured) ----------
+    const TRANSACTIONS = [
+        {id: 1, description: "💼 Salary (Freelance)", amount: 3450.75, type: "income"},
+        {id: 2, description: "🛒 Groceries & Supermarket", amount: -128.40, type: "expense"},
+        {id: 3, description: "☕ Coffee & Workspace", amount: -42.30, type: "expense"},
+        {id: 4, description: "📱 Phone & Internet Bill", amount: -89.99, type: "expense"},
+        {id: 5, description: "🎁 Bonus & Cashback", amount: 120.00, type: "income"},
+        {id: 6, description: "🚗 Fuel & Transport", amount: -55.20, type: "expense"}
+    ];
+
+    const EVENTS = [
+        {id: 1, name: "🌟 Tech Conference 2025", date: "May 22, 2025", location: "Convention Hall"},
+        {id: 2, name: "🎨 Design Workshop", date: "June 10, 2025", location: "Creative Hub"},
+        {id: 3, name: "🏆 Team Hackathon", date: "July 5, 2025", location: "Innovation Lab"},
+        {id: 4, name: "📚 Startup Networking Night", date: "Aug 18, 2025", location: "Downtown Loft"}
+    ];
+
+    const SAVINGS = [
+        {id: 1, goal: "🌴 Dream Vacation", targetAmount: 4500, savedAmount: 1875},
+        {id: 2, goal: "🚗 New Electric Car", targetAmount: 32000, savedAmount: 8900},
+        {id: 3, goal: "🏡 Home Down Payment", targetAmount: 70000, savedAmount: 15200},
+        {id: 4, goal: "📚 Education Fund", targetAmount: 12000, savedAmount: 6400}
+    ];
+
+    // ---------- DOM elements ----------
+    const transactionDiv = document.getElementById('divTransaction');
+    const eventDiv = document.getElementById('divEvent');
+    const savingDiv = document.getElementById('divSaving');
+    const listContainer = document.getElementById('listContainer');
+    const dynamicTitle = document.getElementById('dynamicTitle');
+    const recordCountSpan = document.getElementById('recordCount');
+
+    // Helper: update active UI state for category divs
+    function setActiveCategory(activeElementId) {
+        const allDivs = [transactionDiv, eventDiv, savingDiv];
+        allDivs.forEach(div => {
+            if (div.id === activeElementId) {
+                div.classList.add('active');
+            } else {
+                div.classList.remove('active');
+            }
+        });
+    }
+
+    // Helper: update record count badge
+    function updateBadge(count) {
+        if (count === 1) recordCountSpan.innerText = `${count} item`;
+        else recordCountSpan.innerText = `${count} items`;
+    }
+
+    // ---------- RENDER FUNCTIONS (each returns HTML string) ----------
+    function renderTransactionList() {
+        if (!TRANSACTIONS.length) {
+            updateBadge(0);
+            return '<div class="empty-message">✨ No transactions found</div>';
+        }
+        let html = '';
+        for (let tx of TRANSACTIONS) {
+            const amountAbs = Math.abs(tx.amount).toFixed(2);
+            const amountClass = tx.amount >= 0 ? 'positive' : 'negative';
+            const signSymbol = tx.amount >= 0 ? '+' : '-';
+            html += `
+        <div class="list-item">
+          <div class="trans-row">
+            <div class="trans-desc">${escapeHtml(tx.description)}</div>
+            <div class="trans-amount ${amountClass}">${signSymbol} $${amountAbs}</div>
+          </div>
+        </div>
+      `;
+        }
+        updateBadge(TRANSACTIONS.length);
+        return html;
+    }
+
+    function renderEventList() {
+        if (!EVENTS.length) {
+            updateBadge(0);
+            return '<div class="empty-message">📅 No upcoming events</div>';
+        }
+        let html = '';
+        for (let ev of EVENTS) {
+            html += `
+        <div class="list-item">
+          <div class="event-row">
+            <div class="event-name">
+              <span>📌</span> ${escapeHtml(ev.name)}
+            </div>
+            <div class="event-date">📅 ${escapeHtml(ev.date)}</div>
+          </div>
+          <div style="font-size:0.75rem; color:#7a8e9e; margin-top:6px;">📍 ${escapeHtml(ev.location)}</div>
+        </div>
+      `;
+        }
+        updateBadge(EVENTS.length);
+        return html;
+    }
+
+    function renderSavingList() {
+        if (!SAVINGS.length) {
+            updateBadge(0);
+            return '<div class="empty-message">🏦 No saving goals yet</div>';
+        }
+        let html = '';
+        for (let save of SAVINGS) {
+            const percent = (save.savedAmount / save.targetAmount) * 100;
+            const percentRounded = Math.min(100, Math.floor(percent));
+            const remaining = save.targetAmount - save.savedAmount;
+            html += `
+        <div class="list-item">
+          <div class="saving-item">
+            <div class="saving-goal">
+              <span>🎯</span> ${escapeHtml(save.goal)}
+            </div>
+            <div class="saving-progress">
+              <span class="saving-numbers">💰 $${save.savedAmount.toLocaleString()} saved</span>
+              <span class="saving-numbers">🎯 target: $${save.targetAmount.toLocaleString()}</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-fill" style="width: ${percentRounded}%;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size:0.8rem;">
+              <span>📈 ${percentRounded}% completed</span>
+              <span>⭐ remaining: $${remaining.toLocaleString()}</span>
+            </div>
+          </div>
+        </div>
+      `;
+        }
+        updateBadge(SAVINGS.length);
+        return html;
+    }
+
+    // simple XSS protection
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    // main rendering dispatcher based on category
+    function showCategory(categoryType) {
+        let contentHtml = '';
+        let titleText = '';
+
+        switch (categoryType) {
+            case 'transaction':
+                contentHtml = renderTransactionList();
+                titleText = '💰 Transaction records';
+                break;
+            case 'event':
+                contentHtml = renderEventList();
+                titleText = '🎉 Upcoming Events';
+                break;
+            case 'saving':
+                contentHtml = renderSavingList();
+                titleText = '🏦 Saving goals & progress';
+                break;
+            default:
+                contentHtml = '<div class="empty-message">Select a category to see details</div>';
+                titleText = 'Dashboard';
+                updateBadge(0);
+        }
+        dynamicTitle.innerText = titleText;
+        listContainer.innerHTML = contentHtml;
+    }
+
+    // ---------- EVENT HANDLERS + CLICK on THREE DIVS ----------
+    function handleTransactionClick() {
+        setActiveCategory('divTransaction');
+        showCategory('transaction');
+    }
+
+    function handleEventClick() {
+        setActiveCategory('divEvent');
+        showCategory('event');
+    }
+
+    function handleSavingClick() {
+        setActiveCategory('divSaving');
+        showCategory('saving');
+    }
+
+    // attach click listeners to the three divs
+    transactionDiv.addEventListener('click', handleTransactionClick);
+    eventDiv.addEventListener('click', handleEventClick);
+    savingDiv.addEventListener('click', handleSavingClick);
+
+    // ----- initialize with Transaction list (default active)-----
+    // ensure active state matches and load transaction data
+    setActiveCategory('divTransaction');
+    showCategory('transaction');
+
+    // optional: add keyboard / accessibility improvement (no extra but keeps robust)
+    // if user wants to simulate touch, it's fully interactive
+</script>
+</body>
+</html>

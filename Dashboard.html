@@ -81,7 +81,7 @@
         <!-- Search placeholder -->
         <div style="display: flex; align-items: center; gap: 0.5rem; color: #9CA3AF;">
             <i class='bx bx-search'></i>
-            <input type="text" placeholder="Search"></input>
+            <input type="text" placeholder="Search">
         </div>
     </div>
     <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
@@ -118,41 +118,28 @@
     </div>
 
     <div class="button-group">
-        <button class="transaction-btn">Transaction</button>
-        <button class="envent-btn">Upcoming Event</button>
-        <button class="saving-btn">Saving</button>
+        <button class="transaction-btn active" id="transactionBtn">Transaction</button>
+        <button class="envent-btn" id="eventBtn">Upcoming Event</button>
+        <button class="saving-btn" id="savingBtn">Saving</button>
     </div>
 
-    <div class="transaction-list-container">
-        <span class="transaction-subtitle">Transaction History</span>
-        <div class="transition-history">
+
+    <div class="display-panel">
+        <div class="list-header">
+            <h3 id="dynamicTitle">Transaction History</h3>
+        </div>
+        <div id="listContainer" class="listContainer">
             <div class="transaction-list">
-                <div class="transaction-item">
-                    <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                             fill="#9b1212" viewBox="0 0 24 24">
-                            <!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
-                            <path d="M13 18v-6h4l-5-6-5 6h4v6z"></path>
-                        </svg>
-                    </div>
-                    <div style="flex: 1; min-width: 0;">
-                        <p style="margin: 0; font-size: 14px; font-weight: 500; color: #3B3B3B;">Transport</p>
-                        <span style="font-size: 12px; color: #888;">2026-05-18</span>
-                    </div>
 
-                    <!-- 3. Amount -->
-                    <span style="white-space: nowrap; color: #c0786a; font-size: 14px; font-weight: 500;">-Rs 800</span>
-                </div>
-                <div class="transaction-item">Groceries</div>
-                <div class="transaction-item">University Fee</div>
-                <div class="transaction-item">Hotel Rent</div>
-
-                <button class="add-transaction">+ Add Transaction</button>
             </div>
         </div>
+        <button class="add-transaction" id="addBtn">+ Add Transaction</button>
+
+
     </div>
 </main>
 
+<script src="index.js"></script>
 </body>
 
 </html>
