@@ -104,7 +104,23 @@ function renderSavingList() {
     let html = '';
 
     for(let sv of SAVINGS) {
-        html += ``;
+        html += `
+        <div class="saving-goals">
+            <div class="goal-card">
+                <div class="goal-header">
+                    <span class="goal-name">Laptop Upgrade</span>
+                    <span class="goal-pct">27%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: 27%"></div>
+                </div>
+                <div class="goal-footer">
+                    <span>Rs 22,000 saved</span>
+                    <span>Goal: Rs 80,000</span>
+                </div>
+            </div>
+        </div>
+`;
     }
 
     return html;
@@ -128,6 +144,11 @@ function showCategory(categoryType) {
             titleText = "Upcoming Event"
             addBtnText = "+ Add Event";
             break;
+        case 'saving':
+            contentHtml = renderSavingList();
+            titleText = "Saving Goal";
+            addBtnText = "+ Add Goal";
+            break;
         default:
             contentHtml = "<div class='empty-message'>Select a category to see details</div>";
             titleText = "Dashboard";
@@ -148,8 +169,13 @@ function handleEventClick() {
     showCategory('event');
 }
 
+function handleSavingClick(){
+    setActiveBtn("savingBtn");
+    showCategory("saving");
+}
 transactionBtn.addEventListener('click', handleTransactionClick);
 eventBtn.addEventListener('click', handleEventClick);
+savingBtn.addEventListener('click', handleSavingClick);
 
 setActiveBtn('transactionBtn');
 showCategory("transaction");

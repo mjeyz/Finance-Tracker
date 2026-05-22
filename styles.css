@@ -171,8 +171,8 @@ body {
 }
 
 .button-group button:active {
-  background-color: #565e64;
-  border-color: #51585e;
+    background-color: #565e64;
+    border-color: #51585e;
 }
 
 .button-group button:disabled {
@@ -186,7 +186,7 @@ body {
 }
 
 .dynamicTitle {
-     color: #696969;
+    color: #696969;
     font-size: 1rem;
     display: flex;
 
@@ -199,35 +199,89 @@ body {
     margin-top: 1rem;
 }
 
-.transaction-item, .event-item, .saving-item{
+.transaction-item, .event-item {
     height: 70px;
     width: 100%;
     background-color: white;
     border-radius: 10px;
     padding: 1rem;
-    display:flex;
+    display: flex;
     align-items: center;
     gap: 1rem;
     margin-bottom: 5px;
 }
 
+.section-title {
+    color: #696969;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.goal-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px 24px;
+}
+
+.goal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.goal-name {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.goal-pct {
+    font-size: 13px;
+    color: #4ade80; /* green accent */
+}
+
+.progress-track {
+    background: #e2e8f0;
+    border-radius: 100px;
+    height: 6px;
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #4ade80;
+    border-radius: 100px;
+    transition: width 0.8s ease;
+}
+
+.goal-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #9ca3af;
+}
+
+
 @keyframes liftCard {
-  0% {
-    transform: translateY(0);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  100% {
-    transform: translateY(-0.5px);
-    box-shadow: 0 12px 20px rgba(0,0,0,0.2);
-  }
+    0% {
+        transform: translateY(0);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    100% {
+        transform: translateY(-0.5px);
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+    }
 }
 
 .event-item:hover {
-  animation: liftCard 0.25s ease forwards;
+    animation: liftCard 0.25s ease forwards;
 }
 
 .transaction-item:hover {
-  animation: liftCard 0.25s ease forwards;
+    animation: liftCard 0.25s ease forwards;
 }
 
 .add-transaction {
