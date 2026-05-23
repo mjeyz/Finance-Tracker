@@ -1,9 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
+import env from "dotenv";
 
 const app = express();
 const port = 3000;
+env.config();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -24,7 +26,6 @@ app.post("/register", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-
 });
 
 app.listen(port, () => {
