@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-    res.render("login.ejs");
+    res.render("register.ejs");
 });
 
 app.get("/login", (req, res) => {

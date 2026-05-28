@@ -1,0 +1,409 @@
+<!-- ========== register.html ========== -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>finTrack - Create Account</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #f4f8fc;
+            --bg-card: #ffffff;
+            --bg-input: #f1f6fc;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-glow: rgba(37, 99, 235, 0.35);
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --border-focus: #2563eb;
+            --danger: #ef4444;
+            --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.02);
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            bottom: -25%; right: -10%;
+            width: 55%; height: 65%;
+            background: radial-gradient(ellipse at center, rgba(96, 165, 250, 0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .form-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2.5rem 2.2rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 460px;
+            position: relative;
+            z-index: 1;
+        }
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #60a5fa, transparent);
+        }
+        .form-header { text-align: center; margin-bottom: 2rem; }
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.6rem;
+        }
+        .logo-icon {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, var(--accent), #1d4ed8);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: #fff;
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
+        }
+        .logo-text .accent { color: var(--accent); }
+        .form-subtitle { color: var(--text-muted); font-size: 0.9rem; }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.45rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .input-wrapper { position: relative; display: flex; align-items: center; }
+        .input-wrapper .input-icon {
+            position: absolute;
+            left: 16px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+        .form-card input[type="text"],
+        .form-card input[type="email"],
+        .form-card input[type="password"] {
+            width: 100%;
+            padding: 14px 16px 14px 46px;
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            outline: none;
+            transition: var(--transition);
+        }
+        .form-card input:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+            background: #fff;
+        }
+        .form-card input:focus ~ .input-icon { color: var(--accent); }
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 6px;
+            font-size: 0.9rem;
+            border-radius: 6px;
+        }
+        .password-toggle:hover { color: var(--text-secondary); background: rgba(0,0,0,0.03); }
+        .strength-bar-container {
+            height: 4px;
+            background: var(--border);
+            border-radius: 6px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .strength-bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.4s, background 0.4s;
+            width: 0%;
+        }
+        .strength-text {
+            font-size: 0.72rem;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+        .terms-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            user-select: none;
+            line-height: 1.4;
+        }
+        .custom-checkbox {
+            width: 18px; height: 18px;
+            border: 2px solid var(--border);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-input);
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+        .custom-checkbox.checked { background: var(--accent); border-color: var(--accent); }
+        .custom-checkbox i { font-size: 0.6rem; color: #fff; opacity: 0; transition: var(--transition); }
+        .custom-checkbox.checked i { opacity: 1; }
+        .terms-check a { color: var(--accent); text-decoration: none; font-weight: 500; }
+        .terms-check a:hover { text-decoration: underline; }
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--accent), #1d4ed8);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 8px 28px var(--accent-glow);
+            transition: var(--transition);
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 36px rgba(37, 99, 235, 0.45);
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .social-buttons { display: flex; gap: 12px; }
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+        .social-btn:hover { background: #fff; border-color: #94a3b8; }
+        .social-btn.google i { color: #ea4335; }
+        .social-btn.apple i { color: #0f172a; }
+        .social-btn.github i { color: #24292f; }
+        .form-footer { text-align: center; margin-top: 1.5rem; font-size: 0.88rem; color: var(--text-muted); }
+        .form-footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
+        .form-footer a:hover { text-decoration: underline; }
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-3px); }
+        }
+        .shake { animation: shake 0.4s ease; }
+        @media (max-width: 500px) {
+            body { padding: 1rem; }
+            .form-card { padding: 1.8rem 1.3rem; }
+            .social-buttons { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-card">
+        <div class="form-header">
+            <div class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <span class="logo-text">fin<span class="accent">Track</span></span>
+            </div>
+            <p class="form-subtitle">Start tracking your finances today</p>
+        </div>
+        <form id="registerForm" novalidate>
+            <div class="form-group">
+                <label for="regName">Full Name</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-user input-icon"></i>
+                    <input type="text" id="regName" placeholder="John Doe" required autocomplete="name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="regEmail">Email Address</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-envelope input-icon"></i>
+                    <input type="email" id="regEmail" placeholder="you@example.com" required autocomplete="email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="regPassword">Password</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="regPassword" placeholder="Min. 8 characters" required minlength="8" autocomplete="new-password">
+                    <button type="button" class="password-toggle" data-target="regPassword"><i class="fa-solid fa-eye"></i></button>
+                </div>
+                <div class="strength-bar-container"><div class="strength-bar-fill" id="strengthBar"></div></div>
+                <p class="strength-text" id="strengthText" style="color: #64748b;">Enter a password</p>
+            </div>
+            <div class="form-group">
+                <label for="regConfirmPassword">Confirm Password</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-shield-halved input-icon"></i>
+                    <input type="password" id="regConfirmPassword" placeholder="Re-enter password" required autocomplete="new-password">
+                    <button type="button" class="password-toggle" data-target="regConfirmPassword"><i class="fa-solid fa-eye"></i></button>
+                </div>
+            </div>
+            <label class="terms-check" id="termsLabel">
+                <span class="custom-checkbox" id="termsCheckbox"><i class="fa-solid fa-check"></i></span>
+                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            </label>
+            <button type="submit" class="submit-btn">Create Account <i class="fa-solid fa-arrow-right"></i></button>
+        </form>
+        <div class="divider">or sign up with</div>
+        <div class="social-buttons">
+            <button class="social-btn google"><i class="fa-brands fa-google"></i> Google</button>
+            <button class="social-btn apple"><i class="fa-brands fa-apple"></i> Apple</button>
+            <button class="social-btn github"><i class="fa-brands fa-github"></i> GitHub</button>
+        </div>
+        <p class="form-footer">Already have an account? <a href="login.html">Sign in</a></p>
+    </div>
+
+    <script>
+        const registerForm = document.getElementById('registerForm');
+        const termsLabel = document.getElementById('termsLabel');
+        const termsCheckbox = document.getElementById('termsCheckbox');
+        const regPassword = document.getElementById('regPassword');
+        const strengthBar = document.getElementById('strengthBar');
+        const strengthText = document.getElementById('strengthText');
+        let termsChecked = false;
+
+        termsLabel.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') return;
+            e.preventDefault();
+            termsChecked = !termsChecked;
+            termsCheckbox.classList.toggle('checked', termsChecked);
+        });
+
+        document.querySelectorAll('.password-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const input = document.getElementById(btn.dataset.target);
+                const icon = btn.querySelector('i');
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                icon.classList.toggle('fa-eye', !isPassword);
+                icon.classList.toggle('fa-eye-slash', isPassword);
+            });
+        });
+
+        function evalStrength(pw) {
+            let score = 0;
+            if (pw.length >= 8) score++;
+            if (pw.length >= 12) score++;
+            if (/[A-Z]/.test(pw)) score++;
+            if (/[a-z]/.test(pw)) score++;
+            if (/[0-9]/.test(pw)) score++;
+            if (/[^A-Za-z0-9]/.test(pw)) score++;
+            return Math.min(score, 5);
+        }
+        const strengthData = [
+            { width:'0%', color:'#cbd5e1', text:'Enter a password', textColor:'#64748b' },
+            { width:'20%', color:'#ef4444', text:'Very Weak', textColor:'#ef4444' },
+            { width:'40%', color:'#f97316', text:'Weak', textColor:'#f97316' },
+            { width:'60%', color:'#eab308', text:'Fair', textColor:'#eab308' },
+            { width:'80%', color:'#3b82f6', text:'Strong', textColor:'#2563eb' },
+            { width:'100%', color:'#2563eb', text:'Very Strong', textColor:'#1d4ed8' }
+        ];
+
+        regPassword.addEventListener('input', () => {
+            const score = regPassword.value ? evalStrength(regPassword.value) : 0;
+            const d = strengthData[score];
+            strengthBar.style.width = d.width;
+            strengthBar.style.background = d.color;
+            strengthText.textContent = d.text;
+            strengthText.style.color = d.textColor;
+        });
+
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('regName');
+            const email = document.getElementById('regEmail');
+            const password = regPassword;
+            const confirm = document.getElementById('regConfirmPassword');
+            let valid = true;
+            const shake = (el) => { el.style.borderColor = '#ef4444'; el.classList.add('shake'); setTimeout(() => { el.style.borderColor = ''; el.classList.remove('shake'); }, 1500); };
+            if (!name.value.trim() || name.value.trim().length < 2) { shake(name); valid = false; }
+            if (!email.value.trim() || !email.checkValidity()) { shake(email); valid = false; }
+            if (!password.value || password.value.length < 8) { shake(password); valid = false; }
+            if (confirm.value !== password.value || !confirm.value) { shake(confirm); valid = false; }
+            if (!termsChecked) { termsLabel.classList.add('shake'); setTimeout(() => termsLabel.classList.remove('shake'), 450); valid = false; }
+            if (valid) {
+                const btn = registerForm.querySelector('.submit-btn');
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Creating account...';
+                btn.disabled = true;
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Account Created!';
+                    btn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+                    console.log('✅ Registered:', { name: name.value, email: email.value, termsAccepted: termsChecked });
+                    setTimeout(() => {
+                        btn.innerHTML = orig;
+                        btn.disabled = false;
+                        btn.style.background = '';
+                        registerForm.reset();
+                        termsChecked = false;
+                        termsCheckbox.classList.remove('checked');
+                        strengthBar.style.width = '0%';
+                        strengthText.textContent = 'Enter a password';
+                        strengthText.style.color = '#64748b';
+                        window.location.href = 'login.html'; // optional redirect after success
+                    }, 1800);
+                }, 1500);
+            }
+        });
+
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', () => input.style.borderColor = '');
+        });
+    </script>
+</body>
+</html>
