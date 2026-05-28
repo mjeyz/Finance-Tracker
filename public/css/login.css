@@ -86,7 +86,7 @@ body {
 
 }
 
-.form-card input[type="email"], .form-card input[type="password"] {
+.form-card input[type="email"], .form-card input[type="password"], .form-card input[type="text"] {
     width: 100%;
     padding: 14px 16px 14px 46px;
     background: var(--bg-input);

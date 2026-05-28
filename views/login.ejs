@@ -1,382 +1,52 @@
-<!-- ========== login.html ========== -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>finTrack - Sign In</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-primary: #f4f8fc;
-            --bg-card: #ffffff;
-            --bg-input: #f1f6fc;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --accent-glow: rgba(37, 99, 235, 0.35);
-            --text-primary: #0f172a;
-            --text-secondary: #334155;
-            --text-muted: #64748b;
-            --border: #cbd5e1;
-            --border-focus: #2563eb;
-            --danger: #ef4444;
-            --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.02);
-            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-primary);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            top: -30%; left: -15%;
-            width: 60%; height: 70%;
-            background: radial-gradient(ellipse at center, rgba(37, 99, 235, 0.05) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .form-card {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 2.5rem 2.2rem;
-            box-shadow: var(--card-shadow);
-            border: 1px solid var(--border);
-            width: 100%;
-            max-width: 460px;
-            position: relative;
-            z-index: 1;
-        }
-        .form-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #60a5fa, transparent);
-        }
-        .form-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .logo {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 0.6rem;
-        }
-        .logo-icon {
-            width: 44px; height: 44px;
-            background: linear-gradient(135deg, var(--accent), #1d4ed8);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            color: #fff;
-            box-shadow: 0 8px 24px var(--accent-glow);
-        }
-        .logo-text {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: var(--text-primary);
-            letter-spacing: -0.03em;
-        }
-        .logo-text .accent { color: var(--accent); }
-        .form-subtitle {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-            .form-group label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 0.45rem;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-        }
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-        .input-wrapper .input-icon {
-            position: absolute;
-            left: 16px;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            pointer-events: none;
-            transition: var(--transition);
-        }
-        .form-card input[type="email"],
-        .form-card input[type="password"] {
-            width: 100%;
-            padding: 14px 16px 14px 46px;
-            background: var(--bg-input);
-            border: 1.5px solid var(--border);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            font-weight: 500;
-            outline: none;
-            transition: var(--transition);
-        }
-        .form-card input:focus {
-            border-color: var(--border-focus);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
-            background: #fff;
-        }
-        .form-card input:focus ~ .input-icon { color: var(--accent); }
-        .password-toggle {
-            position: absolute;
-            right: 14px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            padding: 6px;
-            font-size: 0.9rem;
-            border-radius: 6px;
-        }
-        .password-toggle:hover { color: var(--text-secondary); background: rgba(0,0,0,0.03); }
-        .options-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-            font-size: 0.85rem;
-        }
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            color: var(--text-secondary);
-            user-select: none;
-            font-weight: 500;
-        }
-        .custom-checkbox {
-            width: 18px; height: 18px;
-            border: 2px solid var(--border);
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-input);
-            transition: var(--transition);
-        }
-        .custom-checkbox.checked { background: var(--accent); border-color: var(--accent); }
-        .custom-checkbox i { font-size: 0.6rem; color: #fff; opacity: 0; transition: var(--transition); }
-        .custom-checkbox.checked i { opacity: 1; }
-        .forgot-link {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-        .forgot-link:hover { text-decoration: underline; }
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, var(--accent), #1d4ed8);
-            border: none;
-            border-radius: 12px;
-            color: #fff;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 8px 28px var(--accent-glow);
-            transition: var(--transition);
-        }
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 14px 36px rgba(37, 99, 235, 0.45);
-        }
-        .divider {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 1.5rem 0;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-        }
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-        .social-buttons {
-            display: flex;
-            gap: 12px;
-        }
-        .social-btn {
-            flex: 1;
-            padding: 12px;
-            background: var(--bg-input);
-            border: 1.5px solid var(--border);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: var(--transition);
-        }
-        .social-btn:hover { background: #fff; border-color: #94a3b8; }
-        .social-btn.google i { color: #ea4335; }
-        .social-btn.apple i { color: #0f172a; }
-        .social-btn.github i { color: #24292f; }
-        .form-footer {
-            text-align: center;
-            margin-top: 1.5rem;
-            font-size: 0.88rem;
-            color: var(--text-muted);
-        }
-        .form-footer a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .form-footer a:hover { text-decoration: underline; }
-        @keyframes shake {
-            0%,100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-3px); }
-        }
-        .shake { animation: shake 0.4s ease; }
-        @media (max-width: 500px) {
-            body { padding: 1rem; }
-            .form-card { padding: 1.8rem 1.3rem; }
-            .social-buttons { flex-direction: column; }
-        }
-    </style>
 </head>
 <body>
-    <div class="form-card">
-        <div class="form-header">
-            <div class="logo">
-                <div class="logo-icon"><i class="fa-solid fa-chart-line"></i></div>
-                <span class="logo-text">fin<span class="accent">Track</span></span>
-            </div>
-            <p class="form-subtitle">Welcome back! Sign in to your account</p>
+<div class="form-card">
+    <form class="login-form">
+        <div class="form-header" style="margin-bottom: 1rem;">
+            <h1 class="form-heading">Fin<span style="color: #2563eb;">Track</span></h1>
+            <p class="form-subheading">Welcome back! sign in to your account</p>
         </div>
-        <form id="loginForm" novalidate>
-            <div class="form-group">
-                <label for="loginEmail">Email Address</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-envelope input-icon"></i>
-                    <input type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email">
-                </div>
+
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <div class="input-wrapper">
+                <input type="email" id="email" placeholder="you@example.com">
             </div>
-            <div class="form-group">
-                <label for="loginPassword">Password</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-lock input-icon"></i>
-                    <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
-                    <button type="button" class="password-toggle" data-target="loginPassword"><i class="fa-solid fa-eye"></i></button>
-                </div>
-            </div>
-            <div class="options-row">
-                <label class="remember-me" id="rememberMeLabel">
-                    <span class="custom-checkbox" id="rememberCheckbox"><i class="fa-solid fa-check"></i></span>
-                    Remember me
-                </label>
-                <a href="#" class="forgot-link">Forgot password?</a>
-            </div>
-            <button type="submit" class="submit-btn">Sign In <i class="fa-solid fa-arrow-right"></i></button>
-        </form>
-        <div class="divider">or continue with</div>
-        <div class="social-buttons">
-            <button class="social-btn google"><i class="fa-brands fa-google"></i> Google</button>
-            <button class="social-btn apple"><i class="fa-brands fa-apple"></i> Apple</button>
-            <button class="social-btn github"><i class="fa-brands fa-github"></i> GitHub</button>
         </div>
-        <p class="form-footer">Don't have an account? <a href="register.html">Create one</a></p>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="password">
+        </div>
+        <div class="options-row">
+            <label>
+                <input type="checkbox">
+                Remember me
+            </label>
+
+            <span href="#" class="forgot-link">Forgot password</span>
+        </div>
+
+        <button type="submit" class="submit-btn">Sign In</button>
+
+    </form>
+    <div class="divider">or continue with</div>
+
+    <div class="social-buttons">
+        <button class="social-btn google">Google</button>
+        <button class=" social-btn apple">Apple</button>
+        <button class="social-btn github">Github</button>
     </div>
 
-    <script>
-        const loginForm = document.getElementById('loginForm');
-        const rememberLabel = document.getElementById('rememberMeLabel');
-        const rememberCheckbox = document.getElementById('rememberCheckbox');
-        let rememberChecked = false;
-
-        rememberLabel.addEventListener('click', (e) => {
-            e.preventDefault();
-            rememberChecked = !rememberChecked;
-            rememberCheckbox.classList.toggle('checked', rememberChecked);
-        });
-
-        document.querySelectorAll('.password-toggle').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const input = document.getElementById(btn.dataset.target);
-                const icon = btn.querySelector('i');
-                const isPassword = input.type === 'password';
-                input.type = isPassword ? 'text' : 'password';
-                icon.classList.toggle('fa-eye', !isPassword);
-                icon.classList.toggle('fa-eye-slash', isPassword);
-            });
-        });
-
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail');
-            const password = document.getElementById('loginPassword');
-            let valid = true;
-            if (!email.value.trim() || !email.checkValidity()) {
-                email.style.borderColor = '#ef4444';
-                email.classList.add('shake');
-                setTimeout(() => { email.style.borderColor = ''; email.classList.remove('shake'); }, 1500);
-                valid = false;
-            }
-            if (!password.value.trim()) {
-                password.style.borderColor = '#ef4444';
-                password.classList.add('shake');
-                setTimeout(() => { password.style.borderColor = ''; password.classList.remove('shake'); }, 1500);
-                valid = false;
-            }
-            if (valid) {
-                const btn = loginForm.querySelector('.submit-btn');
-                const orig = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing in...';
-                btn.disabled = true;
-                setTimeout(() => {
-                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Signed In!';
-                    btn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
-                    console.log('✅ Login:', { email: email.value, remember: rememberChecked });
-                    setTimeout(() => {
-                        btn.innerHTML = orig;
-                        btn.disabled = false;
-                        btn.style.background = '';
-                        loginForm.reset();
-                        rememberChecked = false;
-                        rememberCheckbox.classList.remove('checked');
-                    }, 1800);
-                }, 1200);
-            }
-        });
-
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('focus', () => input.style.borderColor = '');
-        });
-    </script>
+    <p class="form-footer">Don't have an account? <a href="/register">Create one</a></p>
+</div>
 </body>
 </html>
