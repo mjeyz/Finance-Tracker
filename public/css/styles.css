@@ -102,6 +102,21 @@ body {
     width: 100%;
 }
 
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper .input-icon {
+    position: absolute;
+    left: 16px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    pointer-events: none;
+    transition: var(--transition);
+}
+
 @media screen and (max-width: 600px) {
     .topnav a,
     .topnav input[type="text"] {

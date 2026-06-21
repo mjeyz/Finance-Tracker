@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import passport from "passport";
 import Strategy from "passport-local";
 import session from "express-session"
+import GithubStrategy from "passport-github";
 
 const app = express();
 const port = 3000;
@@ -35,7 +36,11 @@ const db = new pg.Client({
 db.connect();
 
 app.get("/", (req, res) => {
-  res.render("Dashboard.ejs");
+    if(req.isAuthenticated()) {
+        res.render("Dashboard.ejs", {user: req.user });
+    } else {
+        res.redirect("/login");
+    }
 });
 
 app.get("/register", (req, res) => {
@@ -46,6 +51,16 @@ app.get("/login", (req, res) => {
     res.render("login.ejs");
 });
 
+app.get("/logout", (req, res) => {
+    req.logout(function (err) {
+        if (err) {
+            return next(err);
+        } else {
+            res.redirect("/login")
+        }
+    })
+})
+
 app.post("/login", passport.authenticate(
     "local", {
         successRedirect: "/",
@@ -53,6 +68,14 @@ app.post("/login", passport.authenticate(
     }
 ));
 
+app.get("/auth/github", passport.authenticate("Github", {
+     scope: ["user:email"]
+}));
+
+app.get("/api/auth/callback/github", passport.authenticate("Github", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+}));
 
 app.post("/register", async (req, res) => {
     const name = req.body.name
@@ -116,6 +139,28 @@ passport.use(
         }
     }),
 );
+
+passport.use("Github",
+    new GithubStrategy({
+        clientID: process.env.GITGUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: "http://localhost:3000/api/auth/callback/github",
+        userProfileURL: "https://api.github.com/user",
+    },
+     async (accessToken, refreshToken, profile, cb) => {
+        try {
+            console.log(profile);
+            const result = await db.query("SELECT * FROM users WHERE email = $1", [profile.email]);
+            if (result.rows.length === 0) {
+                const newUser = await db.query("INSERT INTO users (email, password) VALUES ($1, $2) RETURNING  *", [profile.email, "Github"]);
+                return cb(null, newUser.rows[0]);
+            } else {
+                return cb(null, newUser.rows[0]);
+            }
+        } catch (err) {
+            return cb(err);
+        }
+     }  ));
 
 
 passport.serializeUser((user, cb) => {
