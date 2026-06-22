@@ -20,7 +20,7 @@ app.use(
         saveUninitialized: true
     }));
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 app.use(passport.initialize());
@@ -36,8 +36,8 @@ const db = new pg.Client({
 db.connect();
 
 app.get("/", (req, res) => {
-    if(req.isAuthenticated()) {
-        res.render("Dashboard.ejs", {user: req.user });
+    if (req.isAuthenticated()) {
+        res.render("Dashboard.ejs", {user: req.user});
     } else {
         res.redirect("/login");
     }
@@ -69,13 +69,20 @@ app.post("/login", passport.authenticate(
 ));
 
 app.get("/auth/github", passport.authenticate("Github", {
-     scope: ["user:email"]
+    scope: ["user:email"]
 }));
 
 app.get("/api/auth/callback/github", passport.authenticate("Github", {
     successRedirect: "/",
     failureRedirect: "/login",
 }));
+
+app.get("/auth/google/callback", passport.authenticate("Google", {
+    successRedirect: "/",
+    failureRedirect: "/logon",
+}));
+
+app.get("/auth/google", passport.authenticate("Google"))
 
 app.post("/register", async (req, res) => {
     const name = req.body.name
@@ -92,7 +99,7 @@ app.post("/register", async (req, res) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    const result= await db.query("INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING * ", [name, email, hash]);
+                    const result = await db.query("INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING * ", [name, email, hash]);
                     const user = result.rows[0];
                     req.login(user, (err) => {
                         console.log("success");
@@ -110,25 +117,25 @@ app.post("/register", async (req, res) => {
 
 passport.use(
     "local",
-    new Strategy({ usernameField: 'email' }, async function verify(email, password, cb) {
+    new Strategy({usernameField: 'email'}, async function verify(email, password, cb) {
         try {
             const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
 
             if (result.rows.length > 0) {
-               const user = result.rows[0];
-               const hashedPassword = user.password;
+                const user = result.rows[0];
+                const hashedPassword = user.password;
 
-               bcrypt.compare(password, hashedPassword, (err, valid) => {
-                   if (err) {
-                       return cb(err);
-                   } else {
-                       if (valid) {
-                           return cb(null, user);
-                       } else {
-                           return cb(null, false); // Authentication failed
-                       }
-                   }
-               });
+                bcrypt.compare(password, hashedPassword, (err, valid) => {
+                    if (err) {
+                        return cb(err);
+                    } else {
+                        if (valid) {
+                            return cb(null, user);
+                        } else {
+                            return cb(null, false); // Authentication failed
+                        }
+                    }
+                });
             } else {
                 // CHANGED: Pass null for error, false for user
                 return cb(null, false);
@@ -143,30 +150,54 @@ passport.use(
 passport.use(
     "Github",
     new GithubStrategy({
-        clientID: process.env.GITGUB_CLIENT_ID,
-        clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        callbackURL: "http://localhost:3000/api/auth/callback/github",
-        userProfileURL: "https://api.github.com/user",
-    },
-     async (accessToken, refreshToken, profile, cb) => {
-        try {
-            const email = profile._json.email;
-            const name = profile._json.name;
+            clientID: process.env.GITGUB_CLIENT_ID,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET,
+            callbackURL: "http://localhost:3000/api/auth/callback/github",
+            userProfileURL: "https://api.github.com/user",
+        },
+        async (accessToken, refreshToken, profile, cb) => {
+            try {
+                const email = profile._json.email;
+                const name = profile._json.name;
 
-            console.log(`Name : ${name}, Email : ${email}`);
+                console.log(`Name : ${name}, Email : ${email}`);
 
-            const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
-            if (result.rows.length === 0) {
-                const newUser = await db.query("INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING  *", [name, email, "Github"]);
-                return cb(null, newUser.rows[0]);
-            } else {
-                return cb(null, result.rows[0]);
+                const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+                if (result.rows.length === 0) {
+                    const newUser = await db.query("INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING  *", [name, email, "Github"]);
+                    return cb(null, newUser.rows[0]);
+                } else {
+                    return cb(null, result.rows[0]);
+                }
+            } catch (err) {
+                return cb(err);
             }
-        } catch (err) {
-            return cb(err);
-        }
-     }  ));
+        }));
 
+passport.use("Google", new GithubStrategy({
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            callbackURL: "http://localhost:3000/auth/google",
+            userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+        },
+        async (accessToken, refreshToken, profile, cb) => {
+            const email = profile.email;
+
+            try {
+                const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+
+                if (result.rows.length === 0) {
+                    const newUser = await db.query("INSERT INTO users (email, password) VALUES ($1, $2)", [email, "Google"]);
+                    return cb(null, newUser.rows[0]);
+                } else {
+                    return cb(null, result.rows[0]);
+                }
+            } catch (err) {
+                return cb(err)
+            }
+        }
+    )
+);
 
 passport.serializeUser((user, cb) => {
     cb(null, user);
