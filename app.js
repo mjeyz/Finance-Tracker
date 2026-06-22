@@ -140,7 +140,8 @@ passport.use(
     }),
 );
 
-passport.use("Github",
+passport.use(
+    "Github",
     new GithubStrategy({
         clientID: process.env.GITGUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
@@ -149,13 +150,17 @@ passport.use("Github",
     },
      async (accessToken, refreshToken, profile, cb) => {
         try {
-            console.log(profile);
-            const result = await db.query("SELECT * FROM users WHERE email = $1", [profile.email]);
+            const email = profile._json.email;
+            const name = profile._json.name;
+
+            console.log(`Name : ${name}, Email : ${email}`);
+
+            const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
             if (result.rows.length === 0) {
-                const newUser = await db.query("INSERT INTO users (email, password) VALUES ($1, $2) RETURNING  *", [profile.email, "Github"]);
+                const newUser = await db.query("INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING  *", [name, email, "Github"]);
                 return cb(null, newUser.rows[0]);
             } else {
-                return cb(null, newUser.rows[0]);
+                return cb(null, result.rows[0]);
             }
         } catch (err) {
             return cb(err);

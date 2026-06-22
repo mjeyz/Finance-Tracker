@@ -211,6 +211,10 @@ body {
     color: var(--text-muted);
 }
 
+.social-buttons a {
+    text-decoration: none;
+}
+
 .form-footer a {
     color: var(--accent);
     text-decoration: none;
