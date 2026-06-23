@@ -7,7 +7,7 @@ import passport from "passport";
 import Strategy from "passport-local";
 import session from "express-session"
 import GithubStrategy from "passport-github";
-
+import GoogleStrategy from "passport-google-oauth20";
 const app = express();
 const port = 3000;
 const saltRound = 10;
@@ -72,6 +72,10 @@ app.get("/auth/github", passport.authenticate("Github", {
     scope: ["user:email"]
 }));
 
+app.get("/auth/google", passport.authenticate("Google", {
+    scope: ["profile", "email"]
+}));
+
 app.get("/api/auth/callback/github", passport.authenticate("Github", {
     successRedirect: "/",
     failureRedirect: "/login",
@@ -79,10 +83,9 @@ app.get("/api/auth/callback/github", passport.authenticate("Github", {
 
 app.get("/auth/google/callback", passport.authenticate("Google", {
     successRedirect: "/",
-    failureRedirect: "/logon",
+    failureRedirect: "/login",
 }));
 
-app.get("/auth/google", passport.authenticate("Google"))
 
 app.post("/register", async (req, res) => {
     const name = req.body.name
@@ -174,20 +177,26 @@ passport.use(
             }
         }));
 
-passport.use("Google", new GithubStrategy({
+passport.use(
+    "Google",
+    new GoogleStrategy({
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: "http://localhost:3000/auth/google",
+            callbackURL: "http://localhost:3000/auth/google/callback",
             userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
         },
         async (accessToken, refreshToken, profile, cb) => {
-            const email = profile.email;
+            const email = profile.emails[0].value;
+            const name = profile.displayName || profile.name?.givenName || "Google User";
+
+            console.log("Email : ", email, "Name : ", name );
+            console.log(profile)
 
             try {
                 const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
 
                 if (result.rows.length === 0) {
-                    const newUser = await db.query("INSERT INTO users (email, password) VALUES ($1, $2)", [email, "Google"]);
+                    const newUser = await db.query("INSERT INTO users (name, email, password) VALUES ($1, $2, $3)", [name, email, "Google"]);
                     return cb(null, newUser.rows[0]);
                 } else {
                     return cb(null, result.rows[0]);
