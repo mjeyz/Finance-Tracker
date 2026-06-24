@@ -1,382 +1,684 @@
-<!-- ========== login.html ========== -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>finTrack - Sign In</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Draggable Form Modal</title>
+
+    <!-- Font Awesome for icons -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
     <style>
-        :root {
-            --bg-primary: #f4f8fc;
-            --bg-card: #ffffff;
-            --bg-input: #f1f6fc;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --accent-glow: rgba(37, 99, 235, 0.35);
-            --text-primary: #0f172a;
-            --text-secondary: #334155;
-            --text-muted: #64748b;
-            --border: #cbd5e1;
-            --border-focus: #2563eb;
-            --danger: #ef4444;
-            --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.02);
-            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        /* ── Reset & Base ── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        /* ── Dashboard ── */
+        .dashboard {
+            width: 1100px;
+            max-width: 94%;
             padding: 2rem;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            top: -30%; left: -15%;
-            width: 60%; height: 70%;
-            background: radial-gradient(ellipse at center, rgba(37, 99, 235, 0.05) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .form-card {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 2.5rem 2.2rem;
-            box-shadow: var(--card-shadow);
-            border: 1px solid var(--border);
-            width: 100%;
-            max-width: 460px;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            transition: filter 0.4s ease;
             position: relative;
             z-index: 1;
         }
-        .form-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #60a5fa, transparent);
-        }
-        .form-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .logo {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 0.6rem;
-        }
-        .logo-icon {
-            width: 44px; height: 44px;
-            background: linear-gradient(135deg, var(--accent), #1d4ed8);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            color: #fff;
-            box-shadow: 0 8px 24px var(--accent-glow);
-        }
-        .logo-text {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: var(--text-primary);
-            letter-spacing: -0.03em;
-        }
-        .logo-text .accent { color: var(--accent); }
-        .form-subtitle {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-            .form-group label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 0.45rem;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-        }
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-        .input-wrapper .input-icon {
-            position: absolute;
-            left: 16px;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            pointer-events: none;
-            transition: var(--transition);
-        }
-        .form-card input[type="email"],
-        .form-card input[type="password"] {
-            width: 100%;
-            padding: 14px 16px 14px 46px;
-            background: var(--bg-input);
-            border: 1.5px solid var(--border);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            font-weight: 500;
-            outline: none;
-            transition: var(--transition);
-        }
-        .form-card input:focus {
-            border-color: var(--border-focus);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
-            background: #fff;
-        }
-        .form-card input:focus ~ .input-icon { color: var(--accent); }
-        .password-toggle {
-            position: absolute;
-            right: 14px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            padding: 6px;
-            font-size: 0.9rem;
-            border-radius: 6px;
-        }
-        .password-toggle:hover { color: var(--text-secondary); background: rgba(0,0,0,0.03); }
-        .options-row {
+
+        .dashboard-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1.5rem;
-            font-size: 0.85rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            color: var(--text-secondary);
-            user-select: none;
-            font-weight: 500;
+
+        .dashboard-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0b1a33;
+            letter-spacing: -0.5px;
         }
-        .custom-checkbox {
-            width: 18px; height: 18px;
-            border: 2px solid var(--border);
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-input);
-            transition: var(--transition);
+
+        .dashboard-header h1 i {
+            color: #4f6ef7;
+            margin-right: 10px;
         }
-        .custom-checkbox.checked { background: var(--accent); border-color: var(--accent); }
-        .custom-checkbox i { font-size: 0.6rem; color: #fff; opacity: 0; transition: var(--transition); }
-        .custom-checkbox.checked i { opacity: 1; }
-        .forgot-link {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-        .forgot-link:hover { text-decoration: underline; }
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, var(--accent), #1d4ed8);
+
+        .add-btn {
+            background: #4f6ef7;
             border: none;
-            border-radius: 12px;
             color: #fff;
             font-size: 1rem;
-            font-weight: 700;
+            font-weight: 600;
+            padding: 0.75rem 1.8rem;
+            border-radius: 60px;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 10px;
-            box-shadow: 0 8px 28px var(--accent-glow);
-            transition: var(--transition);
+            box-shadow: 0 8px 24px rgba(79, 110, 247, 0.3);
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
         }
-        .submit-btn:hover {
+
+        .add-btn:hover {
+            background: #3a56d4;
             transform: translateY(-2px);
-            box-shadow: 0 14px 36px rgba(37, 99, 235, 0.45);
+            box-shadow: 0 12px 32px rgba(79, 110, 247, 0.4);
         }
-        .divider {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 1.5rem 0;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            text-transform: uppercase;
+
+        .add-btn:active {
+            transform: scale(0.96);
         }
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
+
+        .add-btn i {
+            font-size: 1.1rem;
         }
-        .social-buttons {
-            display: flex;
-            gap: 12px;
+
+        /* ── Dashboard Cards ── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
         }
-        .social-btn {
-            flex: 1;
-            padding: 12px;
-            background: var(--bg-input);
-            border: 1.5px solid var(--border);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
+
+        .stat-card {
+            background: #f8faff;
+            padding: 1.5rem 1.2rem;
+            border-radius: 20px;
+            border: 1px solid #e9edf4;
+            text-align: center;
+            transition: border 0.2s;
+        }
+
+        .stat-card:hover {
+            border-color: #4f6ef7;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0b1a33;
+        }
+
+        .stat-card .label {
+            font-size: 0.85rem;
+            color: #6b7a8f;
+            margin-top: 4px;
+        }
+
+        .stat-card .icon {
+            color: #4f6ef7;
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+        }
+
+        .chart-placeholder {
+            background: #f8faff;
+            border-radius: 20px;
+            border: 1px solid #e9edf4;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            color: #6b7a8f;
+            font-size: 0.95rem;
+        }
+
+        .chart-placeholder i {
+            font-size: 2.2rem;
+            color: #d0d9e8;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* ── Overlay (blur background) ── */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(11, 26, 51, 0.35);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            transition: var(--transition);
         }
-        .social-btn:hover { background: #fff; border-color: #94a3b8; }
-        .social-btn.google i { color: #ea4335; }
-        .social-btn.apple i { color: #0f172a; }
-        .social-btn.github i { color: #24292f; }
-        .form-footer {
-            text-align: center;
-            margin-top: 1.5rem;
-            font-size: 0.88rem;
-            color: var(--text-muted);
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
-        .form-footer a {
-            color: var(--accent);
-            text-decoration: none;
+
+        /* ── Draggable Form Modal ── */
+        .modal {
+            background: #ffffff;
+            border-radius: 28px;
+            width: 520px;
+            max-width: 92%;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            transform: scale(0.92) translateY(20px);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+            opacity 0.3s ease;
+            opacity: 0;
+            cursor: default;
+            user-select: none;
+            /* prevent text selection while dragging */;
+        }
+
+        .overlay.active .modal {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        /* ── Modal Header (drag handle) ── */
+        .modal-header {
+            padding: 1.2rem 1.8rem;
+            background: #f8faff;
+            border-bottom: 1px solid #e9edf4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: grab;
+            transition: background 0.15s;
+        }
+
+        .modal-header:active {
+            cursor: grabbing;
+        }
+
+        .modal-header:hover {
+            background: #f0f5ff;
+        }
+
+        .modal-header .title {
+            font-size: 1.15rem;
             font-weight: 600;
+            color: #0b1a33;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .form-footer a:hover { text-decoration: underline; }
-        @keyframes shake {
-            0%,100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-3px); }
+
+        .modal-header .title i {
+            color: #4f6ef7;
         }
-        .shake { animation: shake 0.4s ease; }
-        @media (max-width: 500px) {
-            body { padding: 1rem; }
-            .form-card { padding: 1.8rem 1.3rem; }
-            .social-buttons { flex-direction: column; }
+
+        .modal-header .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: #8a9bb0;
+            cursor: pointer;
+            padding: 0 6px;
+            transition: color 0.2s, transform 0.15s;
+            line-height: 1;
+        }
+
+        .modal-header .close-btn:hover {
+            color: #e74c3c;
+            transform: rotate(90deg);
+        }
+
+        /* ── Modal Body (form) ── */
+        .modal-body {
+            padding: 1.8rem 1.8rem 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1f2a44;
+            margin-bottom: 5px;
+        }
+
+        .form-group label .required {
+            color: #e74c3c;
+            margin-left: 2px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            background: #fafcff;
+            transition: border 0.2s, box-shadow 0.2s;
+            outline: none;
+            color: #0b1a33;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #4f6ef7;
+            box-shadow: 0 0 0 4px rgba(79, 110, 247, 0.12);
+            background: #ffffff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            margin-top: 1.8rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid #e9edf4;
+        }
+
+        .form-actions .btn {
+            padding: 0.6rem 1.8rem;
+            border: none;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .form-actions .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-secondary {
+            background: #eef2f7;
+            color: #1f2a44;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-primary {
+            background: #4f6ef7;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(79, 110, 247, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: #3a56d4;
+        }
+
+        /* ── Drag ghost indicator ── */
+        .modal.dragging {
+            transition: none !important;
+            cursor: grabbing;
+        }
+
+        .modal.dragging .modal-header {
+            cursor: grabbing;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 600px) {
+            .dashboard {
+                padding: 1.2rem;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .add-btn {
+                justify-content: center;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-body {
+                padding: 1.2rem;
+            }
+
+            .modal-header {
+                padding: 1rem 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="form-card">
-        <div class="form-header">
-            <div class="logo">
-                <div class="logo-icon"><i class="fa-solid fa-chart-line"></i></div>
-                <span class="logo-text">fin<span class="accent">Track</span></span>
-            </div>
-            <p class="form-subtitle">Welcome back! Sign in to your account</p>
-        </div>
-        <form id="loginForm" novalidate>
-            <div class="form-group">
-                <label for="loginEmail">Email Address</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-envelope input-icon"></i>
-                    <input type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="loginPassword">Password</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-lock input-icon"></i>
-                    <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
-                    <button type="button" class="password-toggle" data-target="loginPassword"><i class="fa-solid fa-eye"></i></button>
-                </div>
-            </div>
-            <div class="options-row">
-                <label class="remember-me" id="rememberMeLabel">
-                    <span class="custom-checkbox" id="rememberCheckbox"><i class="fa-solid fa-check"></i></span>
-                    Remember me
-                </label>
-                <a href="#" class="forgot-link">Forgot password?</a>
-            </div>
-            <button type="submit" class="submit-btn">Sign In <i class="fa-solid fa-arrow-right"></i></button>
-        </form>
-        <div class="divider">or continue with</div>
-        <div class="social-buttons">
-            <button class="social-btn google"><i class="fa-brands fa-google"></i> Google</button>
-            <button class="social-btn apple"><i class="fa-brands fa-apple"></i> Apple</button>
-            <button class="social-btn github"><i class="fa-brands fa-github"></i> GitHub</button>
-        </div>
-        <p class="form-footer">Don't have an account? <a href="register.html">Create one</a></p>
+
+<!-- ═══ DASHBOARD ═══ -->
+<div class="dashboard" id="dashboard">
+
+    <div class="dashboard-header">
+        <h1><i class="fas fa-chart-pie"></i> Dashboard</h1>
+        <button class="add-btn" id="openModalBtn">
+            <i class="fas fa-plus"></i> Add New
+        </button>
     </div>
 
-    <script>
-        const loginForm = document.getElementById('loginForm');
-        const rememberLabel = document.getElementById('rememberMeLabel');
-        const rememberCheckbox = document.getElementById('rememberCheckbox');
-        let rememberChecked = false;
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="icon"><i class="fas fa-users"></i></div>
+            <div class="number">1,284</div>
+            <div class="label">Total Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon"><i class="fas fa-shopping-cart"></i></div>
+            <div class="number">342</div>
+            <div class="label">Orders</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon"><i class="fas fa-dollar-sign"></i></div>
+            <div class="number">$12.4k</div>
+            <div class="label">Revenue</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon"><i class="fas fa-rocket"></i></div>
+            <div class="number">87%</div>
+            <div class="label">Growth</div>
+        </div>
+    </div>
 
-        rememberLabel.addEventListener('click', (e) => {
+    <div class="chart-placeholder">
+        <i class="fas fa-chart-bar"></i>
+        <span>📊 Your recent activity will appear here</span>
+    </div>
+</div>
+
+<!-- ═══ OVERLAY (blur backdrop) ═══ -->
+<div class="overlay" id="overlay">
+
+    <!-- ═══ DRAGGABLE FORM MODAL ═══ -->
+    <div class="modal" id="modal">
+
+        <!-- Header = drag handle -->
+        <div class="modal-header" id="modalHeader">
+            <div class="title">
+                <i class="fas fa-file-alt"></i> Create New Entry
+            </div>
+            <button class="close-btn" id="closeModalBtn" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Body = form -->
+        <div class="modal-body">
+            <form id="entryForm" novalidate>
+
+                <div class="form-group">
+                    <label for="title">Title <span class="required">*</span></label>
+                    <input type="text" id="title" placeholder="e.g. Project Alpha" required/>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category">
+                            <option value="work">Work</option>
+                            <option value="personal">Personal</option>
+                            <option value="finance">Finance</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status">
+                            <option value="active">Active</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" placeholder="Write a short note…"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Submit
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        'use strict';
+
+        // ── DOM refs ──
+        const overlay = document.getElementById('overlay');
+        const modal = document.getElementById('modal');
+        const modalHeader = document.getElementById('modalHeader');
+        const openBtn = document.getElementById('openModalBtn');
+        const closeBtn = document.getElementById('closeModalBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const form = document.getElementById('entryForm');
+
+        // ── Open / Close ──
+        function openModal() {
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // prevent scroll
+            // Reset any lingering drag transforms
+            modal.style.transform = '';
+        }
+
+        function closeModal() {
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+            // Reset form (optional)
+            // form.reset();
+        }
+
+        // ── Event listeners for open/close ──
+        openBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        // Click on overlay background closes modal (but not if click inside modal)
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) {
+                closeModal();
+            }
+        });
+
+        // ESC key closes
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && overlay.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // ── DRAG LOGIC ──
+        let isDragging = false;
+        let offsetX = 0;
+        let offsetY = 0;
+        let startX = 0;
+        let startY = 0;
+
+        // We'll store the modal's current position as transform values
+        let currentX = 0;
+        let currentY = 0;
+
+        modalHeader.addEventListener('mousedown', function (e) {
+            // Only left-click
+            if (e.button !== 0) return;
+
+            // Don't start drag if the click is on the close button or its children
+            const target = e.target.closest('.close-btn');
+            if (target) return;
+
+            isDragging = true;
+            modal.classList.add('dragging');
+
+            // Get the current transform values (if any)
+            const style = window.getComputedStyle(modal);
+            const transform = style.transform;
+            if (transform && transform !== 'none') {
+                const matrix = transform.match(/matrix.*\((.+)\)/);
+                if (matrix) {
+                    const values = matrix[1].split(', ').map(Number);
+                    // matrix(scaleX, skewY, skewX, scaleY, tx, ty)
+                    currentX = values[4] || 0;
+                    currentY = values[5] || 0;
+                }
+            }
+
+            // Mouse position relative to the modal
+            const rect = modal.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+
+            // Store starting mouse position for calculating delta
+            startX = e.clientX;
+            startY = e.clientY;
+
+            // Prevent text selection while dragging
+            document.body.style.userSelect = 'none';
+
             e.preventDefault();
-            rememberChecked = !rememberChecked;
-            rememberCheckbox.classList.toggle('checked', rememberChecked);
         });
 
-        document.querySelectorAll('.password-toggle').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const input = document.getElementById(btn.dataset.target);
-                const icon = btn.querySelector('i');
-                const isPassword = input.type === 'password';
-                input.type = isPassword ? 'text' : 'password';
-                icon.classList.toggle('fa-eye', !isPassword);
-                icon.classList.toggle('fa-eye-slash', isPassword);
-            });
+        document.addEventListener('mousemove', function (e) {
+            if (!isDragging) return;
+
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+
+            // Apply the new position
+            const newX = currentX + deltaX;
+            const newY = currentY + deltaY;
+
+            modal.style.transform = `translate(${newX}px, ${newY}px)`;
+
+            // Keep the modal within viewport (optional but nice)
+            // We'll just let it go anywhere for simplicity
         });
 
-        loginForm.addEventListener('submit', (e) => {
+        document.addEventListener('mouseup', function (e) {
+            if (isDragging) {
+                isDragging = false;
+                modal.classList.remove('dragging');
+                document.body.style.userSelect = '';
+
+                // Update currentX/Y to match the final transform
+                const style = window.getComputedStyle(modal);
+                const transform = style.transform;
+                if (transform && transform !== 'none') {
+                    const matrix = transform.match(/matrix.*\((.+)\)/);
+                    if (matrix) {
+                        const values = matrix[1].split(', ').map(Number);
+                        currentX = values[4] || 0;
+                        currentY = values[5] || 0;
+                    }
+                } else {
+                    currentX = 0;
+                    currentY = 0;
+                }
+            }
+        });
+
+        // ── Handle form submission ──
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
-            const email = document.getElementById('loginEmail');
-            const password = document.getElementById('loginPassword');
-            let valid = true;
-            if (!email.value.trim() || !email.checkValidity()) {
-                email.style.borderColor = '#ef4444';
-                email.classList.add('shake');
-                setTimeout(() => { email.style.borderColor = ''; email.classList.remove('shake'); }, 1500);
-                valid = false;
+
+            const title = document.getElementById('title').value.trim();
+            if (!title) {
+                alert('Please enter a title.');
+                return;
             }
-            if (!password.value.trim()) {
-                password.style.borderColor = '#ef4444';
-                password.classList.add('shake');
-                setTimeout(() => { password.style.borderColor = ''; password.classList.remove('shake'); }, 1500);
-                valid = false;
-            }
-            if (valid) {
-                const btn = loginForm.querySelector('.submit-btn');
-                const orig = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing in...';
-                btn.disabled = true;
-                setTimeout(() => {
-                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Signed In!';
-                    btn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
-                    console.log('✅ Login:', { email: email.value, remember: rememberChecked });
-                    setTimeout(() => {
-                        btn.innerHTML = orig;
-                        btn.disabled = false;
-                        btn.style.background = '';
-                        loginForm.reset();
-                        rememberChecked = false;
-                        rememberCheckbox.classList.remove('checked');
-                    }, 1800);
-                }, 1200);
-            }
+
+            // Collect data
+            const data = {
+                title: title,
+                category: document.getElementById('category').value,
+                status: document.getElementById('status').value,
+                description: document.getElementById('description').value.trim(),
+            };
+
+            console.log('📦 Form submitted:', data);
+
+            // Show a quick success feedback
+            const btn = form.querySelector('.btn-primary');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check-circle"></i> Done!';
+            btn.style.background = '#27ae60';
+            btn.style.boxShadow = '0 6px 20px rgba(39, 174, 96, 0.3)';
+
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+                btn.style.boxShadow = '';
+                closeModal();
+                form.reset();
+                // Reset drag position (optional – return modal to center)
+                modal.style.transform = '';
+                currentX = 0;
+                currentY = 0;
+            }, 800);
         });
 
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('focus', () => input.style.borderColor = '');
-        });
-    </script>
+        // ── Reset modal position when closed ──
+        // We want the modal to re-center when opened again.
+        // We'll store the original transform and reset on open.
+        const originalTransform = modal.style.transform;
+
+        // Override openModal to reset position
+        const originalOpen = openModal;
+        openModal = function () {
+            // Reset transform to center
+            modal.style.transform = '';
+            currentX = 0;
+            currentY = 0;
+            originalOpen.call(this);
+        };
+
+        // Re-bind the open button
+        openBtn.removeEventListener('click', openModal);
+        openBtn.addEventListener('click', openModal);
+
+        console.log('✅ Draggable modal ready! Drag the header to move it.');
+    })();
+</script>
+
 </body>
 </html>

@@ -118,7 +118,6 @@ app.get("/auth/facebook/callback", passport.authenticate(
     )
 );
 
-
 app.post("/register", async (req, res) => {
     const name = req.body.name
     const email = req.body.email
