@@ -80,7 +80,7 @@ app.get("/auth/google", passport.authenticate(
 );
 
 app.get("/auth/facebook", passport.authenticate(
-    "Facebook", {
+        "Facebook", {
             scope: ["public_profile", "email"]
         }
     )
