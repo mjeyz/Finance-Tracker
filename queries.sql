@@ -31,3 +31,8 @@ CREATE TABLE saving (
     savedAmount INTEGER,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+INSERT INTO events (user_id, name, date, location) VALUES (2, '🎨 Design Workshop"', 'June 10, 2025', 'Creative Hub');
+
+insert INTO saving (user_id, goal, targetAmount, savedAmount) VALUES (1, '🌴 Dream Vacation', 4500, 1875);
+

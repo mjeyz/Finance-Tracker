@@ -234,6 +234,36 @@ showCategory("transaction");
 
 
 
+const overlay = document.getElementById("overlay");
+const model = document.getElementById("model");
+const modelHeader = document.getElementById("modelHeader");
+const openBtn = document.getElementById("addTransaction");
+const closeBtn = document.getElementById("cancelBtn");
+const form = document.getElementById("entryForm");
+const cancelBtn = document.getElementById("cancelBtn");
+
+
+function openModel() {
+  overlay.classList.add("active");
+  document.body.style.overflow = "hidden";
+  model.style.transform = "";
+}
+
+function closeModel() {
+  overlay.classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+openBtn.addEventListener("click", openModel);
+closeBtn.addEventListener("click", closeModel);
+cancelBtn.addEventListener("click", closeModel);
+
+
+
+
+
+
+
 
 
 
