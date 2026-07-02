@@ -347,232 +347,184 @@ body {
     color: #ffffff;
 }
 
-        /* ── Overlay (blur background) ── */
-        .overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(11, 26, 51, 0.35);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.35s ease, visibility 0.35s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* ── Draggable Form Modal ── */
-        .modal {
-            background: #ffffff;
-            border-radius: 28px;
-            width: 520px;
-            max-width: 92%;
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.25);
-            overflow: hidden;
-            transform: scale(0.92) translateY(20px);
-            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-            opacity 0.3s ease;
-            opacity: 0;
-            cursor: default;
-            user-select: none;
-            /* prevent text selection while dragging */;
-        }
-
-        .overlay.active .modal {
-            transform: scale(1) translateY(0);
-            opacity: 1;
-        }
-
-        /* ── Modal Header (drag handle) ── */
-        .modal-header {
-            padding: 1.2rem 1.8rem;
-            background: #f8faff;
-            border-bottom: 1px solid #e9edf4;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: grab;
-            transition: background 0.15s;
-        }
-
-        .modal-header:active {
-            cursor: grabbing;
-        }
-
-        .modal-header:hover {
-            background: #f0f5ff;
-        }
-
-        .modal-header .title {
-            font-size: 1.15rem;
-            font-weight: 600;
-            color: #0b1a33;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .modal-header .title i {
-            color: #4f6ef7;
-        }
-
-        .modal-header .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.4rem;
-            color: #8a9bb0;
-            cursor: pointer;
-            padding: 0 6px;
-            transition: color 0.2s, transform 0.15s;
-            line-height: 1;
-        }
-
-        .modal-header .close-btn:hover {
-            color: #e74c3c;
-            transform: rotate(90deg);
-        }
-
-        /* ── Modal Body (form) ── */
-        .modal-body {
-            padding: 1.8rem 1.8rem 2rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #1f2a44;
-            margin-bottom: 5px;
-        }
-
-        .form-group label .required {
-            color: #e74c3c;
-            margin-left: 2px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.7rem 1rem;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 14px;
-            font-size: 0.95rem;
-            font-family: inherit;
-            background: #fafcff;
-            transition: border 0.2s, box-shadow 0.2s;
-            outline: none;
-            color: #0b1a33;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: #4f6ef7;
-            box-shadow: 0 0 0 4px rgba(79, 110, 247, 0.12);
-            background: #ffffff;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.8rem;
-            margin-top: 1.8rem;
-            padding-top: 1.2rem;
-            border-top: 1px solid #e9edf4;
-        }
-
-        .form-actions .btn {
-            padding: 0.6rem 1.8rem;
-            border: none;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.15s;
-        }
-
-        .form-actions .btn:active {
-            transform: scale(0.96);
-        }
-
-        .btn-secondary {
-            background: #eef2f7;
-            color: #1f2a44;
-        }
-
-        .btn-secondary:hover {
-            background: #e2e8f0;
-        }
-
-        .btn-primary {
-            background: #4f6ef7;
-            color: #fff;
-            box-shadow: 0 6px 20px rgba(79, 110, 247, 0.25);
-        }
-
-        .btn-primary:hover {
-            background: #3a56d4;
-        }
-
-        /* ── Drag ghost indicator ── */
-        .modal.dragging {
-            transition: none !important;
-            cursor: grabbing;
-        }
-
-        .modal.dragging .modal-header {
-            cursor: grabbing;
-        }
-
-        /* ── Responsive ── */
-        @media (max-width: 600px) {
-            .dashboard {
-                padding: 1.2rem;
-            }
-
-            .dashboard-header {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-            }
-
-            .add-btn {
-                justify-content: center;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .modal-body {
-                padding: 1.2rem;
-            }
-
-            .modal-header {
-                padding: 1rem 1.2rem;
-            }
-        }
+.add-transaction:active {
+    transform: scale(0.96);
 }
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 26, 51, 0.35);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay:active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.model {
+    background: #ffffff;
+    border-radius: 28px;
+    width: 520px;
+    max-width: 92%;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.25);
+    overflow: hidden;
+    transform: scale(0.92) translateY(20px);
+    cursor: default;
+    user-select: none;
+}
+
+.model-header {
+    padding: 1.2rem 1rem;
+    background: #f8faff;
+    border-bottom: 1px solid #e9edf4;
+}
+
+.model-header .title  {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #0b1a33;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.model-header .close-btn {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: #8a9bb0;
+    cursor: pointer;
+    padding: 0 6px;
+    transition: color 0.2s, transform 0.15s;
+    line-height: 1;
+}
+
+.model-header .close-btn:hover {
+    color: #e74c3c;
+    transform: rotate(90deg);
+}
+
+.model-body {
+    padding: 1.8rem 1.8rem 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    display: block;
+    font-weight: 600;
+    color: #1f2a44;
+    margin-bottom: 5px;
+}
+
+.form-group label .required {
+    color: #e74c3c;
+    margin-left: 2px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 0.95rem;
+    font-family: inherit;
+    background: #fafcff;
+    transition: border 0.2s ease, box-shadow 0.2s;
+    outline: none;
+    color: #0b1a33;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: #4f6ef7;
+    box-shadow: 0 0 0 4px rgba(79, 110, 247, 0.12);
+    background: #ffffff;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-action {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-top: 1.8rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e9edf4;
+}
+
+.form-action .btn {
+    padding: 0.6rem 1.8rem;
+    border: none;
+    border-radius: 60px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.25s;
+}
+
+.form-action .btn:active {
+    transform: scale(0.96);
+}
+
+.btn-secondary {
+    background: #eef2f7;
+    color: #1f2a44;
+}
+
+.btn-primary {
+    background: #4f6ef7;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(79, 110, 247, 0.25);
+}
+
+.btn-primary:hover {
+    background: #3a56d4;
+}
+
+.model.dragging {
+    transform: none !important;
+    cursor: grabbing;
+}
+
+.model.dragging .model-header {
+    cursor: grabbing;
+}
+
+
+
+@media (max-width: 600px) {
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .model-body {
+        padding: 1.2rem;
+    }
+
+    .model-header {
+        padding: 1rem 1.2rem;
+    }
+}
+
+
+
