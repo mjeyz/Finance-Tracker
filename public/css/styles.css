@@ -365,7 +365,7 @@ body {
     justify-content: center;
 }
 
-.overlay:active {
+.overlay.active {
     opacity: 1;
     visibility: visible;
 }
@@ -386,6 +386,8 @@ body {
     padding: 1.2rem 1rem;
     background: #f8faff;
     border-bottom: 1px solid #e9edf4;
+    display: flex;
+    justify-content: space-between;
 }
 
 .model-header .title  {
@@ -404,7 +406,7 @@ body {
     color: #8a9bb0;
     cursor: pointer;
     padding: 0 6px;
-    transition: color 0.2s, transform 0.15s;
+    transition: color 0.2s, transform 1s;
     line-height: 1;
 }
 

@@ -76,7 +76,7 @@ const eventBtn = document.getElementById("eventBtn");
 const savingBtn = document.getElementById("savingBtn");
 const listContainer = document.getElementById("listContainer");
 const dynamicTitle = document.getElementById("dynamicTitle");
-const addBtn = document.getElementById("addBtn");
+const addBtn = document.getElementById("addTransaction");
 
 function setActiveBtn(activeElementId) {
   const allBtn = [transactionBtn, eventBtn, savingBtn];
@@ -206,7 +206,9 @@ function showCategory(categoryType) {
 
   dynamicTitle.innerText = titleText;
   listContainer.innerHTML = contentHtml;
-  addBtn.innerText = addBtnText;
+  if (addBtn) {
+    addBtn.innerText = addBtnText;
+  }
 }
 
 function handleTransactionClick() {
@@ -238,7 +240,7 @@ const overlay = document.getElementById("overlay");
 const model = document.getElementById("model");
 const modelHeader = document.getElementById("modelHeader");
 const openBtn = document.getElementById("addTransaction");
-const closeBtn = document.getElementById("cancelBtn");
+const closeBtn = document.getElementById("closeModalBtn");
 const form = document.getElementById("entryForm");
 const cancelBtn = document.getElementById("cancelBtn");
 
