@@ -36,3 +36,8 @@ INSERT INTO events (user_id, name, date, location) VALUES (2, '🎨 Design Works
 
 insert INTO saving (user_id, goal, targetAmount, savedAmount) VALUES (1, '🌴 Dream Vacation', 4500, 1875);
 
+ALTER TABLE transaction ADD COLUMN description TEXT;
+
+INSERT INTO transaction (user_id, amount, expenses, type, description) VALUES (1,  3450.75, 20000, 'expense', '💼 Salary (Freelance)');
+
+
