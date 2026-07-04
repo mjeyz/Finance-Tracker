@@ -57,6 +57,14 @@ app.get("/login", (req, res) => {
     res.render("login.ejs");
 });
 
+app.get("/change-password", (req, res) => {
+    res.render("change-password.ejs");
+});
+
+app.get("/varify-email", (req, res) => {
+    res.render("varify-email.ejs");
+});
+
 app.get("/logout", (req, res) => {
         req.logout(function (err) {
                 if (err) {
