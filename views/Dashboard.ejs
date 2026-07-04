@@ -152,6 +152,7 @@
     </div>
 </header>
 
+
 <main class="main-content">
     <h1 class="dashboard-heading">Dashboard</h1>
     <p class="dashboard-subtitle">Your financial overview at a glance</p>
@@ -159,7 +160,11 @@
     <div class="status">
         <div class="stat-card total-income">
             <span class="card-subtitle">Total Income</span>
-            <p class="amount">PKR 21000</p>
+            <% if (user.income) {%>
+            <p class="amount"><%= user.income %> PKR</p>
+            <% } else { %>
+            <p class="amount">0 PKR</p>
+            <% }%>
         </div>
         <div class="stat-card current-balance">
             <span class="card-subtitle">Current Balance</span>
@@ -167,7 +172,11 @@
         </div>
         <div class="stat-card expenses">
             <span class="card-subtitle">Expenses</span>
-            <p class="amount">PKR 15000</p>
+            <% if (user.expenses) { %>
+            <p class="amount"><%= user.expenses %></p>
+            <% } else { %>
+            <p class="amount">0 PKR</p>
+            <% }%>
         </div>
     </div>
 

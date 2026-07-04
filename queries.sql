@@ -41,3 +41,8 @@ ALTER TABLE transaction ADD COLUMN description TEXT;
 INSERT INTO transaction (user_id, amount, expenses, type, description) VALUES (1,  3450.75, 20000, 'expense', '💼 Salary (Freelance)');
 
 
+ALTER TABLE users ADD COLUMN expenses INTEGER;
+
+UPDATE users SET income = 21000, expenses = 16000 Where id = 1;
+
+ALTER TABLE transaction DROP COLUMN expenses;

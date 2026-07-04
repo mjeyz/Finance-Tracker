@@ -37,8 +37,12 @@ const db = new pg.Client({
 });
 db.connect();
 
-app.get("/", (req, res) => {
+app.get("/",async (req, res) => {
     if (req.isAuthenticated()) {
+        const result = await db.query("SELECT * FROM transaction WHERE user_id = $1", [req.user.id]);
+        const transaction = result.rows;
+        console.log(transaction);
+
         res.render("Dashboard.ejs", {user: req.user});
     } else {
         res.redirect("/login");
