@@ -97,7 +97,7 @@ function renderTransactionList() {
 
   let html = "";
 
-  for (let tx of TRANSACTIONS) {
+  for (let tx of TRANSACTIONS) { 
     html += `
          <div class="transaction-item">
              <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
