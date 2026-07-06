@@ -101,23 +101,9 @@ function renderTransactionList() {
 
   let html = "";
 
-  for (let tx of TRANSACTIONS) { 
+  for (let tx of TRANSACTIONS) {
     html += `
-         <div class="transaction-item">
-             <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                             fill="#9b1212" viewBox="0 0 24 24">
-                   <path d="M13 18v-6h4l-5-6-5 6h4v6z"></path>
-                </svg>
-                 </div>
-                    <div style="flex: 1; min-width: 0;">
-                        <p style="margin: 0; font-size: 14px; font-weight: 500; color: #3B3B3B;">${tx.description}</p>
-                        <span style="font-size: 12px; color: #888;">2026-05-18</span>
-                    </div>
 
-                 <!-- 3. Amount -->
-                 <span style="white-space: nowrap; color: #c0786a; font-size: 14px; font-weight: 500;">${tx.amount}</span>
-             </div>
 `;
   }
 

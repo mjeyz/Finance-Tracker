@@ -14,7 +14,7 @@
             href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
             rel="stylesheet"/>
 
-      <!-- Font Awesome for icons -->
+    <!-- Font Awesome for icons -->
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -159,11 +159,11 @@
     <div class="status">
         <div class="stat-card total-income">
             <span class="card-subtitle">Total Income</span>
-            <% if (user.income) {%>
-            <p class="amount"><%= user.income %> PKR</p>
+            <% if (user.income) { %>
+                <p class="amount"><%= user.income %> PKR</p>
             <% } else { %>
-            <p class="amount">0 PKR</p>
-            <% }%>
+                <p class="amount">0 PKR</p>
+            <% } %>
         </div>
         <div class="stat-card current-balance">
             <span class="card-subtitle">Current Balance</span>
@@ -172,10 +172,10 @@
         <div class="stat-card expenses">
             <span class="card-subtitle">Expenses</span>
             <% if (user.expenses) { %>
-            <p class="amount"><%= user.expenses %></p>
+                <p class="amount"><%= user.expenses %></p>
             <% } else { %>
-            <p class="amount">0 PKR</p>
-            <% }%>
+                <p class="amount">0 PKR</p>
+            <% } %>
         </div>
     </div>
 
@@ -192,11 +192,34 @@
             <h3 id="dynamicTitle">Transaction History</h3>
         </div>
         <div id="listContainer" class="listContainer">
-            <div class="transaction-list"></div>
+
+            <% if ( !transaction) {%>
+            <% transaction.forEach( tx => { %>
+            <div class="transaction-list">
+                <div class="transaction-item">
+                    <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                             fill="#9b1212" viewBox="0 0 24 24">
+                            <path d="M13 18v-6h4l-5-6-5 6h4v6z"></path>
+                        </svg>
+                    </div>
+                    <div style="flex: 1; min-width: 0;">
+                        <p style="margin: 0; font-size: 14px; font-weight: 500; color: #3B3B3B;"><%= tx.description %></p>
+                        <span style="font-size: 12px; color: #888;"><%= tx.date %></span>
+                    </div>
+
+                    <!-- 3. Amount -->
+                    <span style="white-space: nowrap; color: #c0786a; font-size: 14px; font-weight: 500;"> <%= tx.amount %></span>
+                </div>
+            </div>
+            <% }) %>
+            <% } else { %>
+            <div class="empty-message">No Transaction History Found</div>
+            <% } %>
+
         </div>
     </div>
     <button class="add-transaction" id="addTransaction">+ Add Transaction</button>
-
 
 
     <div class="overlay" id="overlay">
@@ -258,7 +281,7 @@
     </div>
 </main>
 
- 
+
 <script src="js/index.js"></script>
 </body>
 

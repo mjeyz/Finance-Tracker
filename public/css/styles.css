@@ -309,6 +309,18 @@ body {
     color: #9ca3af;
 }
 
+.empty-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    height: 200px;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #535361;
+}
+
 @keyframes liftCard {
     0% {
         transform: translateY(0);
