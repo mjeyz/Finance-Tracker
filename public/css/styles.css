@@ -511,6 +511,28 @@ body {
     cursor: grabbing;
 }
 
+.varify-email-container {
+    width: 600px;
+    /*background-color: #ffffff;*/
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.action-group {
+    display: flex;
+    justify-content: space-between;
+    color: #4f6ef7;
+    font-weight: 600;
+
+}
+
+.varify-heading {
+    margin-bottom: 1rem;
+}
 
 
 @media (max-width: 600px) {

@@ -46,3 +46,16 @@ ALTER TABLE users ADD COLUMN expenses INTEGER;
 UPDATE users SET income = 21000, expenses = 16000 Where id = 1;
 
 ALTER TABLE transaction DROP COLUMN expenses;
+
+ALTER TABLE transaction ADD COLUMN date DATE DEFAULT CURRENT_DATE;
+
+ALTER TABLE transaction ADD COLUMN  created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+INSERT INTO transaction (user_id, description, amount, type, date) VALUES
+(1, '💼 Salary (Freelance)', 3450.75, 'income', '2026-05-01'),
+(1, '🛒 Groceries & Supermarket', 128.40, 'expense', '2026-05-15'),
+(2, '☕ Coffee & Workspace', 42.30, 'expense', '2026-05-16'),
+(2, '📱 Phone & Internet Bill', 89.99, 'expense', '2026-05-17'),
+(3, '🎁 Bonus & Cashback', 120.00, 'income', '2026-05-18'),
+(3, '🚗 Fuel & Transport', 55.20, 'expense', '2026-05-19');
+

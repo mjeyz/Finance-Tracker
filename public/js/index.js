@@ -1,75 +1,79 @@
-const TRANSACTIONS = [
-  {
-    id: 1,
-    description: "💼 Salary (Freelance)",
-    amount: 3450.75,
-    type: "income",
-  },
-  {
-    id: 2,
-    description: "🛒 Groceries & Supermarket",
-    amount: -128.4,
-    type: "expense",
-  },
-  {
-    id: 3,
-    description: "☕ Coffee & Workspace",
-    amount: -42.3,
-    type: "expense",
-  },
-  {
-    id: 4,
-    description: "📱 Phone & Internet Bill",
-    amount: -89.99,
-    type: "expense",
-  },
-  { id: 5, description: "🎁 Bonus & Cashback", amount: 120.0, type: "income" },
-  { id: 6, description: "🚗 Fuel & Transport", amount: -55.2, type: "expense" },
-];
+// const TRANSACTIONS = [
+//   {
+//     id: 1,
+//     description: "💼 Salary (Freelance)",
+//     amount: 3450.75,
+//     type: "income",
+//   },
+//   {
+//     id: 2,
+//     description: "🛒 Groceries & Supermarket",
+//     amount: -128.4,
+//     type: "expense",
+//   },
+//   {
+//     id: 3,
+//     description: "☕ Coffee & Workspace",
+//     amount: -42.3,
+//     type: "expense",
+//   },
+//   {
+//     id: 4,
+//     description: "📱 Phone & Internet Bill",
+//     amount: -89.99,
+//     type: "expense",
+//   },
+//   { id: 5, description: "🎁 Bonus & Cashback", amount: 120.0, type: "income" },
+//   { id: 6, description: "🚗 Fuel & Transport", amount: -55.2, type: "expense" },
+// ];
+//
+// const EVENTS = [
+//   {
+//     id: 1,
+//     name: "🌟 Tech Conference 2025",
+//     date: "May 22, 2025",
+//     location: "Convention Hall",
+//   },
+//   {
+//     id: 2,
+//     name: "🎨 Design Workshop",
+//     date: "June 10, 2025",
+//     location: "Creative Hub",
+//   },
+//   {
+//     id: 3,
+//     name: "🏆 Team Hackathon",
+//     date: "July 5, 2025",
+//     location: "Innovation Lab",
+//   },
+//   {
+//     id: 4,
+//     name: "📚 Startup Networking Night",
+//     date: "Aug 18, 2025",
+//     location: "Downtown Loft",
+//   },
+// ];
+//
+// const SAVINGS = [
+//   { id: 1, goal: "🌴 Dream Vacation", targetAmount: 4500, savedAmount: 1875 },
+//   {
+//     id: 2,
+//     goal: "🚗 New Electric Car",
+//     targetAmount: 32000,
+//     savedAmount: 8900,
+//   },
+//   {
+//     id: 3,
+//     goal: "🏡 Home Down Payment",
+//     targetAmount: 70000,
+//     savedAmount: 15200,
+//   },
+//   { id: 4, goal: "📚 Education Fund", targetAmount: 12000, savedAmount: 6400 },
+// ];
 
-const EVENTS = [
-  {
-    id: 1,
-    name: "🌟 Tech Conference 2025",
-    date: "May 22, 2025",
-    location: "Convention Hall",
-  },
-  {
-    id: 2,
-    name: "🎨 Design Workshop",
-    date: "June 10, 2025",
-    location: "Creative Hub",
-  },
-  {
-    id: 3,
-    name: "🏆 Team Hackathon",
-    date: "July 5, 2025",
-    location: "Innovation Lab",
-  },
-  {
-    id: 4,
-    name: "📚 Startup Networking Night",
-    date: "Aug 18, 2025",
-    location: "Downtown Loft",
-  },
-];
-
-const SAVINGS = [
-  { id: 1, goal: "🌴 Dream Vacation", targetAmount: 4500, savedAmount: 1875 },
-  {
-    id: 2,
-    goal: "🚗 New Electric Car",
-    targetAmount: 32000,
-    savedAmount: 8900,
-  },
-  {
-    id: 3,
-    goal: "🏡 Home Down Payment",
-    targetAmount: 70000,
-    savedAmount: 15200,
-  },
-  { id: 4, goal: "📚 Education Fund", targetAmount: 12000, savedAmount: 6400 },
-];
+let TRANSACTIONS = window.__INITIAL_DATA__?.transactions || [];
+let EVENTS = window.__INITIAL_DATA__?.events || [];
+let SAVINGS = window.__INITIAL_DATA__?.savings || [];
 
 const transactionBtn = document.getElementById("transactionBtn");
 const eventBtn = document.getElementById("eventBtn");
@@ -231,7 +235,6 @@ savingBtn.addEventListener("click", handleSavingClick);
 
 setActiveBtn("transactionBtn");
 showCategory("transaction");
-
 
 
 

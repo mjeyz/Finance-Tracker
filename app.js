@@ -37,13 +37,26 @@ const db = new pg.Client({
 });
 db.connect();
 
-app.get("/",async (req, res) => {
+app.get("/", async (req, res) => {
     if (req.isAuthenticated()) {
-        const result = await db.query("SELECT * FROM transaction WHERE user_id = $1", [req.user.id]);
-        const transaction = result.rows;
-        console.log(transaction);
 
-        res.render("Dashboard.ejs", {user: req.user});
+        try {
+            const user_id = req.user.id;
+
+            const transactionResult = await db.query("SELECT * FROM transaction WHERE user_id = $1", [user_id]);
+            const eventResult = await db.query("SELECT * FROM events WHERE user_id = $1", [user_id]);
+            const savingResult = await db.query("SELECT * FROM saving WHERE user_id = $1", [user_id]);
+
+            const transaction = transactionResult.rows;
+            const events = eventResult.rows;
+            const saving = savingResult.rows
+
+            console.log(`Transaction Table rows : ${transaction} \n Event Table Rows : ${events} \n Saving Table Rows : ${saving}`);
+
+            res.render("Dashboard.ejs", {user: req.user, transaction: transaction, events: events, saving: saving});
+        } catch (err) {
+            console.log(err)
+        }
     } else {
         res.redirect("/login");
     }
