@@ -191,94 +191,171 @@
         <div class="list-header">
             <h3 id="dynamicTitle">Transaction History</h3>
         </div>
-        <div id="listContainer" class="listContainer">
+        <div id="listContainer" class="listContainer active">
 
-            <% if ( !transaction) {%>
-            <% transaction.forEach( tx => { %>
-            <div class="transaction-list">
-                <div class="transaction-item">
-                    <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                             fill="#9b1212" viewBox="0 0 24 24">
-                            <path d="M13 18v-6h4l-5-6-5 6h4v6z"></path>
-                        </svg>
-                    </div>
-                    <div style="flex: 1; min-width: 0;">
-                        <p style="margin: 0; font-size: 14px; font-weight: 500; color: #3B3B3B;"><%= tx.description %></p>
-                        <span style="font-size: 12px; color: #888;"><%= tx.date %></span>
-                    </div>
+            <% if ( transaction) { %>
+                <% transaction.forEach( tx => { %>
+                    <div class="transaction-list">
+                        <div class="transaction-item">
+                            <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                     fill="#9b1212" viewBox="0 0 24 24">
+                                    <path d="M13 18v-6h4l-5-6-5 6h4v6z"></path>
+                                </svg>
+                            </div>
+                            <div style="flex: 1; min-width: 0;">
+                                <p style="margin: 0; font-size: 14px; font-weight: 500; color: #3B3B3B;"><%= tx.description %></p>
+                                <span style="font-size: 12px; color: #888;"><%= tx.date %></span>
+                            </div>
 
-                    <!-- 3. Amount -->
-                    <span style="white-space: nowrap; color: #c0786a; font-size: 14px; font-weight: 500;"> <%= tx.amount %></span>
-                </div>
-            </div>
-            <% }) %>
+                            <!-- 3. Amount -->
+                            <span style="white-space: nowrap; color: #c0786a; font-size: 14px; font-weight: 500;"> <%= tx.amount %></span>
+                        </div>
+                    </div>
+                <% }) %>
             <% } else { %>
-            <div class="empty-message">No Transaction History Found</div>
+                <div class="empty-message">No Transaction History Found</div>
             <% } %>
 
-        </div>
-    </div>
-    <button class="add-transaction" id="addTransaction">+ Add Transaction</button>
+            <div id="listContainer" class="listContainer">
 
+                <!--  Transaction List-->
+                <div class="transaction-list active" id="transactionList">
+                    <% if ( transaction) { %>
+                        <% transaction.forEach( tx => { %>
+                            <div class="transaction-item">
+                                <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                         fill="#9b1212" viewBox="0 0 24 24">
+                                        <path d="M13 18v-6h4l-5-6-5 6h4v6z"></path>
+                                    </svg>
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <p style="margin: 0; font-size: 14px; font-weight: 500; color: #3B3B3B;"><%= tx.description %></p>
+                                    <span style="font-size: 12px; color: #888;"><%= tx.date %></span>
+                                </div>
 
-    <div class="overlay" id="overlay">
-
-        <div class="model" id="model">
-
-
-            <div class="model-header" id="modelHeader">
-                <div class="title">
-                    Add Your Transaction
+                                <!-- 3. Amount -->
+                                <span style="white-space: nowrap; color: #c0786a; font-size: 14px; font-weight: 500;"> <%= tx.amount %></span>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="empty-message">No Transaction History Found</div>
+                    <% } %>
                 </div>
-                <button class="close-btn" id="closeModalBtn" aria-label="Close">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
 
-            <div class="model-body" id="modelBody">
-                <form class="entry-form" id="entryForm">
-                    <div class="form-group">
-                        <label for="amount">Amount <span class="required">*</span></label>
-                        <input type="text" id="amount" placeholder="e.g. 2000">
-                    </div>
+                <!--  Events List-->
+                <div class="event-list" id="eventList">
+                    <% if ( events ) { %>
+                        <% events.forEach( ev => { %>
+                            <div class="event-item">
+                                <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                         fill="#9b1212" viewBox="0 0 24 24">
+                                        <path d="M13 18v-6h4l-5-6-5 6h4v6z"></path>
+                                    </svg>
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <p style="margin: 0; font-size: 14px; font-weight: 500; color: #3B3B3B;"><%= ev.description %></p>
+                                    <span style="font-size: 12px; color: #888;"><%= ev.date %></span>
+                                </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="category">Category</label>
+                                <!-- 3. Amount -->
+                                <span style="white-space: nowrap; color: #c0786a; font-size: 14px; font-weight: 500;"> <%= ev.amount %></span>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="empty-message">No Transaction History Found</div>
+                    <% } %>
+                </div>
 
-                            <select id="category">
-                                <option value="income">Income</option>
-                                <option value="expense">Expense</option>
-                                <option value="other">Other</option>
-                            </select>
+                <!--  Saving List-->
+                <div class="saving-list" id="savingList">
+                    <% if ( saving ) { %>
+                        <% saving.forEach( sv => { %>
+                            <div class="saving-item">
+                                <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                         fill="#9b1212" viewBox="0 0 24 24">
+                                        <path d="M13 18v-6h4l-5-6-5 6h4v6z"></path>
+                                    </svg>
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <p style="margin: 0; font-size: 14px; font-weight: 500; color: #3B3B3B;"><%= sv.description %></p>
+                                    <span style="font-size: 12px; color: #888;"><%= sv.date %></span>
+                                </div>
 
-                        </div>
-                        <div class="form-group">
-                            <label for="type">Type</label>
+                                <!-- 3. Amount -->
+                                <span style="white-space: nowrap; color: #c0786a; font-size: 14px; font-weight: 500;"> <%= sv.amount %></span>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="empty-message">No Transaction History Found</div>
+                    <% } %>
+                </div>
 
-                            <select id="type">
-                                <option value="income">Income</option>
-                                <option value="expense">Expense</option>
-                                <option value="other">Other</option>
-                            </select>
-
-                        </div>
-
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea id="description" type="text" placeholder="Write a short note...."></textarea>
-                    </div>
-
-                    <div class="form-action">
-                        <button class="btn btn-secondary" type="button" id="cancelBtn">Cancel</button>
-                        <button class="btn btn-primary" type="button" id="submitBtn">Submit</button>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
+        <button class="add-transaction" id="addTransaction">+ Add Transaction</button>
+
+
+        <div class="overlay" id="overlay">
+
+            <div class="model" id="model">
+
+
+                <div class="model-header" id="modelHeader">
+                    <div class="title">
+                        Add Your Transaction
+                    </div>
+                    <button class="close-btn" id="closeModalBtn" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="model-body" id="modelBody">
+                    <form class="entry-form" id="entryForm">
+                        <div class="form-group">
+                            <label for="amount">Amount <span class="required">*</span></label>
+                            <input type="text" id="amount" placeholder="e.g. 2000">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="category">Category</label>
+
+                                <select id="category">
+                                    <option value="income">Income</option>
+                                    <option value="expense">Expense</option>
+                                    <option value="other">Other</option>
+                                </select>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="type">Type</label>
+
+                                <select id="type">
+                                    <option value="income">Income</option>
+                                    <option value="expense">Expense</option>
+                                    <option value="other">Other</option>
+                                </select>
+
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea id="description" type="text" placeholder="Write a short note...."></textarea>
+                        </div>
+
+                        <div class="form-action">
+                            <button class="btn btn-secondary" type="button" id="cancelBtn">Cancel</button>
+                            <button class="btn btn-primary" type="button" id="submitBtn">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 </main>
 
 

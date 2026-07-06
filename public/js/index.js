@@ -81,6 +81,9 @@ const savingBtn = document.getElementById("savingBtn");
 const listContainer = document.getElementById("listContainer");
 const dynamicTitle = document.getElementById("dynamicTitle");
 const addBtn = document.getElementById("addTransaction");
+const transactionList = document.getElementById("transactionList");
+const eventList = document.getElementById("eventList");
+const savingList = document.getElementById("savingList");
 
 function setActiveBtn(activeElementId) {
   const allBtn = [transactionBtn, eventBtn, savingBtn];
@@ -88,84 +91,90 @@ function setActiveBtn(activeElementId) {
   allBtn.forEach((btn) => {
     if (btn.id === activeElementId) {
       btn.classList.add("active");
+
     } else {
       btn.classList.remove("active");
     }
   });
 }
 
-function renderTransactionList() {
-  if (!TRANSACTIONS.length) {
-    return '<div class="empty-message">No Transaction found</div>';
-  }
+// function renderTransactionList() {
+//   if (!TRANSACTIONS.length) {
+//     return '<div class="empty-message">No Transaction found</div>';
+//   }
+//
+//   let html = "";
+//
+//   for (let tx of TRANSACTIONS) {
+//     html += `
+//
+// `;
+//   }
+//
+//   return html;
+// }
 
-  let html = "";
+// function renderEventList() {
+//   if (!EVENTS.length) {
+//     return "<div class='empty-message'>No Upcoming Event</div>";
+//   }
+//
+//   let html = "";
+//
+//   for (let ev of EVENTS) {
+//     html += ` <div class="events-list">
+//             <div class="event-item">
+//                 <div style="flex: 1; min-width: 0; border-left: 5px solid orangered; border-radius: 4px; padding-left: 10px">
+//                     <p style="margin: 0; font-size: 14px;font-weight: 500; color: #3B3B3B">${ev.name}</p>
+//                     <span style="font-size: 12px; color: #888;">${ev.date}</span>
+//                 </div>
+//                 <div style="white-space: nowrap;">
+//                     <span style="font-size: 14px; font-weight: 500; color: orange">RS 400</span>
+//                     <p style="font-size: 12px;">Mid priority</p>
+//                 </div>
+//             </div>
+//         </div>`;
+//   }
+//
+//   return html;
+// }
 
-  for (let tx of TRANSACTIONS) {
-    html += `
+// function renderSavingList() {
+//   if (!SAVINGS.length) {
+//     return "<div class='empty-message'>No saving found</div>";
+//   }
+//
+//   let html = "";
+//
+//   for (let sv of SAVINGS) {
+//     const percent = (sv.savedAmount / sv.targetAmount) * 100;
+//     const percentRounded = Math.min(100, Math.floor(percent));
+//     html += `
+//         <div class="saving-goals">
+//             <div class="goal-card">
+//                 <div class="goal-header">
+//                     <span class="goal-name">${sv.goal}</span>
+//                     <span class="goal-pct">${percentRounded}%</span>
+//                 </div>
+//                 <div class="progress-track">
+//                     <div class="progress-fill" style="width: ${percentRounded}%"></div>
+//                 </div>
+//                 <div class="goal-footer">
+//                     <span>Rs ${sv.savedAmount} saved</span>
+//                     <span>Goal: Rs ${sv.targetAmount}</span>
+//                 </div>
+//             </div>
+//         </div>
+// `;
+//   }
 
-`;
-  }
-
-  return html;
-}
-
-function renderEventList() {
-  if (!EVENTS.length) {
-    return "<div class='empty-message'>No Upcoming Event</div>";
-  }
-
-  let html = "";
-
-  for (let ev of EVENTS) {
-    html += ` <div class="events-list">
-            <div class="event-item">
-                <div style="flex: 1; min-width: 0; border-left: 5px solid orangered; border-radius: 4px; padding-left: 10px">
-                    <p style="margin: 0; font-size: 14px;font-weight: 500; color: #3B3B3B">${ev.name}</p>
-                    <span style="font-size: 12px; color: #888;">${ev.date}</span>
-                </div>
-                <div style="white-space: nowrap;">
-                    <span style="font-size: 14px; font-weight: 500; color: orange">RS 400</span>
-                    <p style="font-size: 12px;">Mid priority</p>
-                </div>
-            </div>
-        </div>`;
-  }
-
-  return html;
-}
+//   return html;
+// }
 
 function renderSavingList() {
-  if (!SAVINGS.length) {
-    return "<div class='empty-message'>No saving found</div>";
-  }
 
-  let html = "";
-
-  for (let sv of SAVINGS) {
-    const percent = (sv.savedAmount / sv.targetAmount) * 100;
-    const percentRounded = Math.min(100, Math.floor(percent));
-    html += `
-        <div class="saving-goals">
-            <div class="goal-card">
-                <div class="goal-header">
-                    <span class="goal-name">${sv.goal}</span>
-                    <span class="goal-pct">${percentRounded}%</span>
-                </div>
-                <div class="progress-track">
-                    <div class="progress-fill" style="width: ${percentRounded}%"></div>
-                </div>
-                <div class="goal-footer">
-                    <span>Rs ${sv.savedAmount} saved</span>
-                    <span>Goal: Rs ${sv.targetAmount}</span>
-                </div>
-            </div>
-        </div>
-`;
-  }
-
-  return html;
 }
+
 
 function showCategory(categoryType) {
   let contentHtml = "";
