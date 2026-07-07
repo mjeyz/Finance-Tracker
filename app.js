@@ -51,10 +51,6 @@ app.get("/", async (req, res) => {
             const events = eventResult.rows;
             const saving = savingResult.rows
 
-            console.log(`Transaction Table rows : ${transaction} \n Event Table Rows : ${events} \n Saving Table Rows : ${saving}`);
-
-        
-
             res.render("Dashboard.ejs", {user: req.user, transaction: transaction, events: events, saving: saving});
         } catch (err) {
             console.log(err)

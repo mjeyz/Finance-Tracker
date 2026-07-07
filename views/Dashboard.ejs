@@ -196,7 +196,7 @@
 
             <!--  Transaction List-->
             <div class="list-section transaction-list active" id="transactionList">
-                <% if ( transaction) { %>
+                <% if ( transaction.length > 0 ) { %>
                     <% transaction.forEach( tx => { %>
                         <div class="transaction-item">
                             <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
@@ -221,7 +221,7 @@
 
             <!--  Events List-->
             <div class="list-section events-list" id="eventList">
-                <% if ( events) { %>
+                <% if ( events.length > 0 ) { %>
                     <% events.forEach( ev => { %>
                         <div class="event-item">
                             <div style="flex: 1; min-width: 0; border-left: 5px solid orangered; border-radius: 4px; padding-left: 10px">
@@ -236,13 +236,13 @@
                         </div>
                     <% }) %>
                 <% } else { %>
-                    <div class="empty-message">No Transaction History Found</div>
+                    <div class="empty-message">No Events Found</div>
                 <% } %>
             </div>
 
             <!--  Saving List-->
             <div class="list-section saving-goals" id="savingList">
-                <% if ( saving) { %>
+                <% if ( saving.length > 0 ) { %>
                     <% saving.forEach( sv => { %>
 
                         <% const percent = (sv.savedamount / sv.targetamount) * 100;
@@ -264,7 +264,7 @@
                         </div>
                     <% }) %>
                 <% } else { %>
-                    <div class="empty-message">No Transaction History Found</div>
+                    <div class="empty-message">No Saving Found</div>
                 <% } %>
             </div>
         </div>
