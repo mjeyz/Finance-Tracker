@@ -180,11 +180,11 @@
     </div>
 
     <div class="button-group">
-        <button class="transaction-btn active" id="transactionBtn">
+        <button class="tab-btn transaction-btn active" id="transactionBtn">
             Transaction
         </button>
-        <button class="envent-btn" id="eventBtn">Upcoming Event</button>
-        <button class="saving-btn" id="savingBtn">Saving</button>
+        <button class="tab-btn envent-btn" id="eventBtn">Upcoming Event</button>
+        <button class="tab-btn saving-btn" id="savingBtn">Saving</button>
     </div>
 
     <div class="display-panel">
@@ -193,9 +193,11 @@
         </div>
         <div id="listContainer" class="listContainer active">
 
-            <% if ( transaction) { %>
-                <% transaction.forEach( tx => { %>
-                    <div class="transaction-list">
+
+            <!--  Transaction List-->
+            <div class="list-section transaction-list active" id="transactionList">
+                <% if ( transaction) { %>
+                    <% transaction.forEach( tx => { %>
                         <div class="transaction-item">
                             <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -211,89 +213,59 @@
                             <!-- 3. Amount -->
                             <span style="white-space: nowrap; color: #c0786a; font-size: 14px; font-weight: 500;"> <%= tx.amount %></span>
                         </div>
-                    </div>
-                <% }) %>
-            <% } else { %>
-                <div class="empty-message">No Transaction History Found</div>
-            <% } %>
+                    <% }) %>
+                <% } else { %>
+                    <div class="empty-message">No Transaction History Found</div>
+                <% } %>
+            </div>
 
-            <div id="listContainer" class="listContainer">
-
-                <!--  Transaction List-->
-                <div class="transaction-list active" id="transactionList">
-                    <% if ( transaction) { %>
-                        <% transaction.forEach( tx => { %>
-                            <div class="transaction-item">
-                                <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         fill="#9b1212" viewBox="0 0 24 24">
-                                        <path d="M13 18v-6h4l-5-6-5 6h4v6z"></path>
-                                    </svg>
-                                </div>
-                                <div style="flex: 1; min-width: 0;">
-                                    <p style="margin: 0; font-size: 14px; font-weight: 500; color: #3B3B3B;"><%= tx.description %></p>
-                                    <span style="font-size: 12px; color: #888;"><%= tx.date %></span>
-                                </div>
-
-                                <!-- 3. Amount -->
-                                <span style="white-space: nowrap; color: #c0786a; font-size: 14px; font-weight: 500;"> <%= tx.amount %></span>
+            <!--  Events List-->
+            <div class="list-section events-list" id="eventList">
+                <% if ( events) { %>
+                    <% events.forEach( ev => { %>
+                        <div class="event-item">
+                            <div style="flex: 1; min-width: 0; border-left: 5px solid orangered; border-radius: 4px; padding-left: 10px">
+                                <p style="margin: 0; font-size: 14px;font-weight: 500; color: #3B3B3B">
+                                    <%= ev.name %></p>
+                                <span style="font-size: 12px; color: #888;"><%= ev.date %></span>
                             </div>
-                        <% }) %>
-                    <% } else { %>
-                        <div class="empty-message">No Transaction History Found</div>
-                    <% } %>
-                </div>
-
-                <!--  Events List-->
-                <div class="event-list" id="eventList">
-                    <% if ( events ) { %>
-                        <% events.forEach( ev => { %>
-                            <div class="event-item">
-                                <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         fill="#9b1212" viewBox="0 0 24 24">
-                                        <path d="M13 18v-6h4l-5-6-5 6h4v6z"></path>
-                                    </svg>
-                                </div>
-                                <div style="flex: 1; min-width: 0;">
-                                    <p style="margin: 0; font-size: 14px; font-weight: 500; color: #3B3B3B;"><%= ev.description %></p>
-                                    <span style="font-size: 12px; color: #888;"><%= ev.date %></span>
-                                </div>
-
-                                <!-- 3. Amount -->
-                                <span style="white-space: nowrap; color: #c0786a; font-size: 14px; font-weight: 500;"> <%= ev.amount %></span>
+                            <div style="white-space: nowrap;">
+                                <span style="font-size: 14px; font-weight: 500; color: orange">RS 400</span>
+                                <p style="font-size: 12px;">Mid priority</p>
                             </div>
-                        <% }) %>
-                    <% } else { %>
-                        <div class="empty-message">No Transaction History Found</div>
-                    <% } %>
-                </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="empty-message">No Transaction History Found</div>
+                <% } %>
+            </div>
 
-                <!--  Saving List-->
-                <div class="saving-list" id="savingList">
-                    <% if ( saving ) { %>
-                        <% saving.forEach( sv => { %>
-                            <div class="saving-item">
-                                <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         fill="#9b1212" viewBox="0 0 24 24">
-                                        <path d="M13 18v-6h4l-5-6-5 6h4v6z"></path>
-                                    </svg>
-                                </div>
-                                <div style="flex: 1; min-width: 0;">
-                                    <p style="margin: 0; font-size: 14px; font-weight: 500; color: #3B3B3B;"><%= sv.description %></p>
-                                    <span style="font-size: 12px; color: #888;"><%= sv.date %></span>
-                                </div>
+            <!--  Saving List-->
+            <div class="list-section saving-goals" id="savingList">
+                <% if ( saving) { %>
+                    <% saving.forEach( sv => { %>
 
-                                <!-- 3. Amount -->
-                                <span style="white-space: nowrap; color: #c0786a; font-size: 14px; font-weight: 500;"> <%= sv.amount %></span>
+                        <% const percent = (sv.savedAmount / sv.targetAmount) * 100;
+                            const percentRounded = Math.min(100, Math.floor(percent)); %>
+
+                        <div class="goal-card">
+                            <div class="goal-header">
+                                <span class="goal-name"><%= sv.goal %></span>
+                                <span class="goal-pct"><%= percentRounded %>%</span>
                             </div>
-                        <% }) %>
-                    <% } else { %>
-                        <div class="empty-message">No Transaction History Found</div>
-                    <% } %>
-                </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width: <%= percentRounded %>%"></div>
+                            </div>
+                            <div class="goal-footer">
+                                <span>Rs <%= sv.savedamount %> saved</span>
+                                <span>Goal: Rs <%= sv.targetamount %></span>
+                            </div>
 
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="empty-message">No Transaction History Found</div>
+                <% } %>
             </div>
         </div>
         <button class="add-transaction" id="addTransaction">+ Add Transaction</button>

@@ -321,6 +321,10 @@ body {
     color: #535361;
 }
 
+.list-section { display: none; }
+.list-section.active { display: block; }
+.tab-btn.active { background: #6366f1; color: white; }
+
 @keyframes liftCard {
     0% {
         transform: translateY(0);

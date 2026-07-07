@@ -53,6 +53,8 @@ app.get("/", async (req, res) => {
 
             console.log(`Transaction Table rows : ${transaction} \n Event Table Rows : ${events} \n Saving Table Rows : ${saving}`);
 
+        
+
             res.render("Dashboard.ejs", {user: req.user, transaction: transaction, events: events, saving: saving});
         } catch (err) {
             console.log(err)
