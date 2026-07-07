@@ -323,7 +323,10 @@ body {
 
 .list-section { display: none; }
 .list-section.active { display: block; }
-.tab-btn.active { background: #6366f1; color: white; }
+.tab-btn.active {
+    background-color: #565e64;
+    border-color: #51585e;
+}
 
 @keyframes liftCard {
     0% {
