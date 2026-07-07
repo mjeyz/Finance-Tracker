@@ -224,3 +224,33 @@ body {
 .form-footer a:hover {
     text-decoration: underline;
 }
+
+.change-password-container {
+    background-color: #ffffff;
+    padding: 2rem;
+    width: 100%;
+    max-width: 700px;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    animation: liftCard 1.6s cubic-bezier(0.6, 1, 0.3, 1) forwards;
+
+}
+
+.change-password-heading {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+@keyframes liftCard {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
