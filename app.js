@@ -301,6 +301,14 @@ passport.deserializeUser((user, cb) => {
     }
 );
 
+app.post("/change-password", async (req, res) => {
+    const oldPassword = req.body.oldPassword;
+    const newPassword = req.body.newPassword;
+    const confirmPassword = req.body.confirmPassword;
+
+    console.log(`Old Password : ${oldPassword}, New Password : ${newPassword}, confirm Password : ${confirmPassword}`);
+});
+
 app.listen(port, () => {
         console.log(`Express Server is Listening on ${port}`);
     }
