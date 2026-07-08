@@ -319,6 +319,8 @@ app.post("/change-password", async (req, res) => {
                         console.log(err);
                     } else {
                         await db.query("UPDATE users SET password = $1", [hash]);
+                        console.log("Successfully Updated Password")
+                        res.redirect("/login")
                     }
                 });
 
