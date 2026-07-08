@@ -7,6 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="js/index.js"></script>
+
 </head>
 <body>
 <div class="form-card">
@@ -30,8 +32,8 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Min. 8 characters">
+            <label for="newPassword">Password</label>
+            <input type="password" id="newPassword" name="password" placeholder="Min. 8 characters">
         </div>
         <div class="form-group">
             <label for="confirmPassword">Confirm Password</label>
@@ -59,5 +61,24 @@
 
     <p class="form-footer">Already have an account? <a href="/login ">sign in</a></p>
 </div>
+
+<script>
+const newPassword = document.getElementById("newPassword");
+const confirmPassword = document.getElementById("confirmPassword");
+
+function checkPasswords() {
+    if (newPassword.value !== confirmPassword.value) {
+        confirmPassword.setCustomValidity("Password does not match");
+    } else {
+        confirmPassword.setCustomValidity("");
+    }
+
+    newPassword.addEventListener("input", checkPasswords);
+    confirmPassword.addEventListener("input", checkPasswords);
+}
+
+checkPasswords();
+</script>
+
 </body>
 </html>
