@@ -304,9 +304,31 @@ passport.deserializeUser((user, cb) => {
 app.post("/change-password", async (req, res) => {
     const oldPassword = req.body.oldPassword;
     const newPassword = req.body.newPassword;
-    const confirmPassword = req.body.confirmPassword;
+    const email = req.body.email;
 
-    console.log(`Old Password : ${oldPassword}, New Password : ${newPassword}, confirm Password : ${confirmPassword}`);
+    try {
+        const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+
+        // const checkResult = await db.query("S"
+        if (result.rows.length > 0) {
+            const hashedPassword = result.rows.password;
+
+            bcrypt.compare(oldPassword, hashedPassword, (err) => {
+
+                bcrypt.hash(newPassword, saltRound, async (err, hash) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        await db.query("UPDATE users SET password = $1", [hash]);
+                    }
+                });
+
+            });
+        }
+    } catch (err) {
+        console.log(err)
+    }
+    console.log(`Old Password : ${oldPassword}, New Password : ${newPassword}`);
 });
 
 app.listen(port, () => {
