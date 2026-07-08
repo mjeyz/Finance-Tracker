@@ -302,7 +302,7 @@ passport.deserializeUser((user, cb) => {
 );
 
 app.post("/change-password", async (req, res) => {
-    const oldPassword = req.body.oldPassword;
+    // const oldPassword = req.body.oldPassword;
     const newPassword = req.body.newPassword;
     const email = req.body.email;
 
@@ -313,7 +313,6 @@ app.post("/change-password", async (req, res) => {
         if (result.rows.length > 0) {
             const hashedPassword = result.rows.password;
 
-            bcrypt.compare(oldPassword, hashedPassword, (err) => {
 
                 bcrypt.hash(newPassword, saltRound, async (err, hash) => {
                     if (err) {
@@ -323,12 +322,11 @@ app.post("/change-password", async (req, res) => {
                     }
                 });
 
-            });
+
         }
     } catch (err) {
         console.log(err)
     }
-    console.log(`Old Password : ${oldPassword}, New Password : ${newPassword}`);
 });
 
 app.listen(port, () => {
