@@ -9,6 +9,7 @@ import session from "express-session";
 import GithubStrategy from "passport-github";
 import GoogleStrategy from "passport-google-oauth20";
 import FacebookStrategy from "passport-facebook";
+import nodemailer from "nodemailer";
 
 const app = express();
 const port = 3000;
@@ -37,6 +38,45 @@ const db = new pg.Client({
 });
 db.connect();
 
+const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMATP_PORT,
+    secure: false,
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+    }
+});
+
+transporter.verify((error, success) => {
+    if (error) {
+        console.log("SMTP connection error : ", error);
+    } else {
+        console.log("SMTP server is ready to send message");
+    }
+});
+
+app.post('/send-email', async (req, res) => {
+    const {to, subject, text, html} = req.body;
+
+    const mailOptions = {
+        from: `"My App" <${process.env.SMTP_USER}>`,
+        to: process.env.SMTP_USER,
+        subject: "subject",
+        text: "Hello I am text",
+        html: html || `<p>${text}</p>`, // Support both plain text and HTML[reference:6][reference:7]
+    };
+
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Email sent:', info.messageId);
+        res.json({success: true, messageId: info.messageId});
+    } catch (error) {
+        console.error('Email send error:', error);
+        res.status(500).json({success: false, error: error.message});
+    }
+});
+
 app.get("/", async (req, res) => {
     if (req.isAuthenticated()) {
 
@@ -51,6 +91,24 @@ app.get("/", async (req, res) => {
             const events = eventResult.rows;
             const saving = savingResult.rows
 
+
+            const mailOptions = {
+                from: `"My App" <${process.env.SMTP_USER}>`,
+                to: process.env.SMTP_USER,
+                subject: "subject",
+                text: "Hello I am text",
+                html: `<p>Hello I am text</p>`, // Support both plain text and HTML[reference:6][reference:7]
+            };
+
+            try {
+                const info = await transporter.sendMail(mailOptions);
+                console.log('Email sent:', info.messageId);
+                res.json({success: true, messageId: info.messageId});
+            } catch (error) {
+                console.error('Email send error:', error);
+                res.status(500).json({success: false, error: error.message});
+            }
+
             res.render("Dashboard.ejs", {user: req.user, transaction: transaction, events: events, saving: saving});
         } catch (err) {
             console.log(err)
@@ -58,6 +116,7 @@ app.get("/", async (req, res) => {
     } else {
         res.redirect("/login");
     }
+
 });
 
 app.get("/register", (req, res) => {
@@ -314,15 +373,15 @@ app.post("/change-password", async (req, res) => {
             const hashedPassword = result.rows.password;
 
 
-                bcrypt.hash(newPassword, saltRound, async (err, hash) => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        await db.query("UPDATE users SET password = $1", [hash]);
-                        console.log("Successfully Updated Password")
-                        res.redirect("/login")
-                    }
-                });
+            bcrypt.hash(newPassword, saltRound, async (err, hash) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    await db.query("UPDATE users SET password = $1", [hash]);
+                    console.log("Successfully Updated Password")
+                    res.redirect("/login")
+                }
+            });
 
 
         }
