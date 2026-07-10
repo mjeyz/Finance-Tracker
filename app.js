@@ -46,23 +46,23 @@ const db = new pg.Client({
 });
 db.connect();
 
-// const transporter = nodemailer.createTransport({
-//     host: process.env.SMTP_HOST,
-//     port: process.env.SMATP_PORT,
-//     secure: false,
-//     auth: {
-//         user: process.env.SMTP_USER,
-//         pass: process.env.SMTP_PASS,
-//     }
-// });
+const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMATP_PORT,
+    secure: false,
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+    }
+});
 
-// transporter.verify((error, success) => {
-//     if (error) {
-//         console.log("SMTP connection error : ", error);
-//     } else {
-//         console.log("SMTP server is ready to send message");
-//     }
-// });
+transporter.verify((error, success) => {
+    if (error) {
+        console.log("SMTP connection error : ", error);
+    } else {
+        console.log("SMTP server is ready to send message");
+    }
+});
 
 app.get("/", async (req, res) => {
     if (req.isAuthenticated()) {
@@ -78,23 +78,6 @@ app.get("/", async (req, res) => {
             const events = eventResult.rows;
             const saving = savingResult.rows
 
-        //     const mailOptions = {
-        //         from: `"My App" <${process.env.SMTP_USER}>`,
-        //         to: process.env.SMTP_USER,
-        //         subject: "subject",
-        //         text: "Hello I am text",
-        //         html: `<p>Hello I am text</p>`, // Support both plain text and HTML[reference:6][reference:7]
-        //     };
-        //
-        //     try {
-        //         const info = await transporter.sendMail(mailOptions);
-        //         console.log('Email sent:', info.messageId);
-        //         res.json({success: true, messageId: info.messageId});
-        //     } catch (error) {
-        //         console.error('Email send error:', error);
-        //         res.status(500).json({success: false, error: error.message});
-        //     }
-        //
             res.render("Dashboard.ejs", {user: req.user, transaction: transaction, events: events, saving: saving});
         } catch (err) {
             console.log(err)
@@ -333,9 +316,7 @@ passport.use(
             } catch (err) {
                 return cb(err);
             }
-        }
-    )
-);
+    }));
 
 passport.serializeUser((user, cb) => {
     cb(null, user);
@@ -343,10 +324,6 @@ passport.serializeUser((user, cb) => {
 
 passport.deserializeUser((user, cb) => {
     cb(null, user);
-});
-
-app.post("/varify-email", async (req, res) => {
-
 });
 
 app.post("/change-password", async (req, res) => {
@@ -384,6 +361,34 @@ app.post("/change-password", async (req, res) => {
         req.flash("error", "Unable to update password right now.");
         res.redirect("/change-password");
     }
+});
+
+
+app.post("/varify-email", async (req, res) => {
+    const email = req.body.email;
+    const code = req.body.code;
+
+    const randomCode = Math.floor(Math.random() * 100000) + 99999;
+
+    try {
+        const info = transporter.sendMail({
+            from: `"My App" <${process.env.SMTP_USER}>`,
+            to: process.env.SMTP_USER,
+            subject: "Varifying User Identity",
+            text: `Your Privacy is our First concern`,
+            html: `<p>Your single code is : ${randomCode} don't share it with anyone.</p>`
+        });
+
+        req.flash("success", `Email sent : ${info.messageId}`);
+        console.log(`Email sent : ${info.messageId}`);
+        res.json({success: true, messageId: info.messageId});
+    } catch (err) {
+       console.error('Email send error:', err);
+       res.status(500).json({success: false, error: err.message});
+    }
+    console.log(`Email : ${email}, Code =: ${code} Random Number =: ${randomCode}`);
+
+
 });
 
 app.listen(port, () => {

@@ -41,12 +41,12 @@
         </div>
     <% } %>
 
-    <form class="varify-email-form" >
+    <form class="varify-email-form" method="POST">
         <h1 class="varify-heading">Please varify your Email</h1>
         <div class="varify-section email-section active" id="emailSection">
             <div class="form-group">
                 <label for="email" style="color: #5c636a">Enter your Email</label>
-                <input type="email" id="email" placeholder="example@gmail.com">
+                <input type="email" id="email" placeholder="example@gmail.com" name="email">
             </div>
             <button type="submit" class="submit-btn" id="sendCodeBtn">Send Code</button>
 
@@ -55,7 +55,7 @@
         <div class="varify-section code-section" id="codeSection">
             <div class="form-group">
                 <label for="varifyEmail" style="color: #5c636a">Enter your code</label>
-                <input type="text" id="varifyEmail" placeholder="e.g. 123456">
+                <input type="text" id="varifyEmail" placeholder="e.g. 123456" name="code">
             </div>
             <button type="submit" class="submit-btn" style="margin-bottom: 1rem">Submit Code</button>
 
@@ -86,7 +86,6 @@
             event.preventDefault();
             setActive();
         });
-
 
     </script>
 
