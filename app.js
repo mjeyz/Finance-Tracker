@@ -78,8 +78,6 @@ app.get("/", async (req, res) => {
             const events = eventResult.rows;
             const saving = savingResult.rows
 
-            req.flash("error", "Unable to update password right now.");
-
         //     const mailOptions = {
         //         from: `"My App" <${process.env.SMTP_USER}>`,
         //         to: process.env.SMTP_USER,

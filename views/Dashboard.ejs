@@ -50,7 +50,6 @@
                     height="24"
                     fill="currentColor"
                     viewBox="0 0 24 24">
-                <!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
                 <path
                         d="m10.94,15.5c.71.46,1.65.27,2.12-.44,0,0,0,0,0,0l3.96-6.04s0-.02,0-.03c0-.02-.03-.02-.04-.01l-6.04,3.96c-.71.46-.91,1.41-.44,2.12.12.18.27.33.44.44Z"
                 ></path>
@@ -173,20 +172,6 @@
 
     <h1 class="dashboard-heading">Dashboard</h1>
     <p class="dashboard-subtitle">Your financial overview at a glance</p>
-        <% if (error && error.length > 0) { %>
-        <div class="flash-stack">
-            <% error.forEach(function (msg) { %>
-                <div class="flash-message flash-error"><%= msg %></div>
-            <% }) %>
-        </div>
-    <% } %>
-    <% if (success && success.length > 0) { %>
-        <div class="flash-stack">
-            <% success.forEach(function (msg) { %>
-                <div class="flash-message flash-success"><%= msg %></div>
-            <% }) %>
-        </div>
-    <% } %>
     <div class="status">
         <div class="stat-card total-income">
             <span class="card-subtitle">Total Income</span>
@@ -342,7 +327,6 @@
                                     <option value="expense">Expense</option>
                                     <option value="other">Other</option>
                                 </select>
-
                             </div>
 
                         </div>
@@ -360,6 +344,7 @@
             </div>
         </div>
 </main>
+
 
 
 <script src="js/index.js"></script>

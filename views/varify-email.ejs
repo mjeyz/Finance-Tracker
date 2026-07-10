@@ -9,6 +9,8 @@
             integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
             crossorigin="anonymous"/>
     <link rel="stylesheet" href="css/styles.css"/>
+    <link rel="stylesheet" href="css/login.css"/>
+
     <link
             href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
             rel="stylesheet"/>
@@ -39,24 +41,54 @@
         </div>
     <% } %>
 
-    <form class="varify-email-form">
+    <form class="varify-email-form" >
         <h1 class="varify-heading">Please varify your Email</h1>
+        <div class="varify-section email-section active" id="emailSection">
+            <div class="form-group">
+                <label for="email" style="color: #5c636a">Enter your Email</label>
+                <input type="email" id="email" placeholder="example@gmail.com">
+            </div>
+            <button type="submit" class="submit-btn" id="sendCodeBtn">Send Code</button>
 
-        <div class="form-group" style="margin-bottom: 5px">
-            <label for="varifyEmail" style="color: #5c636a">Enter your code</label>
-            <input type="text" id="varifyEmail" placeholder="e.g. 123456">
+        </div>
+
+        <div class="varify-section code-section" id="codeSection">
+            <div class="form-group">
+                <label for="varifyEmail" style="color: #5c636a">Enter your code</label>
+                <input type="text" id="varifyEmail" placeholder="e.g. 123456">
+            </div>
+            <button type="submit" class="submit-btn" style="margin-bottom: 1rem">Submit Code</button>
+
+            <div class="action-group">
+                <div>
+                    <span class="timer" id="timer">00:00</span>
+                </div>
+
+                <div>
+                    <a class="resend-code" id="resendCode">Resend code</a>
+                </div>
+            </div>
         </div>
     </form>
 
-    <div class="action-group">
-        <div>
-            <span class="timer" id="timer">00:00</span>
-        </div>
+    <script>
+        const sendCodeBtn = document.getElementById("sendCodeBtn");
+        const codeSection = document.getElementById("codeSection");
+        const emailSection = document.getElementById("emailSection");
 
-        <div>
-            <a class="resend-code" id="resendCode">Resend code</a>
-        </div>
-    </div>
+        function setActive() {
+            emailSection.classList.remove("active");
+            codeSection.classList.add("active");
+        }
+
+
+        sendCodeBtn.addEventListener("click", function(event) {
+            event.preventDefault();
+            setActive();
+        });
+
+
+    </script>
 
 </div>
 </body>
