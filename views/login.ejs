@@ -11,6 +11,27 @@
 </head>
 <body>
 <div class="form-card">
+    <% if (error && error.length > 0) { %>
+        <div class="flash-stack">
+            <% error.forEach(function (msg) { %>
+                <div class="flash-message flash-error"><%= msg %></div>
+            <% }) %>
+        </div>
+    <% } %>
+    <% if (success && success.length > 0) { %>
+        <div class="flash-stack">
+            <% success.forEach(function (msg) { %>
+                <div class="flash-message flash-success"><%= msg %></div>
+            <% }) %>
+        </div>
+    <% } %>
+    <% if (info && info.length > 0) { %>
+        <div class="flash-stack">
+            <% info.forEach(function (msg) { %>
+                <div class="flash-message flash-info"><%= msg %></div>
+            <% }) %>
+        </div>
+    <% } %>
     <form class="login-form" action="/login" method="POST">
         <div class="form-header" style="margin-bottom: 1rem;">
             <h1 class="form-heading">Fin<span style="color: #2563eb;">Track</span></h1>
@@ -25,7 +46,7 @@
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password " name="password" placeholder="password">
+            <input type="password" id="password" name="password" placeholder="password">
         </div>
         <div class="options-row">
             <label>

@@ -22,6 +22,23 @@
 </head>
 
 <body>
+<div class="flash-stack page-flash-stack">
+    <% if (error && error.length > 0) { %>
+        <% error.forEach(function (msg) { %>
+            <div class="flash-message flash-error"><%= msg %></div>
+        <% }) %>
+    <% } %>
+    <% if (success && success.length > 0) { %>
+        <% success.forEach(function (msg) { %>
+            <div class="flash-message flash-success"><%= msg %></div>
+        <% }) %>
+    <% } %>
+    <% if (info && info.length > 0) { %>
+        <% info.forEach(function (msg) { %>
+            <div class="flash-message flash-info"><%= msg %></div>
+        <% }) %>
+    <% } %>
+</div>
 <aside class="sidebar">
     <a class="sidebar-brand" href="/public"> FinTrack </a>
 
@@ -153,9 +170,23 @@
 
 
 <main class="main-content">
+
     <h1 class="dashboard-heading">Dashboard</h1>
     <p class="dashboard-subtitle">Your financial overview at a glance</p>
-
+        <% if (error && error.length > 0) { %>
+        <div class="flash-stack">
+            <% error.forEach(function (msg) { %>
+                <div class="flash-message flash-error"><%= msg %></div>
+            <% }) %>
+        </div>
+    <% } %>
+    <% if (success && success.length > 0) { %>
+        <div class="flash-stack">
+            <% success.forEach(function (msg) { %>
+                <div class="flash-message flash-success"><%= msg %></div>
+            <% }) %>
+        </div>
+    <% } %>
     <div class="status">
         <div class="stat-card total-income">
             <span class="card-subtitle">Total Income</span>

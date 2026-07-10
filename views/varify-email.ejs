@@ -24,12 +24,27 @@
 
 <div class="varify-email-container" id="varifyEmailContainer">
 
+    <% if (error && error.length > 0) { %>
+        <div class="flash-stack">
+            <% error.forEach(function (msg) { %>
+                <div class="flash-message flash-error"><%= msg %></div>
+            <% }) %>
+        </div>
+    <% } %>
+    <% if (success && success.length > 0) { %>
+        <div class="flash-stack">
+            <% success.forEach(function (msg) { %>
+                <div class="flash-message flash-success"><%= msg %></div>
+            <% }) %>
+        </div>
+    <% } %>
+
     <form class="varify-email-form">
         <h1 class="varify-heading">Please varify your Email</h1>
 
         <div class="form-group" style="margin-bottom: 5px">
             <label for="varifyEmail" style="color: #5c636a">Enter your code</label>
-            <input type="text" id="varifyEmail">
+            <input type="text" id="varifyEmail" placeholder="e.g. 123456">
         </div>
     </form>
 

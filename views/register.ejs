@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Register</title>
     <link rel="stylesheet" href="css/login.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet">
@@ -12,10 +12,31 @@
 </head>
 <body>
 <div class="form-card">
+    <% if (error && error.length > 0) { %>
+        <div class="flash-stack">
+            <% error.forEach(function (msg) { %>
+                <div class="flash-message flash-error"><%= msg %></div>
+            <% }) %>
+        </div>
+    <% } %>
+    <% if (success && success.length > 0) { %>
+        <div class="flash-stack">
+            <% success.forEach(function (msg) { %>
+                <div class="flash-message flash-success"><%= msg %></div>
+            <% }) %>
+        </div>
+    <% } %>
+    <% if (info && info.length > 0) { %>
+        <div class="flash-stack">
+            <% info.forEach(function (msg) { %>
+                <div class="flash-message flash-info"><%= msg %></div>
+            <% }) %>
+        </div>
+    <% } %>
     <form class="login-form" action="/register" method="POST">
         <div class="form-header" style="margin-bottom: 1rem;">
             <h1 class="form-heading">Fin<span style="color: #2563eb;">Track</span></h1>
-            <p class="form-subheading">Welcome back! sign in to your account</p>
+            <p class="form-subheading">Create a new account</p>
         </div>
 
         <div class="form-group">
@@ -55,7 +76,7 @@
 
     <div class="social-buttons">
         <a class="social-btn google" href="/auth/google">Google</a>
-        <a class=" social-btn apple" href="/auth/facebook">Apple</a>
+        <a class="social-btn facebook" href="/auth/facebook">Facebook</a>
         <a class="social-btn github" href="/auth/github">Github</a>
     </div>
 
