@@ -280,7 +280,10 @@ body {
     flex-direction: column;
     gap: 5px;
     margin-top: 1rem;
+    animation: liftList 1.6s cubic-bezier(0.6, 1, 0.3, 1) forwards;
 }
+.events-list {animation: liftList 1.6s cubic-bezier(0.6, 1, 0.3, 1) forwards;}
+.saving-goals{animation: liftList 1.6s cubic-bezier(0.6, 1, 0.3, 1) forwards;}
 
 .transaction-item,
 .event-item {
@@ -293,7 +296,18 @@ body {
     align-items: center;
     gap: 1rem;
     margin-bottom: 5px;
+
 }
+
+@keyframes liftList {
+    0% {
+        transform: translateX(30px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
 
 .section-title {
     color: #696969;
