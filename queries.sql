@@ -59,3 +59,4 @@ INSERT INTO transaction (user_id, description, amount, type, date) VALUES
 (3, '🎁 Bonus & Cashback', 120.00, 'income', '2026-05-18'),
 (3, '🚗 Fuel & Transport', 55.20, 'expense', '2026-05-19');
 
+ALTER TABLE users ADD COLUMN otp_expiry TIME;

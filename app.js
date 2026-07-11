@@ -11,6 +11,8 @@ import GoogleStrategy from "passport-google-oauth20";
 import FacebookStrategy from "passport-facebook";
 import nodemailer from "nodemailer";
 import flash from "connect-flash";
+import crypto from "crypto";
+import rateLimit from "express-rate-limit";
 
 const app = express();
 const port = 3000;
@@ -63,6 +65,24 @@ transporter.verify((error, success) => {
         console.log("SMTP server is ready to send message");
     }
 });
+
+const sendOtpLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 3,
+    message: {success: false, error: "Too many OTP requests. Try again later."},
+    standardHeaders: true,
+    legacyHeaders: false
+});
+
+const verifyOtpLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+  message: { success: false, error: 'Too many verification attempts. Try again later.' },
+});
+
+function hashOtp(otp) {
+    return crypto.createHash("sha256").update(otp.toString()).digest("hex");
+}
 
 app.get("/", async (req, res) => {
     if (req.isAuthenticated()) {
@@ -364,11 +384,13 @@ app.post("/change-password", async (req, res) => {
 });
 
 
-app.post("/varify-email", async (req, res) => {
-    const email = req.body.email;
-    const code = req.body.code;
-    const randomCode = Math.floor(Math.random() * 100000) + 99999;
+app.post("/send-otp", async (req, res) => {
+     try {
+    const {email} = req.body;
+    // const code = req.body.code;
+    // const randomCode = 100000 + Math.floor(Math.random() * 900000);
     const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+
 
     if (result.rows.length === 0) {
         req.flash("error", "Email does not exist. please sign in first")
@@ -376,13 +398,25 @@ app.post("/varify-email", async (req, res) => {
     }
 
     const name = result.rows[0].name;
-    const html = `<p>Hey ${name}!<br><br>A sign in or password change attempt is require further verification because we did't not recognize your identity. To verify your identity, enter the verification code.<br><br> Verification code: ${randomCode}<br><br>Thanks,<br>The FinTrack Team<p/>`
+    const otp = crypto.randomInt(100000, 999999);
+    const hashedOtp = hashOtp(otp);
 
-    try {
-        const info = transporter.sendMail({
+    await db.query("UPDATE users SET otp = $1, otp_expiry = NOW() + INTERVAL '10 minutes' WHERE email = $2", [hashedOtp, email])
+
+
+        const html = `
+      <p>Hey ${name}!</p>
+      <p>A sign‑in or password change attempt requires further verification because we did not recognize your identity. 
+         To verify your identity, enter the verification code below:</p>
+      <p style="font-size: 24px; font-weight: bold; letter-spacing: 4px;">${otp}</p>
+      <p>This code expires in 10 minutes.</p>
+      <p>Thanks,<br/>The FinTrack Team</p>
+    `;
+
+        const info = await transporter.sendMail({
             from: `"My App" <${process.env.SMTP_USER}>`,
             to: process.env.SMTP_USER,
-            subject: "[FinTrack] Please varifying your identity",
+            subject: "[FinTrack] Please verifying your identity",
             text: `Your Privacy is our First concern`,
             html: html || `<p>Your single code is : ${randomCode} don't share it with anyone.</p>`
         });
@@ -394,16 +428,37 @@ app.post("/varify-email", async (req, res) => {
         console.error('Email send error:', err);
         res.status(500).json({success: false, error: err.message});
     }
-    console.log(`Email : ${email}, Code =: ${code} Random Number =: ${randomCode}, name : ${name}`);
 
+    // console.log(`Email : ${email}, Code =: ${code} Random Number =: ${randomCode}, name : ${name}`);
 
-    if (code === randomCode) {
-        req.flash("success", "Verification successful");
-        console.log("Verification successful");
-        return res.redirect("/login");
-    }
 
 });
+
+app.post("verify-email", async (req, res) => {
+    try {
+        const {email, code} = req.body;
+
+        const result = await db.query("SELECT otp, otp_expiry FROM users WHERE email = $1", [email]);
+
+        if (result.rows.length === 0) {
+            req.flash("error", "User not found.");
+
+        }
+
+        const { otp: storedHashedOtp, otp_expiry } = result.rows;
+
+         if (!storedHashedOtp) {
+        req.flash("error", "No OTP requested. Please request a new code." );
+    }
+
+         const hashedInput = hashOtp(code);
+         if (hashedInput) {
+             req.flash("error", "Invalid verification code")
+         }
+    } catch (err) {
+        console.log("Error")
+    }
+})
 
 app.listen(port, () => {
     console.log(`Express Server is Listening on ${port}`);
