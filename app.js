@@ -48,9 +48,26 @@ const db = new pg.Client({
 });
 db.connect();
 
+async function ensureOtpSchema() {
+    try {
+        await db.query(`
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS otp TEXT,
+            ADD COLUMN IF NOT EXISTS otp_expiry TIMESTAMP,
+            ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT FALSE
+        `);
+
+        await db.query(`ALTER TABLE users ALTER COLUMN otp TYPE TEXT USING otp::text`);
+        await db.query(`ALTER TABLE users ALTER COLUMN otp_expiry TYPE TIMESTAMP USING otp_expiry::timestamp`);
+    } catch (err) {
+        console.log("OTP schema initialization error:", err);
+    }
+}
+
+
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
-    port: process.env.SMATP_PORT,
+    port: Number(process.env.SMTP_PORT || process.env.SMATP_PORT || 587),
     secure: false,
     auth: {
         user: process.env.SMTP_USER,
@@ -68,16 +85,16 @@ transporter.verify((error, success) => {
 
 const sendOtpLimiter = rateLimit({
     windowMs: 60 * 1000,
-    max: 3,
+    max: 30,
     message: {success: false, error: "Too many OTP requests. Try again later."},
     standardHeaders: true,
     legacyHeaders: false
 });
 
 const verifyOtpLimiter = rateLimit({
-  windowMs: 60 * 1000,
-  max: 10,
-  message: { success: false, error: 'Too many verification attempts. Try again later.' },
+    windowMs: 60 * 1000,
+    max: 10,
+    message: {success: false, error: 'Too many verification attempts. Try again later.'},
 });
 
 function hashOtp(otp) {
@@ -384,24 +401,27 @@ app.post("/change-password", async (req, res) => {
 });
 
 
-app.post("/send-otp", async (req, res) => {
-     try {
-    const {email} = req.body;
-    // const code = req.body.code;
-    // const randomCode = 100000 + Math.floor(Math.random() * 900000);
-    const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+app.post("/send-otp", sendOtpLimiter, async (req, res) => {
+    try {
+        const {email} = req.body;
+        if (!email) {
+            req.flash("error", "Please enter your email address.");
+            return res.status(400).json({success: false, error: "Email is required."});
+        }
+
+        const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
 
 
-    if (result.rows.length === 0) {
-        req.flash("error", "Email does not exist. please sign in first")
-        return res.redirect("varify-email");
-    }
+        if (result.rows.length === 0) {
+            req.flash("error", "Email does not exist. Please sign in first.")
+            return res.status(404).json({success: false, error: "Email does not exist."});
+        }
 
-    const name = result.rows[0].name;
-    const otp = crypto.randomInt(100000, 999999);
-    const hashedOtp = hashOtp(otp);
+        const name = result.rows[0].name;
+        const otp = crypto.randomInt(100000, 999999);
+        const hashedOtp = hashOtp(otp);
 
-    await db.query("UPDATE users SET otp = $1, otp_expiry = NOW() + INTERVAL '10 minutes' WHERE email = $2", [hashedOtp, email])
+        await db.query("UPDATE users SET otp = $1, otp_expiry = NOW() + INTERVAL '10 minutes' WHERE email = $2", [hashedOtp, email])
 
 
         const html = `
@@ -415,10 +435,10 @@ app.post("/send-otp", async (req, res) => {
 
         const info = await transporter.sendMail({
             from: `"My App" <${process.env.SMTP_USER}>`,
-            to: process.env.SMTP_USER,
+            to: email,
             subject: "[FinTrack] Please verifying your identity",
             text: `Your Privacy is our First concern`,
-            html: html || `<p>Your single code is : ${randomCode} don't share it with anyone.</p>`
+            html: html || `<p>Your single code is : ${otp} don't share it with anyone.</p>`
         });
 
         req.flash("success", `Email sent : ${info.messageId}`);
@@ -434,29 +454,50 @@ app.post("/send-otp", async (req, res) => {
 
 });
 
-app.post("verify-email", async (req, res) => {
+app.post("/varify-email", verifyOtpLimiter, async (req, res) => {
     try {
         const {email, code} = req.body;
+
+        if (!email || !code) {
+            req.flash("error", "Email and verification code are required.");
+            return res.redirect("/varify-email");
+        }
 
         const result = await db.query("SELECT otp, otp_expiry FROM users WHERE email = $1", [email]);
 
         if (result.rows.length === 0) {
             req.flash("error", "User not found.");
-
+            return res.redirect("/varify-email");
         }
 
-        const { otp: storedHashedOtp, otp_expiry } = result.rows;
+        const {otp: storedHashedOtp, otp_expiry} = result.rows[0];
 
-         if (!storedHashedOtp) {
-        req.flash("error", "No OTP requested. Please request a new code." );
-    }
+        if (!storedHashedOtp) {
+            req.flash("error", "No OTP requested. Please request a new code.");
+            return res.redirect("/varify-email");
+        }
+        if (!otp_expiry || new Date() > new Date(otp_expiry)) {
+            req.flash("error", "OTP has expired. Please request a new one.");
+            return res.redirect("/varify-email");
+        }
 
-         const hashedInput = hashOtp(code);
-         if (hashedInput) {
-             req.flash("error", "Invalid verification code")
-         }
+        const hashedInput = hashOtp(code);
+        if (hashedInput !== storedHashedOtp) {
+            req.flash("error", "Invalid verification code");
+            return res.redirect("/varify-email");
+        }
+
+        await db.query(
+            "UPDATE users SET otp = NULL, otp_expiry = NULL, is_verified = TRUE WHERE email = $1",
+            [email]
+        );
+
+        req.flash("success", "Email verified successfully!");
+        res.redirect("/login");
     } catch (err) {
-        console.log("Error")
+        console.log(err);
+        req.flash("error", "Unable to verify your email right now.");
+        res.redirect("/varify-email");
     }
 })
 

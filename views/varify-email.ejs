@@ -41,12 +41,14 @@
         </div>
     <% } %>
 
-    <form class="varify-email-form" method="POST">
+    <div class="flash-message flash-error" id="verificationMessage" style="display:none;"></div>
+
+    <form class="varify-email-form" method="POST" action="/varify-email">
         <h1 class="varify-heading">Please varify your Email</h1>
         <div class="varify-section email-section active" id="emailSection">
             <div class="form-group">
                 <label for="email" style="color: #5c636a">Enter your Email</label>
-                <input type="email" id="email" placeholder="example@gmail.com" name="email">
+                <input type="email" id="email" placeholder="example@gmail.com" name="email" required>
             </div>
             <button type="submit" class="submit-btn" id="sendCodeBtn">Send Code</button>
 
@@ -55,7 +57,7 @@
         <div class="varify-section code-section" id="codeSection">
             <div class="form-group">
                 <label for="varifyEmail" style="color: #5c636a">Enter your code</label>
-                <input type="text" id="varifyEmail" placeholder="e.g. 123456" name="code">
+                <input type="text" id="varifyEmail" placeholder="e.g. 123456" name="code" inputmode="numeric" autocomplete="one-time-code">
             </div>
             <button type="submit" class="submit-btn" style="margin-bottom: 1rem">Submit Code</button>
 
@@ -75,16 +77,56 @@
         const sendCodeBtn = document.getElementById("sendCodeBtn");
         const codeSection = document.getElementById("codeSection");
         const emailSection = document.getElementById("emailSection");
+        const verificationMessage = document.getElementById("verificationMessage");
+        const emailInput = document.getElementById("email");
+        const form = document.querySelector(".varify-email-form");
 
         function setActive() {
             emailSection.classList.remove("active");
             codeSection.classList.add("active");
         }
 
+        function showMessage(message, type) {
+            verificationMessage.textContent = message;
+            verificationMessage.className = `flash-message ${type === "success" ? "flash-success" : "flash-error"}`;
+            verificationMessage.style.display = "block";
+        }
 
-        sendCodeBtn.addEventListener("click", function(event) {
+
+        sendCodeBtn.addEventListener("click", async function(event) {
             event.preventDefault();
-            setActive();
+
+            const email = emailInput.value.trim();
+            if (!email) {
+                showMessage("Please enter your email address.", "error");
+                return;
+            }
+
+            try {
+                const response = await fetch("/send-otp", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: new URLSearchParams({email})
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    showMessage(data.error || "Unable to send verification code.", "error");
+                    return;
+                }
+
+                showMessage("Verification code sent. Check your email.", "success");
+                setActive();
+            } catch (error) {
+                showMessage("Unable to send verification code right now.", "error");
+            }
+        });
+
+        form.addEventListener("submit", function () {
+            verificationMessage.style.display = "none";
         });
 
     </script>
