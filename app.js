@@ -411,7 +411,6 @@ app.post("/send-otp", sendOtpLimiter, async (req, res) => {
 
         const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
 
-
         if (result.rows.length === 0) {
             req.flash("error", "Email does not exist. Please sign in first.")
             return res.status(404).json({success: false, error: "Email does not exist."});
@@ -434,7 +433,7 @@ app.post("/send-otp", sendOtpLimiter, async (req, res) => {
     `;
 
         const info = await transporter.sendMail({
-            from: `"My App" <${process.env.SMTP_USER}>`,
+            from: `"FinTrack" <${process.env.SMTP_USER}>`,
             to: email,
             subject: "[FinTrack] Please verifying your identity",
             text: `Your Privacy is our First concern`,
@@ -448,10 +447,6 @@ app.post("/send-otp", sendOtpLimiter, async (req, res) => {
         console.error('Email send error:', err);
         res.status(500).json({success: false, error: err.message});
     }
-
-    // console.log(`Email : ${email}, Code =: ${code} Random Number =: ${randomCode}, name : ${name}`);
-
-
 });
 
 app.post("/varify-email", verifyOtpLimiter, async (req, res) => {
