@@ -5,12 +5,35 @@ const listContainer = document.getElementById("listContainer");
 const dynamicTitle = document.getElementById("dynamicTitle");
 const addBtn = document.getElementById("addTransaction");
 const tabButton = document.querySelectorAll(".tab-btn");
+const modalTitle = document.getElementById("modalTitle");
 
 const listSection = {
     transactionList: document.getElementById("transactionList"),
     eventList: document.getElementById("eventList"),
     savingList: document.getElementById("savingList")
 }
+
+const entryForms = document.querySelectorAll(".entry-form");
+
+const formConfig = {
+    transaction: {
+        formId: "transactionForm",
+        title: "Add Transaction",
+        buttonText: "+ Add Transaction"
+    },
+    event: {
+        formId: "eventForm",
+        title: "Add Event",
+        buttonText: "+ Add Event"
+    },
+    saving: {
+        formId: "savingForm",
+        title: "Add Saving Goal",
+        buttonText: "+ Add Goal"
+    }
+};
+
+let activeCategory = "transaction";
 
 const titles = {
     transactionList: "Transaction History",
@@ -24,14 +47,12 @@ const buttonTexts = {
     savingList: "+ Add Goal"
 };
 
-
 function setActiveBtn(activeElementId) {
     const allBtn = [transactionBtn, eventBtn, savingBtn];
 
     allBtn.forEach((btn) => {
         if (btn.id === activeElementId) {
             btn.classList.add("active");
-
         } else {
             btn.classList.remove("active");
         }
@@ -55,17 +76,38 @@ function showCategory(categoryType) {
     }
 }
 
+function setActiveForm(categoryType) {
+    const config = formConfig[categoryType] || formConfig.transaction;
+
+    activeCategory = categoryType in formConfig ? categoryType : "transaction";
+
+    entryForms.forEach((form) => {
+        form.classList.toggle("active", form.id === config.formId);
+    });
+
+    if (modalTitle) {
+        modalTitle.textContent = config.title;
+    }
+
+    if (addBtn) {
+        addBtn.textContent = config.buttonText;
+    }
+}
+
 function handleTransactionClick() {
+    setActiveForm("transaction");
     setActiveBtn("transactionBtn");
     showCategory("transaction");
 }
 
 function handleEventClick() {
+    setActiveForm("event");
     setActiveBtn("eventBtn");
     showCategory("event");
 }
 
 function handleSavingClick() {
+    setActiveForm("saving");
     setActiveBtn("savingBtn");
     showCategory("saving");
 }
@@ -76,16 +118,18 @@ savingBtn?.addEventListener("click", handleSavingClick);
 
 setActiveBtn("transactionBtn");
 showCategory("transaction");
+setActiveForm("transaction");
 
 
 const overlay = document.getElementById("overlay");
 const model = document.getElementById("model");
 const openBtn = document.getElementById("addTransaction");
 const closeBtn = document.getElementById("closeModalBtn");
-const cancelBtn = document.getElementById("cancelBtn");
+const cancelBtn = document.querySelectorAll(".cancel-btn");
 
 
 function openModel() {
+    setActiveForm(activeCategory);
     overlay.classList.add("active");
     document.body.style.overflow = "hidden";
     model.style.transform = "";
@@ -96,12 +140,44 @@ function closeModel() {
     document.body.style.overflow = "";
 }
 
-openBtn.addEventListener("click", openModel);
-closeBtn.addEventListener("click", closeModel);
-cancelBtn.addEventListener("click", closeModel);
+openBtn?.addEventListener("click", openModel);
+closeBtn?.addEventListener("click", closeModel);
+cancelBtn.forEach((button) => button.addEventListener("click", closeModel));
+
+overlay?.addEventListener("click", function (event) {
+    if (event.target === overlay) {
+        closeModel();
+    }
+});
 
 
+entryForms.forEach((form) => {
+    form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    const submitRoute = form.dataset.submitRoute;
+    const formData = new FormData(form);
 
+    const data = Object.fromEntries(formData.entries());
+    data.category = activeCategory;
+
+    const response = await fetch(submitRoute, {
+        method: "POST",
+        headers: {"content-type": "application/json"},
+        body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+        closeModel();
+        form.reset();
+        window.location.reload();
+        return;
+    }
+
+    const result = await response.json().catch(() => null);
+    const message = result?.error || "Unable to save entry right now.";
+    alert(message);
+    });
+});
 
 
 //

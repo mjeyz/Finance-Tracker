@@ -261,8 +261,10 @@
                 <% if ( saving.length > 0 ) { %>
                     <% saving.forEach( sv => { %>
 
-                        <% const percent = (sv.savedamount / sv.targetamount) * 100;
-                            const percentRounded = Math.min(100, Math.floor(percent)); %>
+                        <% 
+                        const percent = (sv.savedamount / sv.targetamount) * 100;
+                        const percentRounded = Math.min(100, Math.floor(percent));
+                        %>
 
                         <div class="goal-card">
                             <div class="goal-header">
@@ -293,8 +295,8 @@
 
 
                 <div class="model-header" id="modelHeader">
-                    <div class="title">
-                        Add Your Transaction
+                    <div class="title" id="modalTitle">
+                        Add Transaction
                     </div>
                     <button class="close-btn" id="closeModalBtn" aria-label="Close">
                         <i class="fas fa-times"></i>
@@ -302,17 +304,17 @@
                 </div>
 
                 <div class="model-body" id="modelBody">
-                    <form class="entry-form" id="entryForm">
+                    <form class="entry-form active" id="transactionForm" method="POST" data-submit-route="/add-transaction">
                         <div class="form-group">
                             <label for="amount">Amount <span class="required">*</span></label>
-                            <input type="text" id="amount" placeholder="e.g. 2000">
+                            <input type="text" id="amount" placeholder="e.g. 2000" name="amount">
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="category">Category</label>
 
-                                <select id="category">
+                                <select id="category" name="category">
                                     <option value="income">Income</option>
                                     <option value="expense">Expense</option>
                                     <option value="other">Other</option>
@@ -322,32 +324,102 @@
                             <div class="form-group">
                                 <label for="type">Type</label>
 
-                                <select id="type">
+                                <select id="type" name="type">
                                     <option value="income">Income</option>
                                     <option value="expense">Expense</option>
                                     <option value="other">Other</option>
                                 </select>
                             </div>
-
                         </div>
+
                         <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea id="description" type="text" placeholder="Write a short note...."></textarea>
+                            <label for="date">Transaction Date</label>
+                           <input id="date" type="date" placeholder="Date" name="date"/>
+                         </div>
+                        <div class="form-group">
+                            <label for="transactionDescription">Description</label>
+                            <textarea id="transactionDescription" type="text" placeholder="Write a short note...." name="description"></textarea>
                         </div>
 
                         <div class="form-action">
-                            <button class="btn btn-secondary" type="button" id="cancelBtn">Cancel</button>
-                            <button class="btn btn-primary" type="button" id="submitBtn">Submit</button>
+                            <button class="btn btn-secondary cancel-btn" type="button">Cancel</button>
+                            <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                        </div>
+                    </form>
+
+                    <form class="entry-form" id="eventForm" method="POST" data-submit-route="/add-event">
+                        <div class="form-group">
+                            <label for="eventName">Event Name <span class="required">*</span></label>
+                            <input type="text" id="eventName" placeholder="e.g. Design Workshop" name="eventName">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <input id="location" name="location" type="text" placeholder="e.g. Lahore">
+                            </div>
+                            <div class="form-group">
+                                <label for="eventDate">Event Date</label>
+
+                                <input id="eventDate" name="eventDate" type="date">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventDescription">Description</label>
+                            <textarea id="eventDescription" type="text" placeholder="Write a short note...." name="description"></textarea>
+                        </div>
+
+                        <div class="form-action">
+                            <button class="btn btn-secondary cancel-btn" type="button" >Cancel</button>
+                            <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                        </div>
+                    </form>
+
+                    <form class="entry-form" id="savingForm" method="POST" data-submit-route="/add-saving">
+                        <div class="form-group">
+                            <label for="purpose">Saving Purpose<span class="required">*</span></label>
+                            <input type="text" id="purpose" placeholder="e.g. Dream Vacation" name="purpose">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="targetAmount">Target Amount</label>
+                                <input id="targetAmount" name="targetAmount" type="text" placeholder="2000">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="savedAmount">Saved Amount</label>
+
+                                <input id="savedAmount" name="savedAmount" type="text" placeholder="1000">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="targetDate">Target Date</label>
+                           <input id="targetDate" type="date" placeholder="Date" name="targetDate"/>
+                         </div>
+                        <div class="form-group">
+                            <label for="savingDescription">Description</label>
+                            <textarea id="savingDescription" type="text" placeholder="Write a short note...." name="description"></textarea>
+                        </div>
+
+                        <div class="form-action">
+                            <button class="btn btn-secondary cancel-btn" type="button">Cancel</button>
+                            <button class="btn btn-primary submit-btn" type="submit">Submit</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-</main>
+        </div>
+    </main>
 
 
 
 <script src="js/index.js"></script>
-</body>
 
+
+
+</body>
 </html>

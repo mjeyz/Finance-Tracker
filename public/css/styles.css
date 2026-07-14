@@ -628,4 +628,7 @@ body {
     }
 }
 
+.entry-form {display: none;}
+.entry-form.active{display: block}
+
 

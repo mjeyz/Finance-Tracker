@@ -31,6 +31,7 @@ app.use(express.static("public"));
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.json())
 app.use(flash());
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
@@ -494,7 +495,80 @@ app.post("/varify-email", verifyOtpLimiter, async (req, res) => {
         req.flash("error", "Unable to verify your email right now.");
         res.redirect("/varify-email");
     }
-})
+});
+
+
+app.post("/add-transaction", async (req, res) => {
+    try {
+        if (!req.user?.id) {
+            return res.status(401).json({success: false, error: "Please log in again."});
+        }
+
+        const {amount, type, date, description} = req.body;
+
+        if (!amount || !type) {
+            return res.status(400).json({success: false, error: "Amount and type are required."});
+        }
+
+        await db.query(
+            "INSERT INTO transaction (user_id, amount, type, date, description) VALUES ($1, $2, $3, $4, $5)",
+            [req.user.id, Number(amount), type, date || null, description || null]
+        );
+
+        return res.status(201).json({success: true});
+    } catch (err) {
+        console.log("Add transaction error:", err);
+        return res.status(500).json({success: false, error: "Unable to save transaction right now."});
+    }
+});
+
+app.post("/add-event", async (req, res) => {
+    try {
+        if (!req.user?.id) {
+            return res.status(401).json({success: false, error: "Please log in again."});
+        }
+
+        const {eventName, location, eventDate} = req.body;
+
+        if (!eventName) {
+            return res.status(400).json({success: false, error: "Event name is required."});
+        }
+
+        await db.query(
+            "INSERT INTO events (user_id, name, date, location) VALUES ($1, $2, $3, $4)",
+            [req.user.id, eventName, eventDate || null, location || null]
+        );
+
+        return res.status(201).json({success: true});
+    } catch (err) {
+        console.log("Add event error:", err);
+        return res.status(500).json({success: false, error: "Unable to save event right now."});
+    }
+});
+
+app.post("/add-saving", async (req, res) => {
+    try {
+        if (!req.user?.id) {
+            return res.status(401).json({success: false, error: "Please log in again."});
+        }
+
+        const {purpose, targetAmount, savedAmount} = req.body;
+
+        if (!purpose || !targetAmount) {
+            return res.status(400).json({success: false, error: "Purpose and target amount are required."});
+        }
+
+        await db.query(
+            "INSERT INTO saving (user_id, goal, targetAmount, savedAmount) VALUES ($1, $2, $3, $4)",
+            [req.user.id, purpose, Number(targetAmount), savedAmount ? Number(savedAmount) : 0]
+        );
+
+        return res.status(201).json({success: true});
+    } catch (err) {
+        console.log("Add saving error:", err);
+        return res.status(500).json({success: false, error: "Unable to save goal right now."});
+    }
+});
 
 app.listen(port, () => {
     console.log(`Express Server is Listening on ${port}`);
