@@ -123,20 +123,17 @@
 </aside>
 
 <header class="header top-nav">
-    <div class="search-bar">
-        <!-- Search placeholder -->
-        <div
-                style="
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #9ca3af;"
-                class="input-wrapper">
-            <i class="bx bx-search input-icon"></i>
-            <label>
-                <input type="text" placeholder="Search"/>
-            </label>
-        </div>
+
+    <!-- Search placeholder -->
+    <div class="search-group">
+        <i class="fas fa-search icon"></i>
+        <input
+                type="search"
+                id="dashboardSearch"
+                placeholder="Search transactions, events, or goals..."
+                name="search"
+                class="search-input"
+                aria-label="Search dashboard items"/>
     </div>
     <div
             class="user-menu"
@@ -261,9 +258,9 @@
                 <% if ( saving.length > 0 ) { %>
                     <% saving.forEach( sv => { %>
 
-                        <% 
-                        const percent = (sv.savedamount / sv.targetamount) * 100;
-                        const percentRounded = Math.min(100, Math.floor(percent));
+                        <%
+                            const percent = (sv.savedamount / sv.targetamount) * 100;
+                            const percentRounded = Math.min(100, Math.floor(percent));
                         %>
 
                         <div class="goal-card">
@@ -304,7 +301,8 @@
                 </div>
 
                 <div class="model-body" id="modelBody">
-                    <form class="entry-form active" id="transactionForm" method="POST" data-submit-route="/add-transaction">
+                    <form class="entry-form active" id="transactionForm" method="POST"
+                          data-submit-route="/add-transaction">
                         <div class="form-group">
                             <label for="amount">Amount <span class="required">*</span></label>
                             <input type="text" id="amount" placeholder="e.g. 2000" name="amount">
@@ -334,11 +332,12 @@
 
                         <div class="form-group">
                             <label for="date">Transaction Date</label>
-                           <input id="date" type="date" placeholder="Date" name="date"/>
-                         </div>
+                            <input id="date" type="date" placeholder="Date" name="date"/>
+                        </div>
                         <div class="form-group">
                             <label for="transactionDescription">Description</label>
-                            <textarea id="transactionDescription" type="text" placeholder="Write a short note...." name="description"></textarea>
+                            <textarea id="transactionDescription" type="text" placeholder="Write a short note...."
+                                      name="description"></textarea>
                         </div>
 
                         <div class="form-action">
@@ -367,11 +366,12 @@
 
                         <div class="form-group">
                             <label for="eventDescription">Description</label>
-                            <textarea id="eventDescription" type="text" placeholder="Write a short note...." name="description"></textarea>
+                            <textarea id="eventDescription" type="text" placeholder="Write a short note...."
+                                      name="description"></textarea>
                         </div>
 
                         <div class="form-action">
-                            <button class="btn btn-secondary cancel-btn" type="button" >Cancel</button>
+                            <button class="btn btn-secondary cancel-btn" type="button">Cancel</button>
                             <button class="btn btn-primary submit-btn" type="submit">Submit</button>
                         </div>
                     </form>
@@ -397,11 +397,12 @@
 
                         <div class="form-group">
                             <label for="targetDate">Target Date</label>
-                           <input id="targetDate" type="date" placeholder="Date" name="targetDate"/>
-                         </div>
+                            <input id="targetDate" type="date" placeholder="Date" name="targetDate"/>
+                        </div>
                         <div class="form-group">
                             <label for="savingDescription">Description</label>
-                            <textarea id="savingDescription" type="text" placeholder="Write a short note...." name="description"></textarea>
+                            <textarea id="savingDescription" type="text" placeholder="Write a short note...."
+                                      name="description"></textarea>
                         </div>
 
                         <div class="form-action">
@@ -412,13 +413,11 @@
                 </div>
             </div>
         </div>
-        </div>
-    </main>
-
+    </div>
+</main>
 
 
 <script src="js/index.js"></script>
-
 
 
 </body>

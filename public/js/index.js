@@ -13,7 +13,15 @@ const listSection = {
     savingList: document.getElementById("savingList")
 }
 
+const searchInput = document.getElementById("dashboardSearch");
+
 const entryForms = document.querySelectorAll(".entry-form");
+
+const listItemSelectors = {
+    transactionList: ".transaction-item",
+    eventList: ".event-item",
+    savingList: ".goal-card"
+};
 
 const formConfig = {
     transaction: {
@@ -34,6 +42,7 @@ const formConfig = {
 };
 
 let activeCategory = "transaction";
+let searchQuery = "";
 
 const titles = {
     transactionList: "Transaction History",
@@ -74,6 +83,8 @@ function showCategory(categoryType) {
     if (addBtn) {
         addBtn.textContent = btnText;
     }
+
+    applySearchFilter();
 }
 
 function setActiveForm(categoryType) {
@@ -91,6 +102,58 @@ function setActiveForm(categoryType) {
 
     if (addBtn) {
         addBtn.textContent = config.buttonText;
+    }
+}
+
+function applySearchFilter() {
+    const activeListId = activeCategory + "List";
+    const activeList = listSection[activeListId];
+
+    if (!activeList) {
+        return;
+    }
+
+    const query = searchQuery.trim().toLowerCase();
+    const items = activeList.querySelectorAll(listItemSelectors[activeListId] || "");
+    const serverEmptyMessage = activeList.querySelector(".empty-message:not(.search-empty-message)");
+    const existingSearchEmptyMessage = activeList.querySelector(".search-empty-message");
+
+    if (serverEmptyMessage) {
+        serverEmptyMessage.style.display = query ? "none" : "flex";
+    }
+
+    if (!query) {
+        items.forEach((item) => {
+            item.style.display = "";
+        });
+
+        if (existingSearchEmptyMessage) {
+            existingSearchEmptyMessage.remove();
+        }
+
+        return;
+    }
+
+    let visibleCount = 0;
+
+    items.forEach((item) => {
+        const isMatch = item.textContent.toLowerCase().includes(query);
+        item.style.display = isMatch ? "" : "none";
+
+        if (isMatch) {
+            visibleCount += 1;
+        }
+    });
+
+    if (existingSearchEmptyMessage) {
+        existingSearchEmptyMessage.remove();
+    }
+
+    if (visibleCount === 0) {
+        const emptyMessage = document.createElement("div");
+        emptyMessage.className = "empty-message search-empty-message";
+        emptyMessage.textContent = "No matching results";
+        activeList.appendChild(emptyMessage);
     }
 }
 
@@ -115,6 +178,11 @@ function handleSavingClick() {
 transactionBtn?.addEventListener("click", handleTransactionClick);
 eventBtn?.addEventListener("click", handleEventClick);
 savingBtn?.addEventListener("click", handleSavingClick);
+
+searchInput?.addEventListener("input", function (event) {
+    searchQuery = event.target.value || "";
+    applySearchFilter();
+});
 
 setActiveBtn("transactionBtn");
 showCategory("transaction");

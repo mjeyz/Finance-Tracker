@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Draggable Form Modal</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search bar with icon</title>
 
-    <!-- Font Awesome for icons -->
+    <!-- Font Awesome for icons (free) -->
     <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
 
     <style>
-        /* ── Reset & Base ── */
+        /* ---------- reset & base ---------- */
         * {
             margin: 0;
             padding: 0;
@@ -20,665 +20,274 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f4f8;
+            background: #f0f4f9;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 2rem 1rem;
+            gap: 2.5rem;
         }
 
-        /* ── Dashboard ── */
-        .dashboard {
-            width: 1100px;
-            max-width: 94%;
-            padding: 2rem;
-            background: #ffffff;
-            border-radius: 32px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-            transition: filter 0.4s ease;
-            position: relative;
-            z-index: 1;
+        h2 {
+            font-weight: 500;
+            color: #1e293b;
+            letter-spacing: -0.01em;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 0.3rem;
+            margin-bottom: 0.5rem;
         }
 
-        .dashboard-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .dashboard-header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #0b1a33;
-            letter-spacing: -0.5px;
-        }
-
-        .dashboard-header h1 i {
-            color: #4f6ef7;
-            margin-right: 10px;
-        }
-
-        .add-btn {
-            background: #4f6ef7;
-            border: none;
-            color: #fff;
-            font-size: 1rem;
-            font-weight: 600;
-            padding: 0.75rem 1.8rem;
-            border-radius: 60px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 8px 24px rgba(79, 110, 247, 0.3);
-            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-        }
-
-        .add-btn:hover {
-            background: #3a56d4;
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(79, 110, 247, 0.4);
-        }
-
-        .add-btn:active {
-            transform: scale(0.96);
-        }
-
-        .add-btn i {
-            font-size: 1.1rem;
-        }
-
-        /* ── Dashboard Cards ── */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .stat-card {
-            background: #f8faff;
-            padding: 1.5rem 1.2rem;
-            border-radius: 20px;
-            border: 1px solid #e9edf4;
-            text-align: center;
-            transition: border 0.2s;
-        }
-
-        .stat-card:hover {
-            border-color: #4f6ef7;
-        }
-
-        .stat-card .number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #0b1a33;
-        }
-
-        .stat-card .label {
-            font-size: 0.85rem;
-            color: #6b7a8f;
-            margin-top: 4px;
-        }
-
-        .stat-card .icon {
-            color: #4f6ef7;
-            font-size: 1.5rem;
-            margin-bottom: 6px;
-        }
-
-        .chart-placeholder {
-            background: #f8faff;
-            border-radius: 20px;
-            border: 1px solid #e9edf4;
-            padding: 2.5rem 2rem;
-            text-align: center;
-            color: #6b7a8f;
-            font-size: 0.95rem;
-        }
-
-        .chart-placeholder i {
-            font-size: 2.2rem;
-            color: #d0d9e8;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        /* ── Overlay (blur background) ── */
-        .overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(11, 26, 51, 0.35);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.35s ease, visibility 0.35s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* ── Draggable Form Modal ── */
-        .modal {
-            background: #ffffff;
-            border-radius: 28px;
-            width: 520px;
-            max-width: 92%;
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.25);
-            overflow: hidden;
-            transform: scale(0.92) translateY(20px);
-            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-            opacity 0.3s ease;
-            opacity: 0;
-            cursor: default;
-            user-select: none;
-            /* prevent text selection while dragging */;
-        }
-
-        .overlay.active .modal {
-            transform: scale(1) translateY(0);
-            opacity: 1;
-        }
-
-        /* ── Modal Header (drag handle) ── */
-        .modal-header {
-            padding: 1.2rem 1.8rem;
-            background: #f8faff;
-            border-bottom: 1px solid #e9edf4;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: grab;
-            transition: background 0.15s;
-        }
-
-        .modal-header:active {
-            cursor: grabbing;
-        }
-
-        .modal-header:hover {
-            background: #f0f5ff;
-        }
-
-        .modal-header .title {
-            font-size: 1.15rem;
-            font-weight: 600;
-            color: #0b1a33;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .modal-header .title i {
-            color: #4f6ef7;
-        }
-
-        .modal-header .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.4rem;
-            color: #8a9bb0;
-            cursor: pointer;
-            padding: 0 6px;
-            transition: color 0.2s, transform 0.15s;
-            line-height: 1;
-        }
-
-        .modal-header .close-btn:hover {
-            color: #e74c3c;
-            transform: rotate(90deg);
-        }
-
-        /* ── Modal Body (form) ── */
-        .modal-body {
-            padding: 1.8rem 1.8rem 2rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #1f2a44;
-            margin-bottom: 5px;
-        }
-
-        .form-group label .required {
-            color: #e74c3c;
-            margin-left: 2px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .demo-wrapper {
             width: 100%;
-            padding: 0.7rem 1rem;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 14px;
-            font-size: 0.95rem;
-            font-family: inherit;
-            background: #fafcff;
-            transition: border 0.2s, box-shadow 0.2s;
-            outline: none;
-            color: #0b1a33;
+            max-width: 500px;
+            background: white;
+            border-radius: 20px;
+            padding: 1.8rem 2rem 2rem;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+            transition: box-shadow 0.2s;
         }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: #4f6ef7;
-            box-shadow: 0 0 0 4px rgba(79, 110, 247, 0.12);
-            background: #ffffff;
+        .demo-wrapper:hover {
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
         }
 
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
+        /* ---- divider ---- */
+        .divider {
+            margin: 1.2rem 0 0.8rem;
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e2e8f0, transparent);
         }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .form-actions {
+        /* ---- all search groups use flex and relative positioning ---- */
+        .search-group {
+            position: relative;
             display: flex;
-            justify-content: flex-end;
-            gap: 0.8rem;
-            margin-top: 1.8rem;
-            padding-top: 1.2rem;
-            border-top: 1px solid #e9edf4;
+            align-items: center;
+            width: 50%;
         }
 
-        .form-actions .btn {
-            padding: 0.6rem 1.8rem;
-            border: none;
+        /* base input style */
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 3rem;
+            /* extra left space for the icon */
+            border: 2px solid #e2e8f0;
             border-radius: 60px;
-            font-weight: 600;
+            font-size: 1rem;
+            background: white;
+            transition: border-color 0.25s, box-shadow 0.25s;
+            outline: none;
+            color: #0f172a;
+        }
+
+        .search-input::placeholder {
+            color: #94a3b8;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        .search-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+        }
+
+        /* ---- 1. icon as background-image (pure CSS) ---- */
+        .search-bg-icon {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%2364748b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>');
+            background-repeat: no-repeat;
+            background-position: 1.2rem center;
+            background-size: 1.2rem;
+            padding-left: 3.4rem;
+            /* keep space for icon */
+        }
+
+        /* ---- 2. icon with ::before pseudo-element ---- */
+        .search-pseudo-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-pseudo-wrapper .search-input {
+            padding-left: 3.2rem;
+        }
+
+        .search-pseudo-wrapper::before {
+            content: "\f002";
+            /* Font Awesome search icon unicode */
+            font-family: "Font Awesome 6 Free",serif;
+            font-weight: 900;
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 1.1rem;
+            pointer-events: none;
+            z-index: 2;
+            transition: color 0.2s;
+        }
+
+        .search-pseudo-wrapper:focus-within::before {
+            color: #3b82f6;
+        }
+
+        /* ---- 3. icon as separate <i> element (flex layout) ---- */
+        .search-icon-element {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-icon-element .search-input {
+            padding-left: 3.2rem;
+        }
+
+        .search-icon-element .icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 1.1rem;
+            pointer-events: none;
+            transition: color 0.2s;
+            z-index: 2;
+        }
+
+        .search-icon-element:focus-within .icon {
+            color: #3b82f6;
+        }
+
+        /* ---- extra: a clear button inside (optional) ---- */
+        .search-group .clear-btn {
+            position: absolute;
+            right: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #94a3b8;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: background 0.2s, transform 0.15s;
+            padding: 0.2rem 0.4rem;
+            border-radius: 40px;
+            transition: background 0.2s, color 0.2s;
+            display: none;
+            /* hidden by default, shown with JS */
+            z-index: 3;
         }
 
-        .form-actions .btn:active {
-            transform: scale(0.96);
+        .search-group .clear-btn:hover {
+            background: #f1f5f9;
+            color: #1e293b;
         }
 
-        .btn-secondary {
-            background: #eef2f7;
-            color: #1f2a44;
+        .search-group .clear-btn.visible {
+            display: block;
         }
 
-        .btn-secondary:hover {
-            background: #e2e8f0;
+        /* small note */
+        .footnote {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 0.2rem;
+            text-align: center;
+            opacity: 0.7;
         }
 
-        .btn-primary {
-            background: #4f6ef7;
-            color: #fff;
-            box-shadow: 0 6px 20px rgba(79, 110, 247, 0.25);
-        }
-
-        .btn-primary:hover {
-            background: #3a56d4;
-        }
-
-        /* ── Drag ghost indicator ── */
-        .modal.dragging {
-            transition: none !important;
-            cursor: grabbing;
-        }
-
-        .modal.dragging .modal-header {
-            cursor: grabbing;
-        }
-
-        /* ── Responsive ── */
-        @media (max-width: 600px) {
-            .dashboard {
-                padding: 1.2rem;
-            }
-
-            .dashboard-header {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-            }
-
-            .add-btn {
-                justify-content: center;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .modal-body {
-                padding: 1.2rem;
-            }
-
-            .modal-header {
-                padding: 1rem 1.2rem;
-            }
+        .footnote i {
+            margin: 0 2px;
         }
     </style>
 </head>
 <body>
 
-<!-- ═══ DASHBOARD ═══ -->
-<div class="dashboard" id="dashboard">
-
-    <div class="dashboard-header">
-        <h1><i class="fas fa-chart-pie"></i> Dashboard</h1>
-        <button class="add-btn" id="openModalBtn">
-            <i class="fas fa-plus"></i> Add New
-        </button>
+    <!-- ========== DEMO 1 : Background image ========== -->
+    <div class="demo-wrapper">
+        <h2><i class="fas fa-image" style="margin-right: 0.5rem; color:#3b82f6;"></i> Background-image</h2>
+        <div class="search-group">
+            <input
+            type="text"
+            class="search-input search-bg-icon"
+            placeholder="Search with SVG icon..."
+            />
+        </div>
+        <hr class="divider" />
+        <p class="footnote">
+            <i class="fas fa-code"></i> Icon set via <code>background-image</code> (inline SVG)
+        </p>
     </div>
 
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="icon"><i class="fas fa-users"></i></div>
-            <div class="number">1,284</div>
-            <div class="label">Total Users</div>
+    <!-- ========== DEMO 2 : ::before pseudo-element ========== -->
+    <div class="demo-wrapper">
+        <h2><i class="fas fa-magic" style="margin-right: 0.5rem; color:#8b5cf6;"></i> Pseudo-element</h2>
+        <div class="search-group search-pseudo-wrapper">
+            <input
+            type="text"
+            class="search-input"
+            placeholder="Search with ::before..."
+            />
         </div>
-        <div class="stat-card">
-            <div class="icon"><i class="fas fa-shopping-cart"></i></div>
-            <div class="number">342</div>
-            <div class="label">Orders</div>
-        </div>
-        <div class="stat-card">
-            <div class="icon"><i class="fas fa-dollar-sign"></i></div>
-            <div class="number">$12.4k</div>
-            <div class="label">Revenue</div>
-        </div>
-        <div class="stat-card">
-            <div class="icon"><i class="fas fa-rocket"></i></div>
-            <div class="number">87%</div>
-            <div class="label">Growth</div>
-        </div>
+        <hr class="divider" />
+        <p class="footnote">
+            <i class="fas fa-code"></i> Icon via <code>::before</code> + Font Awesome
+        </p>
     </div>
 
-    <div class="chart-placeholder">
-        <i class="fas fa-chart-bar"></i>
-        <span>📊 Your recent activity will appear here</span>
-    </div>
-</div>
-
-<!-- ═══ OVERLAY (blur backdrop) ═══ -->
-<div class="overlay" id="overlay">
-
-    <!-- ═══ DRAGGABLE FORM MODAL ═══ -->
-    <div class="modal" id="modal">
-
-        <!-- Header = drag handle -->
-        <div class="modal-header" id="modalHeader">
-            <div class="title">
-                <i class="fas fa-file-alt"></i> Create New Entry
-            </div>
-            <button class="close-btn" id="closeModalBtn" aria-label="Close">
-                <i class="fas fa-times"></i>
+    <!-- ========== DEMO 3 : separate <i> element ========== -->
+    <div class="demo-wrapper">
+        <h2><i class="fas fa-cube" style="margin-right: 0.5rem; color:#f97316;"></i> Separate element</h2>
+        <div class="search-group search-icon-element">
+            <i class="fas fa-search icon"></i>
+            <input
+            type="text"
+            class="search-input"
+            id="searchInput3"
+            placeholder="Search with icon element..."
+            />
+            <!-- optional clear button -->
+            <button class="clear-btn" id="clearBtn3" aria-label="clear">
+                <i class="fas fa-times-circle"></i>
             </button>
         </div>
-
-        <!-- Body = form -->
-        <div class="modal-body">
-            <form id="entryForm" novalidate>
-
-                <div class="form-group">
-                    <label for="title">Title <span class="required">*</span></label>
-                    <input type="text" id="title" placeholder="e.g. Project Alpha" required/>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="category">Category</label>
-                        <select id="category">
-                            <option value="work">Work</option>
-                            <option value="personal">Personal</option>
-                            <option value="finance">Finance</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select id="status">
-                            <option value="active">Active</option>
-                            <option value="pending">Pending</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" placeholder="Write a short note…"></textarea>
-                </div>
-
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-check"></i> Submit
-                    </button>
-                </div>
-
-            </form>
-        </div>
+        <hr class="divider" />
+        <p class="footnote">
+            <i class="fas fa-code"></i> Icon as <code>&lt;i&gt;</code> with absolute positioning
+            <span style="display:inline-block; margin-left:0.8rem;">
+                <i class="fas fa-eraser" style="color:#ef4444;"></i> clear button (JS)
+            </span>
+        </p>
     </div>
-</div>
 
-<script>
-    (function () {
-        'use strict';
+    <script>
+        // ---- optional: clear button functionality for demo 3 ----
+        const input3 = document.getElementById('searchInput3');
+        const clearBtn = document.getElementById('clearBtn3');
 
-        // ── DOM refs ──
-        const overlay = document.getElementById('overlay');
-        const modal = document.getElementById('modal');
-        const modalHeader = document.getElementById('modalHeader');
-        const openBtn = document.getElementById('openModalBtn');
-        const closeBtn = document.getElementById('closeModalBtn');
-        const cancelBtn = document.getElementById('cancelBtn');
-        const form = document.getElementById('entryForm');
-
-        // ── Open / Close ──
-        function openModal() {
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden'; // prevent scroll
-            // Reset any lingering drag transforms
-            modal.style.transform = '';
-        }
-
-        function closeModal() {
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-            // Reset form (optional)
-            // form.reset();
-        }
-
-        // ── Event listeners for open/close ──
-        openBtn.addEventListener('click', openModal);
-        closeBtn.addEventListener('click', closeModal);
-        cancelBtn.addEventListener('click', closeModal);
-
-        // Click on overlay background closes modal (but not if click inside modal)
-        overlay.addEventListener('click', function (e) {
-            if (e.target === overlay) {
-                closeModal();
+        // show/hide clear button based on input value
+        input3.addEventListener('input', function() {
+            if (this.value.length > 0) {
+                clearBtn.classList.add('visible');
+            } else {
+                clearBtn.classList.remove('visible');
             }
         });
 
-        // ESC key closes
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && overlay.classList.contains('active')) {
-                closeModal();
-            }
+        clearBtn.addEventListener('click', function() {
+            input3.value = '';
+            input3.focus();
+            this.classList.remove('visible');
+            // dispatch input event to let any other listener know
+            input3.dispatchEvent(new Event('input'));
         });
 
-        // ── DRAG LOGIC ──
-        let isDragging = false;
-        let offsetX = 0;
-        let offsetY = 0;
-        let startX = 0;
-        let startY = 0;
-
-        // We'll store the modal's current position as transform values
-        let currentX = 0;
-        let currentY = 0;
-
-        modalHeader.addEventListener('mousedown', function (e) {
-            // Only left-click
-            if (e.button !== 0) return;
-
-            // Don't start drag if the click is on the close button or its children
-            const target = e.target.closest('.close-btn');
-            if (target) return;
-
-            isDragging = true;
-            modal.classList.add('dragging');
-
-            // Get the current transform values (if any)
-            const style = window.getComputedStyle(modal);
-            const transform = style.transform;
-            if (transform && transform !== 'none') {
-                const matrix = transform.match(/matrix.*\((.+)\)/);
-                if (matrix) {
-                    const values = matrix[1].split(', ').map(Number);
-                    // matrix(scaleX, skewY, skewX, scaleY, tx, ty)
-                    currentX = values[4] || 0;
-                    currentY = values[5] || 0;
-                }
-            }
-
-            // Mouse position relative to the modal
-            const rect = modal.getBoundingClientRect();
-            offsetX = e.clientX - rect.left;
-            offsetY = e.clientY - rect.top;
-
-            // Store starting mouse position for calculating delta
-            startX = e.clientX;
-            startY = e.clientY;
-
-            // Prevent text selection while dragging
-            document.body.style.userSelect = 'none';
-
-            e.preventDefault();
-        });
-
-        document.addEventListener('mousemove', function (e) {
-            if (!isDragging) return;
-
-            const deltaX = e.clientX - startX;
-            const deltaY = e.clientY - startY;
-
-            // Apply the new position
-            const newX = currentX + deltaX;
-            const newY = currentY + deltaY;
-
-            modal.style.transform = `translate(${newX}px, ${newY}px)`;
-
-            // Keep the modal within viewport (optional but nice)
-            // We'll just let it go anywhere for simplicity
-        });
-
-        document.addEventListener('mouseup', function (e) {
-            if (isDragging) {
-                isDragging = false;
-                modal.classList.remove('dragging');
-                document.body.style.userSelect = '';
-
-                // Update currentX/Y to match the final transform
-                const style = window.getComputedStyle(modal);
-                const transform = style.transform;
-                if (transform && transform !== 'none') {
-                    const matrix = transform.match(/matrix.*\((.+)\)/);
-                    if (matrix) {
-                        const values = matrix[1].split(', ').map(Number);
-                        currentX = values[4] || 0;
-                        currentY = values[5] || 0;
-                    }
-                } else {
-                    currentX = 0;
-                    currentY = 0;
-                }
-            }
-        });
-
-        // ── Handle form submission ──
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const title = document.getElementById('title').value.trim();
-            if (!title) {
-                alert('Please enter a title.');
-                return;
-            }
-
-            // Collect data
-            const data = {
-                title: title,
-                category: document.getElementById('category').value,
-                status: document.getElementById('status').value,
-                description: document.getElementById('description').value.trim(),
-            };
-
-            console.log('📦 Form submitted:', data);
-
-            // Show a quick success feedback
-            const btn = form.querySelector('.btn-primary');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check-circle"></i> Done!';
-            btn.style.background = '#27ae60';
-            btn.style.boxShadow = '0 6px 20px rgba(39, 174, 96, 0.3)';
-
-            setTimeout(() => {
-                btn.innerHTML = originalText;
-                btn.style.background = '';
-                btn.style.boxShadow = '';
-                closeModal();
-                form.reset();
-                // Reset drag position (optional – return modal to center)
-                modal.style.transform = '';
-                currentX = 0;
-                currentY = 0;
-            }, 800);
-        });
-
-        // ── Reset modal position when closed ──
-        // We want the modal to re-center when opened again.
-        // We'll store the original transform and reset on open.
-        const originalTransform = modal.style.transform;
-
-        // Override openModal to reset position
-        const originalOpen = openModal;
-        openModal = function () {
-            // Reset transform to center
-            modal.style.transform = '';
-            currentX = 0;
-            currentY = 0;
-            originalOpen.call(this);
-        };
-
-        // Re-bind the open button
-        openBtn.removeEventListener('click', openModal);
-        openBtn.addEventListener('click', openModal);
-
-        console.log('✅ Draggable modal ready! Drag the header to move it.');
-    })();
-</script>
+        // ---- also add clear to demo 1 & 2 (optional) but we keep it simple ----
+        // you can extend the same pattern if you like.
+        console.log('🔍 Search bar demos ready.');
+    </script>
 
 </body>
 </html>
