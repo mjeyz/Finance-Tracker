@@ -501,12 +501,14 @@ app.post("/varify-email", verifyOtpLimiter, async (req, res) => {
 app.post("/add-transaction", async (req, res) => {
     try {
         if (!req.user?.id) {
+            req.flash("error", "Please log in again.");
             return res.status(401).json({success: false, error: "Please log in again."});
         }
 
         const {amount, type, date, description} = req.body;
 
         if (!amount || !type) {
+            req.flash("error", "Amount and type are required.");
             return res.status(400).json({success: false, error: "Amount and type are required."});
         }
 
@@ -515,9 +517,11 @@ app.post("/add-transaction", async (req, res) => {
             [req.user.id, Number(amount), type, date || null, description || null]
         );
 
+        req.flash("success", "Transaction added successfully.");
         return res.status(201).json({success: true});
     } catch (err) {
         console.log("Add transaction error:", err);
+        req.flash("error", "Unable to save transaction right now.");
         return res.status(500).json({success: false, error: "Unable to save transaction right now."});
     }
 });
@@ -525,12 +529,14 @@ app.post("/add-transaction", async (req, res) => {
 app.post("/add-event", async (req, res) => {
     try {
         if (!req.user?.id) {
+            req.flash("error", "Please log in again.");
             return res.status(401).json({success: false, error: "Please log in again."});
         }
 
         const {eventName, location, eventDate} = req.body;
 
         if (!eventName) {
+            req.flash("error", "Event name is required.");
             return res.status(400).json({success: false, error: "Event name is required."});
         }
 
@@ -539,9 +545,11 @@ app.post("/add-event", async (req, res) => {
             [req.user.id, eventName, eventDate || null, location || null]
         );
 
+        req.flash("success", "Event added successfully.");
         return res.status(201).json({success: true});
     } catch (err) {
         console.log("Add event error:", err);
+        req.flash("error", "Unable to save event right now.");
         return res.status(500).json({success: false, error: "Unable to save event right now."});
     }
 });
@@ -549,12 +557,14 @@ app.post("/add-event", async (req, res) => {
 app.post("/add-saving", async (req, res) => {
     try {
         if (!req.user?.id) {
+            req.flash("error", "Please log in again.");
             return res.status(401).json({success: false, error: "Please log in again."});
         }
 
         const {purpose, targetAmount, savedAmount} = req.body;
 
         if (!purpose || !targetAmount) {
+            req.flash("error", "Purpose and target amount are required.");
             return res.status(400).json({success: false, error: "Purpose and target amount are required."});
         }
 
@@ -563,11 +573,43 @@ app.post("/add-saving", async (req, res) => {
             [req.user.id, purpose, Number(targetAmount), savedAmount ? Number(savedAmount) : 0]
         );
 
+        req.flash("success", "Saving goal added successfully.");
         return res.status(201).json({success: true});
     } catch (err) {
         console.log("Add saving error:", err);
+        req.flash("error", "Unable to save goal right now.");
         return res.status(500).json({success: false, error: "Unable to save goal right now."});
     }
+});
+
+
+// NOTE: Changed from DEFLATE to DELETE
+app.delete('/api/transactions', async (req, res) => {
+  const transactionId = req.query.id;
+
+  // Ensure user is logged in
+  if (!req.user) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  try {
+    // CRITICAL SECURITY FIX: Delete ONLY if the ID belongs to THIS user's email.
+    // This prevents users from deleting other people's transactions by guessing IDs.
+    const result = await db.query(
+      'DELETE FROM transaction WHERE id = $1 AND email = $2 RETURNING *',
+      [transactionId, req.user.email]
+    );
+
+    // If no rows were deleted, the ID doesn't exist or doesn't belong to the user
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Transaction not found or unauthorized' });
+    }
+
+    res.status(200).json({ message: 'Deleted successfully', deleted: result.rows[0] });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
 app.listen(port, () => {

@@ -680,4 +680,18 @@ body {
 .entry-form {display: none;}
 .entry-form.active{display: block}
 
+.delete {
+    padding: 5px;
+    border: 1px solid #8a9bb0;
+    transition: all 0.5s ease;
+}
 
+.delete:hover {
+    color: #e74c3c;
+}
+/*.trash-icon{*/
+/*    transition: all 0.3s ease;*/
+/*}*/
+/*.trash-icon:hover {*/
+/*    color: #e74c3c;*/
+/*}*/
