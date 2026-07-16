@@ -587,9 +587,6 @@ app.post("/add-saving", async (req, res) => {
 app.delete('/api/transactions', async (req, res) => {
   const transactionId = req.query.id;
 
-  console.log(transactionId);
-
-  // Ensure user is logged in
   if (!req.user) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
@@ -602,15 +599,29 @@ app.delete('/api/transactions', async (req, res) => {
 
     // If no rows were deleted, the ID doesn't exist or doesn't belong to the user
     if (result.rowCount === 0) {
+        req.flash("error", 'Transaction not found or unauthorized');
       return res.status(404).json({ error: 'Transaction not found or unauthorized' });
     }
 
+    req.query("success", "Deleted successfully");
     res.status(200).json({ message: 'Deleted successfully', deleted: result.rows[0] });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+app.delete("/api/delete/event", async (req, res) => {
+    const transactionId = req.query.id;
+
+    try {
+        const result = await db.query("DELETE FROM events WHERE id = $1 AND user_id = $2", [transactionId, req.user.id]);
+        req.flash("success", "Event deleted successfully");
+       res.status(200).json({message: "Deleted successfully",  deleted: result.rows[0]});
+    } catch (err) {
+        console.log(err);
+    }
+})
 
 app.listen(port, () => {
     console.log(`Express Server is Listening on ${port}`);

@@ -221,73 +221,98 @@ overlay?.addEventListener("click", function (event) {
 
 entryForms.forEach((form) => {
     form.addEventListener("submit", async function (event) {
-    event.preventDefault();
-    const submitRoute = form.dataset.submitRoute;
-    const formData = new FormData(form);
+        event.preventDefault();
+        const submitRoute = form.dataset.submitRoute;
+        const formData = new FormData(form);
 
-    const data = Object.fromEntries(formData.entries());
-    data.category = activeCategory;
+        const data = Object.fromEntries(formData.entries());
+        data.category = activeCategory;
 
-    const response = await fetch(submitRoute, {
-        method: "POST",
-        headers: {"content-type": "application/json"},
-        body: JSON.stringify(data),
-    });
+        const response = await fetch(submitRoute, {
+            method: "POST",
+            headers: {"content-type": "application/json"},
+            body: JSON.stringify(data),
+        });
 
-    if (response.ok) {
-        closeModel();
-        form.reset();
-        window.location.reload();
-        return;
-    }
+        if (response.ok) {
+            closeModel();
+            form.reset();
+            window.location.reload();
+            return;
+        }
 
-    const result = await response.json().catch(() => null);
-    const message = result?.error || "Unable to save entry right now.";
-    alert(message);
+        const result = await response.json().catch(() => null);
+        const message = result?.error || "Unable to save entry right now.";
+        alert(message);
     });
 });
 
 
-  // Wait for the DOM to load
-  document.addEventListener('DOMContentLoaded', function() {
+
+
+// Wait for the DOM to load
+document.addEventListener('DOMContentLoaded', function () {
 
     // Select ALL delete buttons using the class
     document.querySelectorAll('.delete').forEach(button => {
 
-      button.addEventListener('click', async function(event) {
-        // Find the parent transaction container
-        const transactionItem = this.closest('.transaction-item');
-        // Get the transaction ID from the data attribute
-        const transactionId = transactionItem.dataset.id;
+        button.addEventListener('click', async function (event) {
+            // Find the parent transaction container
+            const transactionItem = this.closest('.transaction-item');
+            // Get the transaction ID from the data attribute
+            const transactionId = transactionItem.dataset.id;
 
-        // Optional: Ask for confirmation before deleting
-        if (!confirm(`Are you sure you want to delete this transaction?`)) {
-          return;
-        }
-
-        try {
-          // Send the DELETE request from the BROWSER
-          const response = await fetch(`/api/transactions?id=${transactionId}`, {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json'
+            // Optional: Ask for confirmation before deleting
+            if (!confirm(`Are you sure you want to delete this transaction?`)) {
+                return;
             }
-          });
 
-          if (!response.ok) {
-            const errorData = await response.json();
-          }
+            try {
+                // Send the DELETE request from the BROWSER
+                const response = await fetch(`/api/transactions?id=${transactionId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-          // Success! Remove the transaction row from the UI without refreshing the page
-          transactionItem.remove();
-          console.log('Transaction deleted successfully');
+                if (!response.ok) {
+                    const errorData = await response.json();
+                }
 
-        } catch (error) {
-          console.error('Delete error:', error.message);
-          alert('Could not delete transaction: ' + error.message);
-        }
-      });
+                // Success! Remove the transaction row from the UI without refreshing the page
+                transactionItem.remove();
+                console.log('Transaction deleted successfully');
+
+            } catch (error) {
+                console.error('Delete error:', error.message);
+                alert('Could not delete transaction: ' + error.message);
+            }
+        });
 
     });
 
-  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".delete").forEach(button => {
+        button.addEventListener("click", async function (event) {
+            const eventItem = this.closest(".event-item");
+            const transactionId = eventItem.dataset.id;
+            if (!confirm(`Are you sure you want to delete this transaction?`)) {
+                return;
+            }
+            try {
+                const response = await fetch(`api/delete/event?id=${transactionId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                });
+                eventItem.remove();
+            } catch (err) {
+                console.log(err)
+            }
+        });
+    });
+});
