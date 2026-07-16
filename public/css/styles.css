@@ -473,6 +473,7 @@ body {
     transform: scale(0.96);
 }
 
+/*TODO : create overlay for add or update income form*/
 .overlay {
     position: fixed;
     inset: 0;
@@ -695,3 +696,6 @@ body {
 /*.trash-icon:hover {*/
 /*    color: #e74c3c;*/
 /*}*/
+
+
+/* TODO 3: decrease the of text like h1 and h2 in order to render properly*/
