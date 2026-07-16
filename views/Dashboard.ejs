@@ -211,7 +211,7 @@
             <div class="list-section transaction-list active" id="transactionList">
                 <% if ( transaction.length > 0 ) { %>
                         <% for (const tx of transaction) { %>
-                        <div class="transaction-item" data-id="<% tx.id %>">
+                        <div class="transaction-item" data-id="<%= tx.id %>">
                             <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                      fill="#9b1212" viewBox="0 0 24 24">

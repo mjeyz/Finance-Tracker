@@ -587,17 +587,17 @@ app.post("/add-saving", async (req, res) => {
 app.delete('/api/transactions', async (req, res) => {
   const transactionId = req.query.id;
 
+  console.log(transactionId);
+
   // Ensure user is logged in
   if (!req.user) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
   try {
-    // CRITICAL SECURITY FIX: Delete ONLY if the ID belongs to THIS user's email.
-    // This prevents users from deleting other people's transactions by guessing IDs.
     const result = await db.query(
-      'DELETE FROM transaction WHERE id = $1 AND email = $2 RETURNING *',
-      [transactionId, req.user.email]
+      "DELETE FROM transaction WHERE id = $1 AND user_id = $2 RETURNING *",
+      [transactionId, req.user.id]
     );
 
     // If no rows were deleted, the ID doesn't exist or doesn't belong to the user
