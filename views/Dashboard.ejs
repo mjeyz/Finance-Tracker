@@ -177,7 +177,7 @@
     </div>
 
 
-    <div class="update-income-overlay">
+    <div class="update-income-overlay" id="updateIncomeOverlay">
         <div class="update-income-model">
 
             <div class="update-income-header">
@@ -189,7 +189,7 @@
 
 
             <div class="update-income-model-body">
-                <form class="update-income-form">
+                <form class="update-income-form" id="incomeForm" method="POST" data-submit-route="/api/update/income">
 
                     <div class="form-group">
                         <label for="incomeInput">Income</label>
@@ -198,14 +198,16 @@
 
                     <div class="form-group">
                         <label for="incomeInput">Expenses</label>
-                        <input type="text" placeholder="20000" name="income" id="incomeInput">
+                        <input type="text" placeholder="20000" name="expense" id="incomeInput">
                     </div>
+
+                    <div class="form-action">
+                    <button class="btn btn-secondary" id="incomeCancelModel" type="button">Cancel</button>
+                    <button class="btn btn-primary" id="incomeSubmitBtn" type="submit">Submit</button>
+                </div>
                 </form>
 
-                <div class="form-action">
-                    <button class="btn btn-secondary cancel-btn" type="button">Cancel</button>
-                    <button class="btn btn-primary submit-btn" type="submit">Submit</button>
-                </div>
+
             </div>
         </div>
     </div>

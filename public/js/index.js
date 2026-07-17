@@ -339,3 +339,47 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
+const updateIncomeBtn = document.getElementById("updateIncomeBtn");
+const updateIncomeOverlay = document.getElementById("updateIncomeOverlay");
+const incomeCancelModel = document.getElementById("incomeCancelModel");
+const incomeCloseBtn = document.getElementById("incomeCloseBtn");
+const incomeSubmitBtn = document.getElementById("incomeSubmitBtn");
+const incomeForm = document.getElementById("incomeForm")
+
+
+function closeIncomeModel()  {
+    updateIncomeOverlay.classList.remove("active")
+}
+
+function openIncomeModel() {
+    updateIncomeOverlay.classList.add("active")
+}
+
+updateIncomeBtn.addEventListener("click", openIncomeModel);
+incomeCancelModel.addEventListener("click",closeIncomeModel);
+incomeCloseBtn.addEventListener("click", closeIncomeModel);
+
+
+incomeForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const formData = new FormData(incomeForm)
+    const data = Object.fromEntries(formData.entries())
+
+    try {
+        const response = await fetch("/api/update/income", {
+            method: "POST",
+            headers: {"content-type": "application/json"},
+            body: JSON.stringify(data)
+        });
+
+        if(response.ok) {
+            closeIncomeModel();
+            incomeForm.reset();
+            window.location.reload();
+        }
+    } catch (err) {
+        console.log(err)
+    }
+})
