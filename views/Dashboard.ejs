@@ -171,8 +171,45 @@
 
     <h1 class="dashboard-heading">Dashboard</h1>
     <p class="dashboard-subtitle">Your financial overview at a glance</p>
-<!--    TODO 1: add button to trigger overlay in order to add or update income and expenses-->
-<!--    TODO : create form for updating income-->
+
+    <div class="update-income-cantainer">
+        <button class="update-income-btn" id="updateIncomeBtn"><i class="fa-solid fa-plus"></i> Update income</button>
+    </div>
+
+
+    <div class="update-income-overlay">
+        <div class="update-income-model">
+
+            <div class="update-income-header">
+                <div class="title"><i class="fa-solid fa-plus"></i> Add or update income</div>
+                <button class="close-btn" id="incomeCloseBtn" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+            </div>
+
+
+            <div class="update-income-model-body">
+                <form class="update-income-form">
+
+                    <div class="form-group">
+                        <label for="incomeInput">Income</label>
+                        <input type="text" placeholder="20000" name="income" id="incomeInput">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="incomeInput">Expenses</label>
+                        <input type="text" placeholder="20000" name="income" id="incomeInput">
+                    </div>
+                </form>
+
+                <div class="form-action">
+                    <button class="btn btn-secondary cancel-btn" type="button">Cancel</button>
+                    <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="status">
         <div class="stat-card total-income">
             <span class="card-subtitle">Total Income</span>
@@ -184,7 +221,7 @@
         </div>
         <div class="stat-card current-balance">
             <span class="card-subtitle">Current Balance</span>
-            <p class="amount">PKR 2000</p>
+            <p class="amount">PKR 0</p>
         </div>
         <div class="stat-card expenses">
             <span class="card-subtitle">Expenses</span>
@@ -214,7 +251,7 @@
             <!--  Transaction List-->
             <div class="list-section transaction-list active" id="transactionList">
                 <% if ( transaction.length > 0 ) { %>
-                        <% for (const tx of transaction) { %>
+                    <% for (const tx of transaction) { %>
                         <div class="transaction-item" data-id="<%= tx.id %>">
                             <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -286,8 +323,8 @@
                                 <span>Rs <%= sv.savedamount %> saved</span>
                                 <span>Goal: Rs <%= sv.targetamount %></span>
                                 <div class="delete" id="deleteBtn">
-                                <i class="fa-regular fa-trash-can trash-icon"></i>
-                            </div>
+                                    <i class="fa-regular fa-trash-can trash-icon"></i>
+                                </div>
                             </div>
 
                         </div>

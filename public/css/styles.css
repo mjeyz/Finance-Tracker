@@ -474,6 +474,73 @@ body {
 }
 
 /*TODO : create overlay for add or update income form*/
+
+.update-income-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 26, 51, 0.35);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 999;
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+}
+.update-income-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+.update-income-model {
+    background: #ffffff;
+    border-radius: 28px;
+    width: 520px;
+    max-width: 92%;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    transform: scale(0.92) translateY(20px);
+    cursor: default;
+    user-select: none;
+}
+
+.update-income-header {
+    padding: 1.2rem 1rem;
+    background: #f8faff;
+    border-bottom: 1px solid #e9edf4;
+    display: flex;
+    justify-content: space-between;
+}
+
+.update-income-header .title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #0b1a33;
+    display: flex;
+    align-items: center;
+    gap: 10px
+}
+
+.update-income-header .close-btn {
+   background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: #8a9bb0;
+    cursor: pointer;
+    padding: 0 6px;
+    transition: color 0.2s, transform 1s;
+    line-height: 1;
+}
+
+.update-income-header .close-btn:hover {
+    color: #e74c3c;
+    transform: rotate(90deg);
+}
+
+.update-income-model-body {
+    padding: 1.8rem 1.8rem 2rem;
+}
+
 .overlay {
     position: fixed;
     inset: 0;
@@ -697,5 +764,23 @@ body {
 /*    color: #e74c3c;*/
 /*}*/
 
+.update-income-cantainer {
+    display: flex;
+    justify-content: end;
+}
+
+.update-income-btn {
+    padding: 9px;
+    font-weight: bold;
+    border: 1px solid #e9edf4;
+    border-radius: 1rem;
+    color: #eef2f7;
+    background-color: #4f6ef7;
+    transition: all 0.3s ease-in;
+}
+
+.update-income-btn:hover {
+    background-color: #3a56d4;
+}
 
 /* TODO 3: decrease the of text like h1 and h2 in order to render properly*/
