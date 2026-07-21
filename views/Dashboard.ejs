@@ -130,7 +130,7 @@
 <!--TODO 2: fix top navbar behaviour on small screen-->
 <header class="header top-nav">
     <button class="toggle-btn" id="toggleBtn" aria-label="Toggle sidebar">
-    <i class="fas fa-bars"></i>
+        <i class="fas fa-bars"></i>
     </button>
 
     <!-- Search placeholder -->
@@ -477,7 +477,22 @@
 </main>
 
 
-<script src="js/index.js"></script>
+<script >
+
+const passwordField = document.getElementById("password");
+const eyeIcon = document.getElementById("eyeIcon");
+
+alert("Hello")
+
+eyeIcon.addEventListener("click", function () {
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+    } else {
+        passwordField.type = "password";
+    }
+});
+
+</script>
 
 
 </body>

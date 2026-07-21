@@ -248,8 +248,6 @@ entryForms.forEach((form) => {
 });
 
 
-
-
 // Wait for the DOM to load
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -317,7 +315,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".delete").forEach(button => {
         button.addEventListener("click", async function (event) {
             const goalItem = this.closest(".goal-card");
@@ -348,7 +346,7 @@ const incomeSubmitBtn = document.getElementById("incomeSubmitBtn");
 const incomeForm = document.getElementById("incomeForm")
 
 
-function closeIncomeModel()  {
+function closeIncomeModel() {
     updateIncomeOverlay.classList.remove("active")
 }
 
@@ -357,7 +355,7 @@ function openIncomeModel() {
 }
 
 updateIncomeBtn.addEventListener("click", openIncomeModel);
-incomeCancelModel.addEventListener("click",closeIncomeModel);
+incomeCancelModel.addEventListener("click", closeIncomeModel);
 incomeCloseBtn.addEventListener("click", closeIncomeModel);
 
 
@@ -374,7 +372,7 @@ incomeForm.addEventListener("submit", async function (event) {
             body: JSON.stringify(data)
         });
 
-        if(response.ok) {
+        if (response.ok) {
             closeIncomeModel();
             incomeForm.reset();
             window.location.reload();
@@ -395,7 +393,7 @@ function toggleSidebar() {
     sidebarOverlay.classList.add("active");
 
     const icon = toggleBtn.querySelector('i')
-    if(sidebar.classList.contains("open")) {
+    if (sidebar.classList.contains("open")) {
         icon.className = "fas fas-times";
     } else {
         icon.className = "fa-solid fa-xmark";
@@ -408,7 +406,7 @@ sidebarOverlay.addEventListener("click", toggleSidebar);
 
 document.querySelectorAll(".sidebar-menu a").forEach(item => {
     item.addEventListener("click", () => {
-        if(window.innerWidth <= 768) {
+        if (window.innerWidth <= 768) {
             toggleSidebar();
         }
     });
@@ -418,6 +416,19 @@ window.addEventListener("resize", () => {
     if (window.innerWidth > 768 && sidebar.classList.contains("open")) {
         sidebar.classList.remove("open");
         sidebarOverlay.classList.remove("active");
-        toggleBtn.querySelector("i").className = 'fa-solid fa-xmark';
+        toggleBtn.querySelector("i").className = 'fas fa-bars';
+    }
+});
+
+const passwordField = document.getElementById("password");
+const eyeIcon = document.getElementById("eyeIcon");
+
+alert("Hello")
+
+eyeIcon.addEventListener("click", function () {
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+    } else {
+        passwordField.type = "password";
     }
 });

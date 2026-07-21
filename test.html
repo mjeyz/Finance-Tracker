@@ -1,308 +1,283 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Responsive Sidebar</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinTrack – Sign In</title>
 
-    <!-- Font Awesome for icons (optional) -->
-    <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <style>
-        /* ───────────── RESET & BASE ───────────── */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <!-- Font Awesome for social icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f6f9;
-        }
+  <style>
+    /* Reset & Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        /* ───────────── SIDEBAR ───────────── */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            height: 100vh;
-            background: #2c3e50;
-            color: #2c3e50;
-            padding-top: 20px;
-            overflow-y: auto;
-            transition: transform 0.3s ease;
-            z-index: 1000;
-        }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        .sidebar-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            padding: 0 20px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 48px 40px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e9edf4;
+    }
 
-        .sidebar-brand i {
-            color: #3498db;
-        }
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: #0b1b33;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+    .logo span {
+      color: #2a7de1;
+    }
 
-        .sidebar-menu {
-            list-style: none;
-            padding: 20px 0;
-        }
+    .subhead {
+      color: #64748b;
+      font-size: 15px;
+      margin-bottom: 32px;
+    }
 
-        .sidebar-menu li {
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            cursor: pointer;
-            transition: background 0.2s;
-            border-left: 3px solid transparent;
-        }
+    .form-group {
+      margin-bottom: 20px;
+    }
 
-        .sidebar-menu li:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-left-color: #3498db;
-        }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 6px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
 
-        .sidebar-menu li i {
-            width: 20px;
-            text-align: center;
-            color: #b0c4d9;
-        }
+    .form-group input[type="email"],
+    .form-group input[type="password"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 15px;
+      background: #fafbfc;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
 
-        .sidebar-menu li span {
-            font-size: 0.95rem;
-        }
+    .form-group input:focus {
+      border-color: #2a7de1;
+      box-shadow: 0 0 0 4px rgba(42, 125, 225, 0.10);
+      background: #ffffff;
+    }
 
-        /* ───────────── MAIN CONTENT ───────────── */
-        .main-content {
-            margin-left: 250px;
-            padding: 30px;
-            min-height: 100vh;
-            transition: margin-left 0.3s ease;
-        }
+    .form-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 6px 0 24px;
+    }
 
-        .main-content h1 {
-            font-size: 2rem;
-            color: #2c3e50;
-            margin-bottom: 16px;
-        }
+    .form-row label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #334155;
+      cursor: pointer;
+    }
 
-        .main-content p {
-            color: #555;
-            line-height: 1.7;
-            max-width: 700px;
-        }
+    .form-row label input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: #2a7de1;
+      cursor: pointer;
+    }
 
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 24px;
-        }
+    .forgot-link {
+      font-size: 14px;
+      color: #2a7de1;
+      text-decoration: none;
+      font-weight: 500;
+    }
 
-        .card {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            border-left: 4px solid #3498db;
-        }
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
 
-        .card h3 {
-            color: #2c3e50;
-            margin-bottom: 6px;
-        }
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: #0b1b33;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
 
-        .card p {
-            color: #777;
-            font-size: 0.9rem;
-        }
+    .btn-primary:hover {
+      background: #1a2f4e;
+    }
 
-        /* ───────────── TOGGLE BUTTON ───────────── */
-        .toggle-btn {
-            display: none;
-            /* hidden on desktop */
-            position: fixed;
-            top: 16px;
-            left: 16px;
-            z-index: 1100;
-            background: #2c3e50;
-            color: #ecf0f1;
-            border: none;
-            border-radius: 6px;
-            padding: 10px 14px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 28px 0 24px;
+      color: #94a3b8;
+      font-size: 13px;
+    }
 
-        .toggle-btn:hover {
-            background: #1a2a3a;
-        }
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e2e8f0;
+    }
 
-        /* ───────────── OVERLAY (mobile) ───────────── */
-        .overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: 999;
-            transition: opacity 0.3s ease;
-        }
+    .social-row {
+      display: flex;
+      gap: 12px;
+    }
 
-        /* ───────────── RESPONSIVE ───────────── */
-        @media (max-width: 768px) {
-            /* show toggle button */
-            .toggle-btn {
-                display: block;
-            }
+    .social-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      background: #ffffff;
+      font-size: 14px;
+      font-weight: 500;
+      color: #1e293b;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      text-decoration: none;
+    }
 
-            /* sidebar slides off-screen by default */
-            .sidebar {
-                transform: translateX(-100%);
-                width: 280px;
-            }
+    .social-btn:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
 
-            /* when open, slide in */
-            .sidebar.open {
-                transform: translateX(0);
-            }
+    .social-btn i {
+      font-size: 18px;
+    }
 
-            /* main content takes full width */
-            .main-content {
-                margin-left: 0;
-                padding: 20px;
-                padding-top: 70px;
-            }
+    .signup-row {
+      text-align: center;
+      margin-top: 28px;
+      font-size: 15px;
+      color: #475569;
+    }
 
-            /* overlay visible when sidebar is open */
-            .overlay.active {
-                display: block;
-            }
-        }
+    .signup-row a {
+      color: #2a7de1;
+      font-weight: 600;
+      text-decoration: none;
+    }
 
-        /* small phones – narrower sidebar */
-        @media (max-width: 480px) {
-            .sidebar {
-                width: 260px;
-            }
+    .signup-row a:hover {
+      text-decoration: underline;
+    }
 
-            .main-content {
-                padding: 16px;
-                padding-top: 70px;
-            }
-
-            .card-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    /* Responsive */
+    @media (max-width: 480px) {
+      .card {
+        padding: 32px 20px;
+        border-radius: 16px;
+        margin: 16px;
+      }
+      .social-row {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- ─── TOGGLE BUTTON ─── -->
-    <button class="toggle-btn" id="toggleBtn" aria-label="Toggle sidebar">
-        <i class="fas fa-bars"></i>
-    </button>
+  <div class="card">
+    <!-- Logo -->
+    <div class="logo">Fin<span>Track</span></div>
+    <p class="subhead">Welcome back! Sign in to your account</p>
 
-    <!-- ─── OVERLAY ─── -->
-    <div class="overlay" id="overlay"></div>
+    <!-- Form -->
+    <form id="loginForm" onsubmit="return handleLogin(event)">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="you@example.com" required />
+      </div>
 
-    <!-- ─── SIDEBAR ─── -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-brand">
-            <i class="fas fa-code"></i>
-            <span>MyApp</span>
-        </div>
-        <ul class="sidebar-menu">
-            <li><i class="fas fa-home"></i><span>Dashboard</span></li>
-            <li><i class="fas fa-chart-line"></i><span>Analytics</span></li>
-            <li><i class="fas fa-users"></i><span>Users</span></li>
-            <li><i class="fas fa-cog"></i><span>Settings</span></li>
-            <li><i class="fas fa-envelope"></i><span>Messages</span></li>
-            <li><i class="fas fa-question-circle"></i><span>Help</span></li>
-        </ul>
-    </nav>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required />
+      </div>
 
-    <!-- ─── MAIN CONTENT ─── -->
-    <main class="main-content">
-        <h1>📱 Responsive Sidebar</h1>
-        <p>
-            This sidebar works just like Bootstrap's — it stays open on desktop
-            and collapses into a slide-out menu on mobile. Click the
-            <strong>☰ hamburger</strong> button to toggle it.
-        </p>
+      <div class="form-row">
+        <label>
+          <input type="checkbox" id="remember" /> Remember me
+        </label>
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
 
-        <div class="card-grid">
-            <div class="card">
-                <h3>Total Users</h3>
-                <p>1,284</p>
-            </div>
-            <div class="card">
-                <h3>Revenue</h3>
-                <p>$8,450</p>
-            </div>
-            <div class="card">
-                <h3>Active</h3>
-                <p>342</p>
-            </div>
-            <div class="card">
-                <h3>Tasks</h3>
-                <p>12 pending</p>
-            </div>
-        </div>
-    </main>
+      <button type="submit" class="btn-primary">Sign In</button>
+    </form>
 
-    <script>
-        // ─── TOGGLE LOGIC ───
-        const sidebar = document.getElementById('sidebar');
-        const toggleBtn = document.getElementById('toggleBtn');
-        const overlay = document.getElementById('overlay');
+    <!-- OR Divider -->
+    <div class="divider">OR CONTINUE WITH</div>
 
-        function toggleSidebar() {
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('active');
-            // change icon
-            const icon = toggleBtn.querySelector('i');
-            if (sidebar.classList.contains('open')) {
-                icon.className = 'fas fa-times';
-            } else {
-                icon.className = 'fas fa-bars';
-            }
-        }
+    <!-- Social Buttons -->
+    <div class="social-row">
+      <a href="#" class="social-btn"><i class="fab fa-google"></i> Google</a>
+      <a href="#" class="social-btn"><i class="fab fa-facebook"></i> Facebook</a>
+      <a href="#" class="social-btn"><i class="fab fa-github"></i> GitHub</a>
+    </div>
 
-        toggleBtn.addEventListener('click', toggleSidebar);
+    <!-- Sign Up -->
+    <div class="signup-row">
+      Don't have an account? <a href="#">Create one</a>
+    </div>
+  </div>
 
-        // close sidebar when overlay is clicked
-        overlay.addEventListener('click', toggleSidebar);
+  <script>
+    // Simple form handler – replace with your own logic
+    function handleLogin(event) {
+      event.preventDefault();
 
-        // close sidebar when a menu item is clicked (optional)
-        document.querySelectorAll('.sidebar-menu li').forEach(item => {
-            item.addEventListener('click', () => {
-                if (window.innerWidth <= 768) {
-                    toggleSidebar();
-                }
-            });
-        });
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const remember = document.getElementById('remember').checked;
 
-        // ─── CLOSE ON RESIZE TO DESKTOP ───
-        // if user resizes from mobile to desktop while sidebar is open, reset
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768 && sidebar.classList.contains('open')) {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
-                toggleBtn.querySelector('i').className = 'fas fa-bars';
-            }
-        });
-    </script>
+      if (!email || !password) {
+        alert('Please fill in both email and password.');
+        return false;
+      }
+
+      console.log('Login attempt:', { email, remember });
+      alert('Sign-in successful! (This is a demo)');
+      return false;
+    }
+  </script>
+
 </body>
 </html>
