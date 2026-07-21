@@ -11,6 +11,7 @@
 </head>
 <body>
 <div class="form-card">
+    <div class="model">
     <% if (error && error.length > 0) { %>
         <div class="flash-stack">
             <% error.forEach(function (msg) { %>
@@ -68,6 +69,7 @@
     </div>
 
     <p class="form-footer">Don't have an account? <a href="/register">Create one</a></p>
+    </div>
 </div>
 </body>
 </html>

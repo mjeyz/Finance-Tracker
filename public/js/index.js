@@ -382,4 +382,42 @@ incomeForm.addEventListener("submit", async function (event) {
     } catch (err) {
         console.log(err)
     }
-})
+});
+
+
+//TOGGLE LOGIC
+const sidebar = document.getElementById("sidebar");
+const toggleBtn = document.getElementById("toggleBtn");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+function toggleSidebar() {
+    sidebar.classList.toggle("open");
+    sidebarOverlay.classList.add("active");
+
+    const icon = toggleBtn.querySelector('i')
+    if(sidebar.classList.contains("open")) {
+        icon.className = "fas fas-times";
+    } else {
+        icon.className = "fa-solid fa-xmark";
+        sidebarOverlay.classList.remove("active");
+    }
+}
+
+toggleBtn.addEventListener("click", toggleSidebar);
+sidebarOverlay.addEventListener("click", toggleSidebar);
+
+document.querySelectorAll(".sidebar-menu a").forEach(item => {
+    item.addEventListener("click", () => {
+        if(window.innerWidth <= 768) {
+            toggleSidebar();
+        }
+    });
+});
+
+window.addEventListener("resize", () => {
+    if (window.innerWidth > 768 && sidebar.classList.contains("open")) {
+        sidebar.classList.remove("open");
+        sidebarOverlay.classList.remove("active");
+        toggleBtn.querySelector("i").className = 'fa-solid fa-xmark';
+    }
+});

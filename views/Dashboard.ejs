@@ -20,7 +20,6 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
 </head>
-
 <body>
 <div class="flash-stack page-flash-stack">
     <% if (error && error.length > 0) { %>
@@ -39,10 +38,15 @@
         <% }) %>
     <% } %>
 </div>
-<aside class="sidebar">
-    <a class="sidebar-brand" href="/public"> FinTrack </a>
 
-    <nav style="flex-grow: 1">
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+    <i class="sidebar-link"> <span style="color: #4f46e5;">Fin</span>Track </i>
+    </div>
+    <nav class="sidebar-manu">
         <a class="nav-link">
             <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +107,7 @@
         </a>
     </nav>
 
-    <div style="border-top: 1px solid #374151; padding-top: 1rem">
+    <div style="border-top: 1px solid #949b9e; padding-top: 1rem;" class="logout-sidebar-btn">
         <a class="nav-link" href="/logout">
             <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -125,6 +129,9 @@
 
 <!--TODO 2: fix top navbar behaviour on small screen-->
 <header class="header top-nav">
+    <button class="toggle-btn" id="toggleBtn" aria-label="Toggle sidebar">
+    <i class="fas fa-bars"></i>
+    </button>
 
     <!-- Search placeholder -->
     <div class="search-group">

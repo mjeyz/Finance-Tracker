@@ -41,12 +41,13 @@ body {
     top: 0;
     width: 250px;
     height: 100vh;
-    background-color: #111827;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     padding: 1.5rem;
-    overflow-y: auto;
-    z-index: 100;
+    z-index: 999;
 }
 
 .sidebar-brand {
@@ -65,7 +66,7 @@ body {
     align-items: center;
     gap: 0.7rem;
     padding: 0.75rem 1rem;
-    color: #9ca3af;
+    color: #ecf0f1;
     text-decoration: none;
     border-radius: 8px;
     transition: all 0.2s;
@@ -74,8 +75,16 @@ body {
 
 .nav-link:hover,
 .nav-link.active {
-    background-color: #374151;
+    background-color: #3498db;
     color: white;
+}
+
+.logout-sidebar-btn {
+    justify-content: end;
+}
+
+.logout-sidebar-btn .nav-link:hover{
+    background-color: #ac5e5a;
 }
 
 .top-nav {
@@ -166,6 +175,12 @@ body {
         padding-bottom: 0.75rem;
     }
 
+    h1 {
+        font-size: 1.8rem;
+    }
+    .dashboard-subtitle {
+        font-size: 10px;
+    }
     .search-group {
         flex: 1 1 100%;
         max-width: none;
@@ -173,7 +188,7 @@ body {
     }
 
     .user-menu {
-        margin-left: auto;
+        /*margin-left: auto;*/
         order: 1;
     }
 
@@ -472,8 +487,6 @@ body {
 .add-transaction:active {
     transform: scale(0.96);
 }
-
-/*TODO : create overlay for add or update income form*/
 
 .update-income-overlay {
     position: fixed;
@@ -784,3 +797,88 @@ body {
 }
 
 /* TODO 3: decrease the of text like h1 and h2 in order to render properly*/
+
+.toggle-btn {
+    display: none;
+    top: 16px;
+    left: 16px;
+    z-index: 100;
+    background: #2c3e50;
+    color: #ecf0f1;
+    border: none;
+     border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.toggle-btn:hover {
+    background: #1a2a3a;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0 ,0, 0.4);
+    z-index: 999;
+    transition: opacity 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .toggle-btn {
+        display: block;
+    }
+
+    .sidebar {
+        transform: translateY(-100%);
+        width: 280px;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+        padding-top: 70px;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 260px;
+    }
+    .main-content {
+        padding: 1rem;
+        padding-top: 70px;
+    }
+
+    .stat-card {
+        width: 100%;
+    }
+    
+}
+
+@media (max-width: 600px) {
+    .sidebar {
+        width: 260px;
+    }
+    .main-content {
+        padding: 1rem;
+        padding-top: 70px;
+    }
+
+    .stat-card {
+        width: 100%;
+
+    }
+    
+}
+
