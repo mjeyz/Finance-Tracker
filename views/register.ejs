@@ -43,6 +43,7 @@
         <div class="form-group">
             <label for="name">Full Name</label>
             <div class="input-wrapper">
+            <i class="fa-solid fa-user icon"></i>
                 <input type="text" id="name" name="name" placeholder="Mudasir Abbas">
             </div>
         </div>
@@ -50,16 +51,25 @@
         <div class="form-group">
             <label for="email">Email Address</label>
             <div class="input-wrapper">
+                <i class="fa-solid fa-envelope icon"></i>
                 <input type="email" id="email" name="email" placeholder="you@example.com">
             </div>
         </div>
         <div class="form-group">
             <label for="newPassword">Password</label>
+            <div class="input-wrapper">
+            <i class="fa-solid fa-unlock icon"></i>
             <input type="password" id="newPassword" name="password" placeholder="Min. 8 characters">
+            <i class="fa-solid fa-eye eye-icon"></i>
+            </div>
         </div>
         <div class="form-group">
             <label for="confirmPassword">Confirm Password</label>
-            <input type="password" id="confirmPassword" name="confirm-password" placeholder="Re-enter Password">
+            <div class="input-wrapper">
+                <i class="fa-solid fa-unlock icon"></i>
+                <input type="password" id="confirmPassword" name="confirm-password" placeholder="Re-enter Password">
+                <i class="fa-solid fa-eye eye-icon"></i>
+            </div>
         </div>
         <div class="options-row">
             <label>
@@ -76,9 +86,9 @@
     <div class="divider">or continue with</div>
 
     <div class="social-buttons">
-        <a class="social-btn google" href="/auth/google">Google</a>
-        <a class="social-btn facebook" href="/auth/facebook">Facebook</a>
-        <a class="social-btn github" href="/auth/github">Github</a>
+        <a class="social-btn google" href="/auth/google"><i class="fa-brands fa-google"></i> Google</a>
+        <a class="social-btn facebook" href="/auth/facebook"><i class="fa-brands fa-facebook"></i> Facebook</a>
+        <a class="social-btn github" href="/auth/github"><i class="fa-brands fa-github"></i> Github</a>
     </div>
 
     <p class="form-footer">Already have an account? <a href="/login ">sign in</a></p>
