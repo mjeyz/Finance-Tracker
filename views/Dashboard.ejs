@@ -43,9 +43,9 @@
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <aside class="sidebar" id="sidebar">
-    <div class="sidebar-brand">
-    <i class="sidebar-link"> <span style="color: #4f46e5;">Fin</span>Track </i>
-    </div>
+    
+    <a class="sidebar-brand" href="/"> <span style="color: #4f46e5;">Fin</span>Track</a>
+    
     <nav class="sidebar-manu">
         <a class="nav-link">
             <svg
@@ -127,13 +127,11 @@
 </aside>
 
 
-<!--TODO 2: fix top navbar behaviour on small screen-->
 <header class="header top-nav">
     <button class="toggle-btn" id="toggleBtn" aria-label="Toggle sidebar">
         <i class="fas fa-bars"></i>
     </button>
 
-    <!-- Search placeholder -->
     <div class="search-group">
         <i class="fas fa-search icon"></i>
         <input
@@ -150,22 +148,8 @@
         <div class="notifications">
             <i class="bx bx-bell" style="font-size: 1.25rem; color: #6b7280"></i>
         </div>
-        <div
-                class="profile"
-                style="display: flex; align-items: center; gap: 0.5rem">
-            <div
-                    style="
-              width: 32px;
-              height: 32px;
-              background: #e0e7ff;
-              color: #4f46e5;
-              border-radius: 50%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-weight: bold;
-            ">
-
+        <div class="profile">
+            <div class="avatar">
                 <%= user.name[0].toUpperCase() %>
             </div>
             <span style="font-weight: 500"><%= user.email %></span>
@@ -176,7 +160,7 @@
 
 <main class="main-content">
 
-    <h1 class="dashboard-heading">Dashboard</h1>
+    <h1 class="dashboard-heading">Hi <%= user.name %></h1>
     <p class="dashboard-subtitle">Your financial overview at a glance</p>
 
     <div class="update-income-cantainer">
@@ -223,21 +207,21 @@
         <div class="stat-card total-income">
             <span class="card-subtitle">Total Income</span>
             <% if (user.income) { %>
-                <p class="amount"><%= user.income %> PKR</p>
+                <p class="amount income"><%= user.income %> PKR</p>
             <% } else { %>
-                <p class="amount">0 PKR</p>
+                <p class="amount income">0 PKR</p>
             <% } %>
         </div>
         <div class="stat-card current-balance">
             <span class="card-subtitle">Current Balance</span>
-            <p class="amount">PKR 0</p>
+            <p class="amount balance">PKR 0</p>
         </div>
         <div class="stat-card expenses">
             <span class="card-subtitle">Expenses</span>
             <% if (user.expenses) { %>
-                <p class="amount"><%= user.expenses %></p>
+                <p class="amount expense"><%= user.expenses %></p>
             <% } else { %>
-                <p class="amount">0 PKR</p>
+                <p class="amount expense">0 PKR</p>
             <% } %>
         </div>
     </div>
@@ -269,13 +253,13 @@
                                 </svg>
                             </div>
                             <div style="flex: 1; min-width: 0;">
-                                <p style="margin: 0; font-size: 14px; font-weight: 500; color: #3B3B3B;"><%= tx.description %></p>
-                                <span style="font-size: 12px; color: #888;"><%= tx.date %></span>
+                                <p class="transaction-description"><%= tx.description %></p>
+                                <span class="transaction-date"><%= tx.date %></span>
                             </div>
 
 
                             <!-- 3. Amount -->
-                            <span style="white-space: nowrap; color: #c0786a; font-size: 14px; font-weight: 500;"> <%= tx.amount %></span>
+                            <span class="transaction-price"> <%= tx.amount %></span>
                             <div class="delete" id="deleteBtn">
                                 <i class="fa-regular fa-trash-can trash-icon"></i>
                             </div>
