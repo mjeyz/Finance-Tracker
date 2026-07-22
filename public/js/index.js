@@ -57,14 +57,10 @@ const buttonTexts = {
 };
 
 function setActiveBtn(activeElementId) {
-    const allBtn = [transactionBtn, eventBtn, savingBtn];
+    const allBtn = [transactionBtn, eventBtn, savingBtn].filter(Boolean);
 
     allBtn.forEach((btn) => {
-        if (btn.id === activeElementId) {
-            btn.classList.add("active");
-        } else {
-            btn.classList.remove("active");
-        }
+        btn.classList.toggle("active", btn.id === activeElementId);
     });
 }
 
@@ -74,10 +70,15 @@ function showCategory(categoryType) {
     const btnText = buttonTexts[targetId] || "+ Add";
 
 
-    dynamicTitle.textContent = title;
+    if (dynamicTitle) {
+        dynamicTitle.textContent = title;
+    }
 
-    Object.keys(listSection).forEach(id => {
-        listSection[id].classList.toggle("active", id === targetId)
+    Object.keys(listSection).forEach((id) => {
+        const list = listSection[id];
+        if (list) {
+            list.classList.toggle("active", id === targetId);
+        }
     });
 
     if (addBtn) {
@@ -198,13 +199,19 @@ const cancelBtn = document.querySelectorAll(".cancel-btn");
 
 function openModel() {
     setActiveForm(activeCategory);
-    overlay.classList.add("active");
+    if (overlay) {
+        overlay.classList.add("active");
+    }
     document.body.style.overflow = "hidden";
-    model.style.transform = "";
+    if (model) {
+        model.style.transform = "";
+    }
 }
 
 function closeModel() {
-    overlay.classList.remove("active");
+    if (overlay) {
+        overlay.classList.remove("active");
+    }
     document.body.style.overflow = "";
 }
 
@@ -354,12 +361,12 @@ function openIncomeModel() {
     updateIncomeOverlay.classList.add("active")
 }
 
-updateIncomeBtn.addEventListener("click", openIncomeModel);
-incomeCancelModel.addEventListener("click", closeIncomeModel);
-incomeCloseBtn.addEventListener("click", closeIncomeModel);
+updateIncomeBtn?.addEventListener("click", openIncomeModel);
+incomeCancelModel?.addEventListener("click", closeIncomeModel);
+incomeCloseBtn?.addEventListener("click", closeIncomeModel);
 
 
-incomeForm.addEventListener("submit", async function (event) {
+incomeForm?.addEventListener("submit", async function (event) {
     event.preventDefault();
 
     const formData = new FormData(incomeForm)
@@ -429,15 +436,12 @@ window.addEventListener("resize", () => {
 const passwordField = document.getElementById("password");
 const eyeIcon = document.getElementById("eyeIcon");
 
-eyeIcon.addEventListener("click", function () {
-    alert("hello");
-    if (passwordField.type === "password") {
-        passwordField.type = "text";
-        eyeIcon.classList.remove("fa-eye");
-        eyeIcon.classList.add("fa-eye-slash");
-    } else {
-        passwordField.type = "password";
-        eyeIcon.classList.remove("fa-eye-slash");
-        eyeIcon.classList.add("fa-eye");
-    }
-});
+if (passwordField && eyeIcon) {
+    eyeIcon.addEventListener("click", function () {
+        const isPasswordHidden = passwordField.type === "password";
+        passwordField.type = isPasswordHidden ? "text" : "password";
+
+        eyeIcon.classList.toggle("fa-eye", !isPasswordHidden);
+        eyeIcon.classList.toggle("fa-eye-slash", isPasswordHidden);
+    });
+}

@@ -41,16 +41,17 @@ body {
 .form-card {
     background-color: var(--bg-card);
     width: 100%;
+    max-width: 520px;
     display: flex;
     flex-direction: column;
     padding: 2rem;
     border-radius: 20px;
     box-shadow: var(--card-shadow);
     border: 1px solid var(--border);
-    max-width: 460px;
     position: relative;
     z-index: 1;
     animation: liftCard 1.6s cubic-bezier(0.6, 1, 0.3, 1) forwards;
+    border-top: 2px solid #4f6ef7;
     
 }
 
@@ -158,6 +159,12 @@ body {
     font-size: 0.85rem;
 }
 
+.options-row label {
+    color: #334155;
+    font-size: 1rem;
+}
+
+
     @media (max-width: 680px) {
       .form-card {
         padding: 32px 20px;
@@ -241,6 +248,7 @@ body {
     transform: var(--transition);
     color: var(--text-primary);
     border-radius: 12px;
+    transition: all 0.3s ease-in;
 }
 
 .social-btn:hover {
