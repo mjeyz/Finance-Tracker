@@ -651,10 +651,10 @@ app.listen(port, () => {
 });
 
 
-// TODO 1 : fix sidebar flex
+//  1 : fix sidebar flex
 //Instead of end logout container is attached with social links inspect and determined whats going on and fix it
 
-// TODO 2 : fix toggle btn
+//  2 : fix toggle btn
 //Toggle btn is not responsive it is displaying behind the sidebar even when screen is large and it icon is rendering well.
 // if i first click on it trigger sidebar and change icon to X than i cannot goes back even on large screen until i refresh and its placement is not well
 
@@ -663,7 +663,7 @@ app.listen(port, () => {
 
 // TODO 4 : fix font size and margins and padding for small screen
 
-// TODO 5 : fix Authentication forms
+//  5 : fix Authentication forms
 //These form is not responsive for mobile devices and iPads
 
 // TODO 6 : also create a feature to view password in password field

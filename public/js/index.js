@@ -436,12 +436,14 @@ window.addEventListener("resize", () => {
 const passwordField = document.getElementById("password");
 const eyeIcon = document.getElementById("eyeIcon");
 
-if (passwordField && eyeIcon) {
-    eyeIcon.addEventListener("click", function () {
-        const isPasswordHidden = passwordField.type === "password";
-        passwordField.type = isPasswordHidden ? "text" : "password";
-
-        eyeIcon.classList.toggle("fa-eye", !isPasswordHidden);
-        eyeIcon.classList.toggle("fa-eye-slash", isPasswordHidden);
-    });
-}
+eyeIcon.addEventListener("click", function () {
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        eyeIcon.classList.remove("fa-eye");
+        eyeIcon.classList.add("fa-eye-slash");
+    } else {
+        passwordField.type = "password";
+        eyeIcon.classList.remove("fa-eye-slash");
+        eyeIcon.classList.add("fa-eye");
+    }
+});

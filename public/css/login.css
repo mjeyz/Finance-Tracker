@@ -120,6 +120,7 @@ body {
 .eye-icon {
    position: absolute;
    right: 14px;
+    color: var(--text-muted);
 }
 
 .form-group .icon {
