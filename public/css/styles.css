@@ -61,6 +61,12 @@ body {
     text-decoration: none;
 }
 
+.sidebar-manu {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
 .nav-link {
     display: flex;
     align-items: center;
@@ -80,10 +86,16 @@ body {
 }
 
 .logout-sidebar-btn {
-    justify-content: end;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #949b9e;
 }
 
-.logout-sidebar-btn .nav-link:hover{
+.logout-sidebar-btn .nav-link {
+    margin-bottom: 0;
+}
+
+.logout-sidebar-btn .nav-link:hover {
     background-color: #ac5e5a;
 }
 
@@ -800,10 +812,7 @@ body {
 
 .toggle-btn {
     display: none;
-    position: relative;
-    top: 16px;
-    left: 16px;
-    transform: translateY(-50%);
+    position: static;
     z-index: 100;
     background: #2c3e50;
     color: #ecf0f1;
@@ -811,12 +820,12 @@ body {
     border-radius: 6px;
     width: 44px;
     height: 44px;
-    display: inline-flex;
     align-items: center;
     justify-content: center;
     font-size: 1.1rem;
     cursor: pointer;
     transition: background 0.2s;
+    flex-shrink: 0;
 }
 
 .toggle-btn:hover {
@@ -835,15 +844,18 @@ body {
 @media (max-width: 768px) {
     .toggle-btn {
         display: inline-flex;
+        margin-right: 0.75rem;
     }
 
     .top-nav {
-        padding-left: 4.5rem;
+        padding-left: 1rem;
+        gap: 0.75rem;
     }
 
     .sidebar {
-        transform: translateY(-100%);
+        transform: translateX(-100%);
         width: 280px;
+        transition: transform 0.3s ease;
     }
 
     .sidebar.open {

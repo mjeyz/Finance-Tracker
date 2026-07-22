@@ -117,10 +117,18 @@ body {
 }
 
 .eye-icon {
-    position: absolute;
-    margin-top: 10px;
+   position: absolute;
+   right: 14px;
 }
 
+.form-group .icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 1rem;
+}
 
 
 .form-card input[type="email"], .form-card input[type="password"], .form-card input[type="text"] {

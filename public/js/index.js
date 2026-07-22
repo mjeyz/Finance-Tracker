@@ -389,22 +389,25 @@ const toggleBtn = document.getElementById("toggleBtn");
 const sidebarOverlay = document.getElementById("sidebarOverlay");
 
 function toggleSidebar() {
-    sidebar.classList.toggle("open");
-    sidebarOverlay.classList.add("active");
+    if (!sidebar || !sidebarOverlay || !toggleBtn) {
+        return;
+    }
 
-    const icon = toggleBtn.querySelector('i')
-    if (sidebar.classList.contains("open")) {
-        icon.className = "fas fas-times";
-    } else {
-        icon.className = "fa-solid fa-xmark";
-        sidebarOverlay.classList.remove("active");
+    const isOpen = sidebar.classList.toggle("open");
+    sidebarOverlay.classList.toggle("active", isOpen);
+
+    const icon = toggleBtn.querySelector("i");
+    if (icon) {
+        icon.className = isOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars";
     }
 }
 
-toggleBtn.addEventListener("click", toggleSidebar);
-sidebarOverlay.addEventListener("click", toggleSidebar);
+if (toggleBtn && sidebarOverlay) {
+    toggleBtn.addEventListener("click", toggleSidebar);
+    sidebarOverlay.addEventListener("click", toggleSidebar);
+}
 
-document.querySelectorAll(".sidebar-menu a").forEach(item => {
+document.querySelectorAll(".sidebar-manu a, .logout-sidebar-btn a").forEach((item) => {
     item.addEventListener("click", () => {
         if (window.innerWidth <= 768) {
             toggleSidebar();
@@ -413,22 +416,28 @@ document.querySelectorAll(".sidebar-menu a").forEach(item => {
 });
 
 window.addEventListener("resize", () => {
-    if (window.innerWidth > 768 && sidebar.classList.contains("open")) {
-        sidebar.classList.remove("open");
-        sidebarOverlay.classList.remove("active");
-        toggleBtn.querySelector("i").className = 'fas fa-bars';
+    if (window.innerWidth > 768) {
+        sidebar?.classList.remove("open");
+        sidebarOverlay?.classList.remove("active");
+        const icon = toggleBtn?.querySelector("i");
+        if (icon) {
+            icon.className = "fa-solid fa-bars";
+        }
     }
 });
 
 const passwordField = document.getElementById("password");
 const eyeIcon = document.getElementById("eyeIcon");
 
-alert("Hello")
-
 eyeIcon.addEventListener("click", function () {
+    alert("hello");
     if (passwordField.type === "password") {
         passwordField.type = "text";
+        eyeIcon.classList.remove("fa-eye");
+        eyeIcon.classList.add("fa-eye-slash");
     } else {
         passwordField.type = "password";
+        eyeIcon.classList.remove("fa-eye-slash");
+        eyeIcon.classList.add("fa-eye");
     }
 });
