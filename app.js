@@ -648,3 +648,16 @@ app.delete("/api/delete/goal", async (req, res) => {
 app.listen(port, () => {
     console.log(`Express Server is Listening on ${port}`);
 });
+
+// TODO 1 : fix income update error
+//Data fom income form is not instantly updating on status bas unless i login again.
+
+// TODO 2 : update balance according to transaction and spend money
+//Currently Balance is not showing
+
+//TODO 3 : apply view password functionality to the all password fields
+
+
+
+
+//TODO 4 : Show graph analysis of monthly and yearly transaction
