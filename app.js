@@ -585,9 +585,10 @@ app.post("/add-saving", async (req, res) => {
 app.post("/api/update/income", async (req, res) => {
     const {income, expense} = req.body;
 
-    const result = await db.query("UPDATE users SET income = $1, expenses = $2 WHERE id = $3", [Number(income), Number(expense), req.user.id]);
+    const result = await db.query("UPDATE users SET income = $1, expenses = $2 WHERE id = $3 RETURNING *", [Number(income), Number(expense), req.user.id]);
 
-    req.flash("success", "Income and Expenses are updated successfully.");
+    req.user.income = Number(income);
+    req.user.expenses = Number(expense);
     res.status(200).json({message: "Update successfully.",  deleted: result.rows[0]});
     console.log(`Income : ${income}, Expense : ${expense}`);
 })

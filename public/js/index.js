@@ -383,6 +383,7 @@ incomeForm?.addEventListener("submit", async function (event) {
             closeIncomeModel();
             incomeForm.reset();
             window.location.reload();
+            return;
         }
     } catch (err) {
         console.log(err)
