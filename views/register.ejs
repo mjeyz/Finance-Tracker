@@ -8,8 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="js/index.js"></script>
-
 </head>
 <body>
 <div class="form-card">
@@ -43,7 +41,7 @@
         <div class="form-group">
             <label for="name">Full Name</label>
             <div class="input-wrapper">
-            <i class="fa-solid fa-user icon"></i>
+                <i class="fa-solid fa-user icon"></i>
                 <input type="text" id="name" name="name" placeholder="Mudasir Abbas">
             </div>
         </div>
@@ -58,17 +56,17 @@
         <div class="form-group">
             <label for="newPassword">Password</label>
             <div class="input-wrapper">
-            <i class="fa-solid fa-unlock icon"></i>
-            <input type="password" id="password" name="password" placeholder="Min. 8 characters">
-            <i class="fa-solid fa-eye eye-icon" id="eyeIcon"></i>
+                <i class="fa-solid fa-lock icon"></i>
+                <input type="password" id="newPassword" name="password" placeholder="Min. 8 characters" required minlength="8">
+                <i class="fa-solid fa-eye eye-icon" id="passwordEyeIcon" aria-label="Toggle password visibility"></i>
             </div>
         </div>
         <div class="form-group">
             <label for="confirmPassword">Confirm Password</label>
             <div class="input-wrapper">
-                <i class="fa-solid fa-unlock icon"></i>
-                <input type="password" id="password" name="confirm-password" placeholder="Re-enter Password">
-                <i class="fa-solid fa-eye eye-icon" id="eyeIcon"></i>
+                <i class="fa-solid fa-lock icon"></i>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter Password" required minlength="8">
+                <i class="fa-solid fa-eye eye-icon" id="confirmPasswordEyeIcon" aria-label="Toggle confirm password visibility"></i>
             </div>
         </div>
         <div class="options-row">
@@ -95,23 +93,26 @@
 </div>
 
 <script>
-const newPassword = document.getElementById("newPassword");
-const confirmPassword = document.getElementById("confirmPassword");
+    const newPassword = document.getElementById("newPassword");
+    const confirmPassword = document.getElementById("confirmPassword");
 
-function checkPasswords() {
-    if (newPassword.value !== confirmPassword.value) {
-        confirmPassword.setCustomValidity("Password does not match");
-    } else {
-        confirmPassword.setCustomValidity("");
+    function checkPasswords() {
+        if (!newPassword || !confirmPassword) {
+            return;
+        }
+
+        if (newPassword.value && confirmPassword.value && newPassword.value !== confirmPassword.value) {
+            confirmPassword.setCustomValidity("Password does not match");
+        } else {
+            confirmPassword.setCustomValidity("");
+        }
     }
 
-    newPassword.addEventListener("input", checkPasswords);
-    confirmPassword.addEventListener("input", checkPasswords);
-}
-
-checkPasswords();
+    newPassword?.addEventListener("input", checkPasswords);
+    confirmPassword?.addEventListener("input", checkPasswords);
+    checkPasswords();
 </script>
 
-<script src="js/index.js"></script>
+<script src="/js/index.js"></script>
 </body>
 </html>
