@@ -16,9 +16,9 @@ import rateLimit from "express-rate-limit";
 
 
 const app = express();
-const port = process.env.PORT || 3000;
 const saltRound = 10;
 env.config();
+const port = process.env.PORT || 3000;
 
 app.use(
     session({
@@ -43,12 +43,15 @@ app.use((req, res, next) => {
 
 const db = new pg.Client({
     user: process.env.POSTGRES_USER,
-    port: process.env.POSTGRES_PORT,
+    port: Number(process.env.POSTGRES_PORT || 5432),
     host: process.env.POSTGRES_HOST,
     database: process.env.POSTGRES_DATABASE,
     password: process.env.POSTGRES_PASSWORD
 });
-db.connect();
+
+db.on("error", (err) => {
+    console.error("PostgreSQL client error:", err.message);
+});
 
 
 async function ensureOtpSchema() {
@@ -60,8 +63,36 @@ async function ensureOtpSchema() {
             ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT FALSE
         `);
 
-        await db.query(`ALTER TABLE users ALTER COLUMN otp TYPE TEXT USING otp::text`);
-        await db.query(`ALTER TABLE users ALTER COLUMN otp_expiry TYPE TIMESTAMP USING otp_expiry::timestamp`);
+        const schemaResult = await db.query(`
+            SELECT column_name, data_type
+            FROM information_schema.columns
+            WHERE table_schema = 'public'
+              AND table_name = 'users'
+              AND column_name IN ('otp', 'otp_expiry')
+        `);
+
+        const columnTypes = Object.fromEntries(
+            schemaResult.rows.map((row) => [row.column_name, row.data_type])
+        );
+
+        if (columnTypes.otp && columnTypes.otp !== "text") {
+            await db.query(`ALTER TABLE users ALTER COLUMN otp TYPE TEXT USING otp::text`);
+        }
+
+        if (columnTypes.otp_expiry && columnTypes.otp_expiry !== "timestamp without time zone") {
+            if (columnTypes.otp_expiry === "time without time zone") {
+                await db.query(`
+                    ALTER TABLE users
+                    ALTER COLUMN otp_expiry TYPE TIMESTAMP
+                    USING CASE
+                        WHEN otp_expiry IS NULL THEN NULL
+                        ELSE CURRENT_DATE + otp_expiry
+                    END
+                `);
+            } else {
+                await db.query(`ALTER TABLE users ALTER COLUMN otp_expiry TYPE TIMESTAMP USING otp_expiry::timestamp`);
+            }
+        }
     } catch (err) {
         console.log("OTP schema initialization error:", err);
     }
@@ -648,9 +679,26 @@ app.delete("/api/delete/goal", async (req, res) => {
 })
 
 
-app.listen(port, () => {
-    console.log(`Express Server is Listening on ${port}`);
-});
+async function startServer() {
+    try {
+        await db.connect();
+        console.log("Connected to PostgreSQL");
+
+        await ensureOtpSchema();
+
+        app.listen(port, () => {
+            console.log(`Express Server is Listening on ${port}`);
+        });
+    } catch (err) {
+        console.error("Failed to connect to PostgreSQL.");
+        console.error("Check that PostgreSQL is running and your .env DB settings are correct.");
+        console.error("Expected host/port:", `${process.env.POSTGRES_HOST || "localhost"}:${process.env.POSTGRES_PORT || "5432"}`);
+        console.error("Connection error:", err.message);
+        process.exit(1);
+    }
+}
+
+startServer();
 
 // TODO 2 : update balance according to transaction and spend money
 //Currently Balance is not showing
