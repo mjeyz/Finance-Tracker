@@ -15,7 +15,7 @@ import crypto from "crypto";
 import rateLimit from "express-rate-limit";
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const saltRound = 10;
 env.config();
 
@@ -649,9 +649,6 @@ app.delete("/api/delete/goal", async (req, res) => {
 app.listen(port, () => {
     console.log(`Express Server is Listening on ${port}`);
 });
-
-// TODO 1 : fix income update error
-//Data fom income form is not instantly updating on status bas unless i login again.
 
 // TODO 2 : update balance according to transaction and spend money
 //Currently Balance is not showing

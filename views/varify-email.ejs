@@ -49,7 +49,10 @@
         <div class="varify-section email-section active" id="emailSection">
             <div class="form-group">
                 <label for="email" style="color: #5c636a">Enter your Email</label>
-                <input type="email" id="email" placeholder="example@gmail.com" name="email" required>
+                <div class="input-wrapper">
+                 <i class="fa-solid fa-envelope icon"></i>
+                <input type="email" id="email" placeholder="example@gmail.com" name="email" required style="padding-left: 2.5rem">
+                    </div>
             </div>
             <button type="submit" class="submit-btn" id="sendCodeBtn">Send Code</button>
 
@@ -58,7 +61,9 @@
         <div class="varify-section code-section" id="codeSection">
             <div class="form-group">
                 <label for="varifyEmail" style="color: #5c636a">Enter your code</label>
+                <div class="input-wrapper">
                 <input type="text" id="varifyEmail" placeholder="e.g. 123456" name="code" inputmode="numeric" autocomplete="one-time-code">
+                    </div>
             </div>
             <button type="submit" class="submit-btn" style="margin-bottom: 1rem">Submit Code</button>
 

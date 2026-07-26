@@ -18,5 +18,8 @@
     "passport-local": "^1.0.0",
     "pg": "^8.22.0"
   },
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "start": "node .bin/www"
+  }
 }
