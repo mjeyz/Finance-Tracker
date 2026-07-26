@@ -17,8 +17,29 @@ import rateLimit from "express-rate-limit";
 
 const app = express();
 const saltRound = 10;
-env.config();
+const envResult = env.config();
 const port = process.env.PORT || 3000;
+
+if (envResult.error) {
+    console.error("Unable to load .env:", envResult.error.message);
+}
+
+function getMissingEnvVars(keys) {
+    return keys.filter((key) => !process.env[key] || process.env[key].trim() === "");
+}
+
+function printDbConnectionErrorDetails(err) {
+    console.error("Connection error:", err?.message || "Unknown error");
+
+    if (Array.isArray(err?.errors) && err.errors.length > 0) {
+        console.error("Underlying connection attempts:");
+        for (const innerErr of err.errors) {
+            console.error(
+                `- ${innerErr.code || "UNKNOWN"} ${innerErr.address || "unknown-host"}:${innerErr.port || "?"} (${innerErr.message || "no message"})`
+            );
+        }
+    }
+}
 
 app.use(
     session({
@@ -681,6 +702,20 @@ app.delete("/api/delete/goal", async (req, res) => {
 
 async function startServer() {
     try {
+        const requiredDbEnv = [
+            "POSTGRES_USER",
+            "POSTGRES_HOST",
+            "POSTGRES_PORT",
+            "POSTGRES_DATABASE",
+            "POSTGRES_PASSWORD"
+        ];
+        const missingDbEnv = getMissingEnvVars(requiredDbEnv);
+
+        if (missingDbEnv.length > 0) {
+            console.error("Missing required DB environment variables:", missingDbEnv.join(", "));
+            process.exit(1);
+        }
+
         await db.connect();
         console.log("Connected to PostgreSQL");
 
@@ -693,7 +728,7 @@ async function startServer() {
         console.error("Failed to connect to PostgreSQL.");
         console.error("Check that PostgreSQL is running and your .env DB settings are correct.");
         console.error("Expected host/port:", `${process.env.POSTGRES_HOST || "localhost"}:${process.env.POSTGRES_PORT || "5432"}`);
-        console.error("Connection error:", err.message);
+        printDbConnectionErrorDetails(err);
         process.exit(1);
     }
 }
