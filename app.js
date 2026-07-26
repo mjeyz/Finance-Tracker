@@ -13,7 +13,6 @@ import nodemailer from "nodemailer";
 import flash from "connect-flash";
 import crypto from "crypto";
 import rateLimit from "express-rate-limit";
-import pool from "pg";
 
 
 const app = express();
@@ -51,12 +50,6 @@ const db = new pg.Client({
 });
 db.connect();
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false 
-  }
-});
 
 async function ensureOtpSchema() {
     try {
