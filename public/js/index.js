@@ -454,3 +454,11 @@ document.querySelectorAll(".eye-icon").forEach((eyeIcon) => {
         }
     });
 });
+
+
+// Graphs logic
+
+
+const pieChart = document.getElementById("pieChart");
+
+const myChart = new Chart()

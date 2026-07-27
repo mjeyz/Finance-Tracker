@@ -559,16 +559,17 @@ app.post("/add-transaction", async (req, res) => {
             return res.status(401).json({success: false, error: "Please log in again."});
         }
 
-        const {amount, type, date, description} = req.body;
+        const {amount, transactionCategory, type, date, method, description} = req.body;
 
+        console.log(`Category :  ${transactionCategory}`);
         if (!amount || !type) {
             req.flash("error", "Amount and type are required.");
             return res.status(400).json({success: false, error: "Amount and type are required."});
         }
 
         await db.query(
-            "INSERT INTO transaction (user_id, amount, type, date, description) VALUES ($1, $2, $3, $4, $5)",
-            [req.user.id, Number(amount), type, date || null, description || null]
+            "INSERT INTO transaction (user_id, amount, category, type, date, method, description) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+            [req.user.id, amount, transactionCategory, type, date || null, method || null, description || null]
         );
 
         req.flash("success", "Transaction added successfully.");

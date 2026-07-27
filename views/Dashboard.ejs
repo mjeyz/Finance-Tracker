@@ -19,6 +19,9 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
 </head>
 <body>
 <div class="flash-stack page-flash-stack">
@@ -43,9 +46,9 @@
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <aside class="sidebar" id="sidebar">
-    
+
     <a class="sidebar-brand" href="/"> <span style="color: #4f46e5;">Fin</span>Track</a>
-    
+
     <nav class="sidebar-manu">
         <a class="nav-link">
             <svg
@@ -174,8 +177,8 @@
             <div class="update-income-header">
                 <div class="title"><i class="fa-solid fa-plus"></i> Add or update income</div>
                 <button class="close-btn" id="incomeCloseBtn" aria-label="Close">
-                <i class="fas fa-times"></i>
-            </button>
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
 
 
@@ -193,9 +196,9 @@
                     </div>
 
                     <div class="form-action">
-                    <button class="btn btn-secondary" id="incomeCancelModel" type="button">Cancel</button>
-                    <button class="btn btn-primary" id="incomeSubmitBtn" type="submit">Submit</button>
-                </div>
+                        <button class="btn btn-secondary" id="incomeCancelModel" type="button">Cancel</button>
+                        <button class="btn btn-primary" id="incomeSubmitBtn" type="submit">Submit</button>
+                    </div>
                 </form>
 
 
@@ -253,7 +256,7 @@
                                 </svg>
                             </div>
                             <div style="flex: 1; min-width: 0;">
-                                <p class="transaction-description"><%= tx.description %></p>
+                                <p class="transaction-description"><%= tx.category %></p>
                                 <span class="transaction-date"><%= tx.date %></span>
                             </div>
 
@@ -327,7 +330,7 @@
                 <% } %>
             </div>
         </div>
-        <button class="add-transaction" id="addTransaction">+ Add Transaction</button>
+        <button class="add-transaction" id="addTransaction"><i class="fa-solid fa-plus"></i> Add Transaction</button>
 
 
         <div class="overlay" id="overlay">
@@ -349,17 +352,23 @@
                           data-submit-route="/add-transaction">
                         <div class="form-group">
                             <label for="amount">Amount <span class="required">*</span></label>
-                            <input type="text" id="amount" placeholder="e.g. 2000" name="amount" required>
+                            <input type="number" id="amount" placeholder="e.g. 2000" name="amount" required>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="category">Category</label>
-
-                                <select id="category" name="category" required>
-                                    <option value="income">Income</option>
-                                    <option value="expense">Expense</option>
-                                    <option value="other">Other</option>
+                                <select id="category" name="transactionCategory" required>
+                                    <option value="" disabled selected>Select category</option>
+                                    <option value="Food">Food and dining</option>
+                                    <option value="Transportation">Transportation</option>
+                                    <option value="Rent">House Rent</option>
+                                    <option value="entertainment">Entertainment</option>
+                                    <option value="Shopping">Shopping</option>
+                                    <option value="Healthcare">Healthcare</option>
+                                    <option value="Personal Care">Personal care</option>
+                                    <option value="Saving">Saving and investment</option>
+                                    <option value="Other">Other</option>
                                 </select>
 
                             </div>
@@ -373,10 +382,25 @@
                                 </select>
                             </div>
                         </div>
-
+                        <div class="form-row">
                         <div class="form-group">
                             <label for="date">Transaction Date</label>
                             <input id="date" type="date" placeholder="Date" name="date"/>
+                        </div>
+
+                            <div class="form-group">
+                                <label for="paymentMethod">Payment method</label>
+                                <select id="paymentMethod" name="method">
+                                    <option value="Cash">Cash</option>
+                                    <option value="Credit Card">Credit Card</option>
+                                    <option value="EasyPaisa">EasyPaisa</option>
+                                    <option value="JazzCash">Jazz Cash</option>
+                                    <option value="Bank Transfer">Bank Transfer</option>
+                                    <option value="PayPal">Paypal</option>
+                                    <option value="Cryptocurrency">Cryptocurrency</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="transactionDescription">Description</label>
@@ -458,8 +482,16 @@
             </div>
         </div>
     </div>
+
+    <div class="chart">
+        <canvas id="pieChart" style="width:100%;max-width:700px"></canvas>
+    </div>
 </main>
 
 <script src="/js/index.js"></script>
+
+<script>
+
+</script>
 </body>
 </html>

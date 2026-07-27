@@ -3,710 +3,711 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hi Mudasir Abbas</title>
-    <!-- Font Awesome for icons (optional but nice) -->
+    <title>Transaction Form</title>
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        /* ----- RESET & BASE ----- */
+        /* ----- Reset & Base ----- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: #f4f7fc;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(145deg, #f6f9fc 0%, #eef2f7 100%);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* ----- SIDEBAR (desktop) ----- */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 240px;
-            height: 100%;
-            background: #1a2634;
-            color: #fff;
-            padding: 1.5rem 1rem;
-            transition: transform 0.3s ease;
-            z-index: 1000;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .sidebar .brand {
-            font-size: 1.4rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .sidebar .brand i {
-            color: #4fc3f7;
-        }
-
-        .sidebar nav {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .sidebar nav a {
-            color: #b0bec5;
-            text-decoration: none;
-            padding: 0.7rem 1rem;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .sidebar nav a i {
-            width: 20px;
-            text-align: center;
-            font-size: 1.1rem;
-        }
-
-        .sidebar nav a:hover,
-        .sidebar nav a.active {
-            background: #2c3e50;
-            color: #fff;
-        }
-
-        .sidebar nav a.active {
-            background: #2c3e50;
-            border-left: 4px solid #4fc3f7;
-        }
-
-        /* ----- SIDEBAR OVERLAY (mobile) ----- */
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .sidebar-overlay.show {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        /* ----- TOP NAV / HEADER ----- */
-        .top-nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: #ffffff;
-            padding: 0.8rem 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            border-bottom: 1px solid #e9edf2;
-            margin-left: 240px;
-            /* same as sidebar width */
-            transition: margin-left 0.3s ease;
-        }
-
-        .top-nav .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        /* Hamburger button (visible on mobile) */
-        .hamburger {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: #1a2634;
-            cursor: pointer;
-            padding: 0.2rem 0.4rem;
-            border-radius: 6px;
-            transition: background 0.2s;
-        }
-
-        .hamburger:hover {
-            background: #f0f2f5;
-        }
-
-        .top-nav .page-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #1a2634;
-        }
-
-        .top-nav .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-        }
-
-        .top-nav .nav-right .avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #4fc3f7;
-            color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ----- Card Container ----- */
+        .form-card {
+            max-width: 720px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.12), 0 8px 24px rgba(0, 0, 0, 0.04);
+            padding: 2.5rem 2.8rem;
+            transition: all 0.2s ease;
+        }
+
+        /* ----- Header ----- */
+        .form-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .form-header h1 {
+            font-size: 1.8rem;
             font-weight: 600;
+            color: #0b1a2e;
+            letter-spacing: -0.02em;
+        }
+
+        .form-header h1 i {
+            color: #2a7de1;
+            margin-right: 10px;
+        }
+
+        .badge {
+            background: #eef5ff;
+            color: #1a5bbf;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.3rem 0.9rem;
+            border-radius: 100px;
+            letter-spacing: 0.3px;
+        }
+
+        /* ----- Form Elements ----- */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1e2f44;
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.2px;
+        }
+
+        label .required {
+            color: #d14545;
+            margin-left: 2px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            font-family: inherit;
+            background: #f8fafd;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            transition: 0.2s ease;
+            color: #0b1a2e;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #2a7de1;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(42, 125, 225, 0.12);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #9aabbb;
+            font-weight: 400;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* ----- Type Toggle (Income / Expense) ----- */
+        .type-toggle {
+            display: flex;
+            gap: 0.75rem;
+            background: #f1f5f9;
+            border-radius: 14px;
+            padding: 0.4rem;
+            border: 1.5px solid #e2e8f0;
+        }
+
+        .type-option {
+            flex: 1;
+            text-align: center;
+            padding: 0.6rem 0.2rem;
+            border-radius: 11px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s ease;
+            color: #4a5c72;
+            background: transparent;
+            border: none;
+            font-family: inherit;
+            letter-spacing: 0.2px;
+        }
+
+        .type-option i {
+            margin-right: 6px;
+        }
+
+        .type-option.active-income {
+            background: #ffffff;
+            color: #0b7e3d;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(11, 126, 61, 0.15);
+        }
+
+        .type-option.active-expense {
+            background: #ffffff;
+            color: #b13a3a;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(177, 58, 58, 0.15);
+        }
+
+        .type-option:hover:not(.active-income):not(.active-expense) {
+            background: #e9eef5;
+        }
+
+        /* ----- Amount input with currency symbol ----- */
+        .amount-wrapper {
+            position: relative;
+        }
+
+        .amount-wrapper .currency-symbol {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 600;
+            color: #4a5c72;
+            font-size: 1rem;
+        }
+
+        .amount-wrapper input {
+            padding-left: 2.2rem;
+        }
+
+        /* ----- Submit Button ----- */
+        .btn-submit {
+            width: 100%;
+            padding: 0.9rem 1.5rem;
+            background: #0b1a2e;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 0.5rem;
+            letter-spacing: 0.3px;
+            font-family: inherit;
+        }
+
+        .btn-submit i {
+            font-size: 1.1rem;
+        }
+
+        .btn-submit:hover {
+            background: #142b44;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(11, 26, 46, 0.20);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* ----- Transaction List (demo) ----- */
+        .transaction-list {
+            margin-top: 2.5rem;
+            border-top: 1.5px solid #eef2f7;
+            padding-top: 1.8rem;
+        }
+
+        .transaction-list .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .transaction-list .list-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e2f44;
+        }
+
+        .transaction-list .list-header span {
+            font-size: 0.8rem;
+            color: #6b7f94;
+            background: #f1f5f9;
+            padding: 0.2rem 0.8rem;
+            border-radius: 100px;
+        }
+
+        .tx-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fafcff;
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            border: 1px solid #eef2f7;
+            margin-bottom: 0.6rem;
+            transition: 0.15s ease;
+        }
+
+        .tx-item:hover {
+            background: #f5f9ff;
+            border-color: #dce5f0;
+        }
+
+        .tx-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tx-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            background: #eef5ff;
+            color: #1a5bbf;
+        }
+
+        .tx-icon.income {
+            background: #e3f3e9;
+            color: #0b7e3d;
+        }
+
+        .tx-icon.expense {
+            background: #fce8e8;
+            color: #b13a3a;
+        }
+
+        .tx-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tx-info .tx-category {
+            font-weight: 500;
+            color: #0b1a2e;
             font-size: 0.9rem;
         }
 
-        /* ----- MAIN CONTENT (shifted right for sidebar) ----- */
-        .main-content {
-            margin-left: 240px;
-            padding: 2rem 2rem 3rem;
-            transition: margin-left 0.3s ease;
-            flex: 1;
+        .tx-info .tx-meta {
+            font-size: 0.75rem;
+            color: #6b7f94;
+            display: flex;
+            gap: 10px;
+            margin-top: 2px;
         }
 
-        /* ----- DASHBOARD CARDS ----- */
-        .dashboard-heading {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #1a2634;
-            margin-bottom: 0.2rem;
-        }
-
-        .dashboard-subtitle {
-            color: #6b7a8a;
-            margin-bottom: 2rem;
+        .tx-amount {
+            font-weight: 600;
             font-size: 0.95rem;
         }
 
-        .status-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.2rem;
-            margin-bottom: 2.5rem;
+        .tx-amount.income {
+            color: #0b7e3d;
         }
 
-        .status-card {
-            background: #fff;
-            padding: 1.5rem 1.2rem;
-            border-radius: 16px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-            border: 1px solid #eef2f7;
-            transition: transform 0.2s;
+        .tx-amount.expense {
+            color: #b13a3a;
         }
 
-        .status-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .status-card .label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #8a9aa8;
-            font-weight: 600;
-        }
-
-        .status-card .value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #1a2634;
-            margin-top: 0.3rem;
-        }
-
-        .status-card .value.positive {
-            color: #2e7d32;
-        }
-        .status-card .value.negative {
-            color: #c62828;
-        }
-
-        .status-card.total-income .value {
-            color: #0d47a1;
-        }
-        .status-card.current-balance .value {
-            color: #1b5e20;
-        }
-        .status-card.expenses .value {
-            color: #b71c1c;
-        }
-
-        /* ----- TRANSACTION LIST ----- */
-        .transaction-section {
-            background: #fff;
-            border-radius: 16px;
-            padding: 1.5rem;
-            border: 1px solid #eef2f7;
-            margin-top: 1rem;
-        }
-
-        .transaction-section h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #1a2634;
-            margin-bottom: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .transaction-section h3 .badge {
-            font-size: 0.7rem;
-            background: #e9edf2;
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            color: #4a5a6a;
-            font-weight: 500;
-        }
-
-        .transaction-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid #f0f3f8;
-        }
-
-        .transaction-item:last-child {
-            border-bottom: none;
-        }
-
-        .transaction-item .tx-left {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .transaction-item .tx-left .tx-name {
-            font-weight: 500;
-            color: #1a2634;
-        }
-
-        .transaction-item .tx-left .tx-date {
-            font-size: 0.75rem;
-            color: #8a9aa8;
-        }
-
-        .transaction-item .tx-amount {
-            font-weight: 600;
-            color: #c62828;
-        }
-
-        .transaction-item .tx-amount.income {
-            color: #2e7d32;
-        }
-
-        /* ----- BUTTONS ----- */
-        .button-group {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin: 1.5rem 0 0.5rem;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.4rem;
-            border-radius: 30px;
-            font-weight: 600;
+        .empty-state {
+            text-align: center;
+            padding: 1.8rem 0.5rem;
+            color: #8a9eb0;
             font-size: 0.9rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: #e9edf2;
-            color: #1a2634;
-            text-decoration: none;
         }
 
-        .btn-primary {
-            background: #1a2634;
-            color: #fff;
+        .empty-state i {
+            font-size: 2.2rem;
+            color: #d0dce8;
+            margin-bottom: 0.5rem;
+            display: block;
         }
 
-        .btn-primary:hover {
-            background: #2c3e50;
-            transform: translateY(-1px);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1.5px solid #d0d7e0;
-        }
-
-        .btn-outline:hover {
-            background: #f0f3f8;
-            border-color: #b0bec5;
-        }
-
-        /* ============================================================
-                   RESPONSIVE BREAKPOINTS
-                   ============================================================ */
-
-        /* --- Tablets & small laptops --- */
-        @media (max-width: 992px) {
-            .sidebar {
-                transform: translateX(-100%);
-                width: 260px;
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .sidebar-overlay.show {
-                opacity: 1;
-                pointer-events: all;
-            }
-
-            .top-nav {
-                margin-left: 0;
-            }
-
-            .main-content {
-                margin-left: 0;
-                padding: 1.5rem;
-            }
-
-            .hamburger {
-                display: block;
-            }
-        }
-
-        /* --- Mobile phones --- */
+        /* ----- Responsive ----- */
         @media (max-width: 600px) {
-            .top-nav {
-                padding: 0.6rem 1rem;
+            .form-card {
+                padding: 1.8rem 1.2rem;
             }
 
-            .top-nav .page-title {
-                font-size: 0.95rem;
-            }
-
-            .top-nav .nav-right .avatar {
-                width: 30px;
-                height: 30px;
-                font-size: 0.75rem;
-            }
-
-            .main-content {
-                padding: 1rem 1rem 2rem;
-            }
-
-            .dashboard-heading {
-                font-size: 1.4rem;
-            }
-
-            .status-cards {
-                grid-template-columns: 1fr 1fr;
+            .form-row {
+                grid-template-columns: 1fr;
                 gap: 0.8rem;
             }
 
-            .status-card {
-                padding: 1rem 0.8rem;
-            }
-
-            .status-card .value {
+            .form-header h1 {
                 font-size: 1.4rem;
             }
 
-            .transaction-section {
-                padding: 1rem;
-            }
-
-            .transaction-item {
-                flex-wrap: wrap;
-                gap: 0.3rem;
-            }
-
-            .transaction-item .tx-left .tx-name {
-                font-size: 0.9rem;
-            }
-
-            .button-group .btn {
+            .type-option {
                 font-size: 0.8rem;
-                padding: 0.5rem 1rem;
+                padding: 0.5rem 0.2rem;
             }
 
-            /* smaller sidebar on mobile */
-            .sidebar {
-                width: 240px;
+            .tx-item {
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+            .tx-left {
+                width: 100%;
+            }
+
+            .tx-amount {
+                margin-left: auto;
             }
         }
 
-        /* --- very small screens --- */
         @media (max-width: 400px) {
-            .status-cards {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.5rem;
+            .form-card {
+                padding: 1.2rem 0.8rem;
             }
 
-            .status-card .value {
-                font-size: 1.2rem;
+            .type-toggle {
+                flex-direction: column;
+                gap: 0.4rem;
             }
 
-            .status-card .label {
-                font-size: 0.65rem;
+            .btn-submit {
+                font-size: 0.9rem;
+                padding: 0.8rem;
             }
-        }
-
-        /* ============================================================
-                   UTILITY & DEMO STYLES (matches your screenshot)
-                   ============================================================ */
-        .flash-stack {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .page-flash-stack {
-            flex: 1;
-        }
-
-        .update-income-container {
-            display: none;
-        }
-        .update-income-overlay {
-            display: none;
-        }
-        .status {
-            display: none;
-        }
-
-        /* demo transaction items — just for preview */
-        .tx-amount.income {
-            color: #2e7d32;
-        }
-        .tx-amount.expense {
-            color: #c62828;
-        }
-
-        /* small fix for the "Add Transaction" button in your screenshot */
-        .btn-add {
-            background: #1a2634;
-            color: #fff;
-        }
-        .btn-add:hover {
-            background: #2c3e50;
-        }
-        .btn-add i {
-            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="flash-stack page-flash-stack">
+    <div class="form-card">
 
-        <!-- ===== SIDEBAR OVERLAY (mobile) ===== -->
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <!-- Header -->
+        <div class="form-header">
+            <h1><i class="fas fa-receipt"></i> New Transaction</h1>
+            <span class="badge"><i class="far fa-calendar-alt"></i> Today</span>
+        </div>
 
-        <!-- ===== SIDEBAR ===== -->
-        <aside class="sidebar" id="sidebar">
-            <div class="brand">
-                <i class="fas fa-wallet"></i>
-                <span>FinDash</span>
-            </div>
-            <nav>
-                <a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
-                <a href="#"><i class="fas fa-chart-line"></i> Analytics</a>
-                <a href="#"><i class="fas fa-exchange-alt"></i> Transactions</a>
-                <a href="#"><i class="fas fa-credit-card"></i> Cards</a>
-                <a href="#"><i class="fas fa-user-cog"></i> Settings</a>
-            </nav>
-            <div style="margin-top: auto; border-top: 1px solid #2c3e50; padding-top: 1rem;">
-                <a href="#" style="color:#b0bec5; text-decoration:none; display:flex; align-items:center; gap:0.8rem; padding:0.5rem 1rem;">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-            </div>
-        </aside>
+        <!-- Form -->
+        <form id="transactionForm" autocomplete="off">
 
-        <!-- ===== TOP NAV ===== -->
-        <header class="header top-nav">
-            <div class="nav-left">
-                <!-- Hamburger (visible on mobile) -->
-                <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <span class="page-title">Dashboard</span>
-            </div>
-            <div class="nav-right">
-                <i class="fas fa-bell" style="color:#6b7a8a; font-size:1.2rem; cursor:pointer;"></i>
-                <div class="avatar">MA</div>
-            </div>
-        </header>
-
-        <!-- ===== MAIN CONTENT ===== -->
-        <main class="main-content">
-
-            <!-- HEADING -->
-            <h1 class="dashboard-heading">Hi Mudasir Abbas</h1>
-            <p class="dashboard-subtitle">Your financial overview at a glance</p>
-
-            <!-- STATUS CARDS -->
-            <div class="status-cards">
-                <div class="status-card total-income">
-                    <div class="label">Total Income</div>
-                    <div class="value">0 PKR</div>
+            <!-- Type Toggle -->
+            <div class="form-group">
+                <label>Transaction type <span class="required">*</span></label>
+                <div class="type-toggle" id="typeToggle">
+                    <button type="button" class="type-option active-income" data-type="income">
+                        <i class="fas fa-arrow-up"></i> Income
+                    </button>
+                    <button type="button" class="type-option" data-type="expense">
+                        <i class="fas fa-arrow-down"></i> Expense
+                    </button>
                 </div>
-                <div class="status-card current-balance">
-                    <div class="label">Current Balance</div>
-                    <div class="value">PKR 0</div>
-                </div>
-                <div class="status-card expenses">
-                    <div class="label">Expenses</div>
-                    <div class="value">0 PKR</div>
-                </div>
+                <input type="hidden" name="type" id="transactionType" value="income" />
             </div>
 
-            <!-- BUTTONS -->
-            <div class="button-group">
-                <button class="btn btn-primary btn-add">
-                    <i class="fas fa-plus"></i> Add Transaction
-                </button>
-                <button class="btn btn-outline">
-                    <i class="fas fa-filter"></i> Filter
-                </button>
-            </div>
-
-            <!-- TRANSACTION HISTORY -->
-            <div class="transaction-section">
-                <h3>
-                    Transaction History
-                    <span class="badge">Last 7 days</span>
-                </h3>
-
-                <div class="transaction-item">
-                    <div class="tx-left">
-                        <span class="tx-name">Groceries &amp; Supermarket</span>
-                        <span class="tx-date">Fri May 15 2026 00:00:00 GMT+0500</span>
+            <!-- Row: Amount + Category -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="amount">Amount <span class="required">*</span></label>
+                    <div class="amount-wrapper">
+                        <span class="currency-symbol">$</span>
+                        <input type="number" id="amount" name="amount" placeholder="0.00" step="0.01" min="0.01" required />
                     </div>
-                    <span class="tx-amount expense">- PKR 0</span>
                 </div>
-
-                <div class="transaction-item">
-                    <div class="tx-left">
-                        <span class="tx-name">Mu hostel rent</span>
-                        <span class="tx-date">Wed Jul 15 2026 00:00:00 GMT+0500</span>
-                    </div>
-                    <span class="tx-amount expense">- PKR 0</span>
-                </div>
-
-                <div class="transaction-item">
-                    <div class="tx-left">
-                        <span class="tx-name">Mu hostel rent</span>
-                        <span class="tx-date">Wed Jul 15 2026 00:00:00 PM+0500</span>
-                    </div>
-                    <span class="tx-amount expense">- PKR 0</span>
-                </div>
-
-                <div class="transaction-item">
-                    <div class="tx-left">
-                        <span class="tx-name">Mu hostel rent</span>
-                        <span class="tx-date">Wed Jul 15 2016 00:00:00 GMT+0500</span>
-                    </div>
-                    <span class="tx-amount expense">- PKR 0</span>
-                </div>
-
-                <div class="transaction-item">
-                    <div class="tx-left">
-                        <span class="tx-name">Mu hostel rent</span>
-                        <span class="tx-date">Wed Jul 15 2026 00:00:00 PM+0500</span>
-                    </div>
-                    <span class="tx-amount expense">- PKR 0</span>
+                <div class="form-group">
+                    <label for="category">Category <span class="required">*</span></label>
+                    <select id="category" name="category" required>
+                        <option value="" disabled selected>Select category</option>
+                        <option value="salary">Salary</option>
+                        <option value="freelance">Freelance</option>
+                        <option value="investment">Investment</option>
+                        <option value="food">Food & Dining</option>
+                        <option value="transport">Transport</option>
+                        <option value="shopping">Shopping</option>
+                        <option value="bills">Bills & Utilities</option>
+                        <option value="health">Health</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="other">Other</option>
+                    </select>
                 </div>
             </div>
 
-        </main>
+            <!-- Row: Date + Payment Method -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="date">Date <span class="required">*</span></label>
+                    <input type="date" id="date" name="date" required />
+                </div>
+                <div class="form-group">
+                    <label for="payment">Payment method</label>
+                    <select id="payment" name="payment">
+                        <option value="cash">Cash</option>
+                        <option value="credit_card">Credit Card</option>
+                        <option value="debit_card">Debit Card</option>
+                        <option value="bank_transfer">Bank Transfer</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="crypto">Cryptocurrency</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Note -->
+            <div class="form-group">
+                <label for="note">Note</label>
+                <textarea id="note" name="note" placeholder="Add a note (optional)"></textarea>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-plus-circle"></i> Add Transaction
+            </button>
+        </form>
+
+        <!-- Transaction List (demo preview) -->
+        <div class="transaction-list">
+            <div class="list-header">
+                <h3><i class="fas fa-list-ul" style="margin-right: 8px; color:#2a7de1;"></i>Recent transactions</h3>
+                <span>3 entries</span>
+            </div>
+
+            <div id="transactionList">
+                <!-- Items will be injected by JS -->
+            </div>
+        </div>
+
     </div>
 
-    <!-- ============================================================
-    JAVASCRIPT — handles hamburger toggle + overlay
-    ============================================================ -->
     <script>
         (function() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            const hamburger = document.getElementById('hamburgerBtn');
+            'use strict';
 
-            function openSidebar() {
-                sidebar.classList.add('open');
-                overlay.classList.add('show');
-                // prevent body scroll when sidebar is open
-                document.body.style.overflow = 'hidden';
-            }
+            // ----- DOM refs -----
+            const form = document.getElementById('transactionForm');
+            const typeToggle = document.getElementById('typeToggle');
+            const typeInput = document.getElementById('transactionType');
+            const amountInput = document.getElementById('amount');
+            const categorySelect = document.getElementById('category');
+            const dateInput = document.getElementById('date');
+            const paymentSelect = document.getElementById('payment');
+            const noteInput = document.getElementById('note');
+            const listContainer = document.getElementById('transactionList');
 
-            function closeSidebar() {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('show');
-                document.body.style.overflow = '';
-            }
+            // ----- Set default date to today -----
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.value = today;
 
-            // Toggle on hamburger click
-            hamburger.addEventListener('click', function(e) {
-                e.stopPropagation();
-                if (sidebar.classList.contains('open')) {
-                    closeSidebar();
-                } else {
-                    openSidebar();
-                }
-            });
+            // ----- Type toggle logic -----
+            const typeOptions = typeToggle.querySelectorAll('.type-option');
 
-            // Close when overlay is clicked
-            overlay.addEventListener('click', closeSidebar);
-
-            // Close on Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && sidebar.classList.contains('open')) {
-                    closeSidebar();
-                }
-            });
-
-            // Optional: close sidebar when a nav link is clicked (on mobile)
-            const navLinks = sidebar.querySelectorAll('nav a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    if (window.innerWidth <= 992) {
-                        closeSidebar();
+            function setActiveType(type) {
+                typeOptions.forEach(btn => {
+                    btn.classList.remove('active-income', 'active-expense');
+                    if (btn.dataset.type === type) {
+                        btn.classList.add(type === 'income' ? 'active-income' : 'active-expense');
                     }
+                });
+                typeInput.value = type;
+            }
+
+            typeOptions.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const type = this.dataset.type;
+                    setActiveType(type);
                 });
             });
 
-            // Handle window resize: if going from mobile to desktop, ensure sidebar is visible
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 992) {
-                    // desktop: remove inline styles, ensure sidebar is visible
-                    sidebar.classList.remove('open');
-                    overlay.classList.remove('show');
-                    document.body.style.overflow = '';
-                } else {
-                    // mobile: if sidebar was closed, keep it closed
-                    // (no-op — we want it closed by default on mobile)
+            // ----- Sample data (initial) -----
+            let transactions = [{
+                id: 1,
+                type: 'income',
+                amount: 2450.00,
+                category: 'Salary',
+                date: '2026-07-24',
+                payment: 'Bank Transfer',
+                note: 'Monthly salary'
+            }, {
+                id: 2,
+                type: 'expense',
+                amount: 128.50,
+                category: 'Food & Dining',
+                date: '2026-07-25',
+                payment: 'Credit Card',
+                note: 'Dinner at Stefano\'s'
+            }, {
+                id: 3,
+                type: 'expense',
+                amount: 45.00,
+                category: 'Transport',
+                date: '2026-07-26',
+                payment: 'Debit Card',
+                note: 'Gas station'
+            }];
+
+            let nextId = 4;
+
+            // ----- Render list -----
+            function renderTransactions() {
+                if (transactions.length === 0) {
+                    listContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            No transactions yet — add one above!
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                // show latest first
+                const sorted = [...transactions].reverse();
+                sorted.forEach(tx => {
+                    const isIncome = tx.type === 'income';
+                    const iconClass = isIncome ? 'income' : 'expense';
+                    const icon = isIncome ? 'fa-arrow-up' : 'fa-arrow-down';
+                    const sign = isIncome ? '+' : '-';
+                    const amountClass = isIncome ? 'income' : 'expense';
+
+                    const dateObj = new Date(tx.date + 'T00:00:00');
+                    const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric',
+                        year: 'numeric' });
+
+                    html += `
+                        <div class="tx-item">
+                            <div class="tx-left">
+                                <div class="tx-icon ${iconClass}">
+                                    <i class="fas ${icon}"></i>
+                                </div>
+                                <div class="tx-info">
+                                    <span class="tx-category">${tx.category}</span>
+                                    <span class="tx-meta">
+                                        <span><i class="far fa-calendar-alt"></i> ${dateStr}</span>
+                                        <span><i class="fas fa-credit-card"></i> ${tx.payment || '—'}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="tx-amount ${amountClass}">
+                                ${sign}$${tx.amount.toFixed(2)}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                listContainer.innerHTML = html;
+                // update badge count
+                const badge = document.querySelector('.list-header span');
+                if (badge) badge.textContent = `${transactions.length} entries`;
+            }
+
+            // ----- Add transaction -----
+            function addTransaction(event) {
+                event.preventDefault();
+
+                // Gather data
+                const type = typeInput.value;
+                const amount = parseFloat(amountInput.value);
+                const category = categorySelect.value;
+                const date = dateInput.value;
+                const payment = paymentSelect.value;
+                const note = noteInput.value.trim();
+
+                // Validations
+                if (!amount || amount <= 0) {
+                    alert('Please enter a valid amount greater than 0.');
+                    amountInput.focus();
+                    return;
+                }
+
+                if (!category) {
+                    alert('Please select a category.');
+                    categorySelect.focus();
+                    return;
+                }
+
+                if (!date) {
+                    alert('Please select a date.');
+                    dateInput.focus();
+                    return;
+                }
+
+                // Create transaction object
+                const newTx = {
+                    id: nextId++,
+                    type: type,
+                    amount: amount,
+                    category: category,
+                    date: date,
+                    payment: payment,
+                    note: note || '—'
+                };
+
+                transactions.push(newTx);
+                renderTransactions();
+
+                // Reset form (keep type and date)
+                amountInput.value = '';
+                categorySelect.value = '';
+                paymentSelect.value = 'cash';
+                noteInput.value = '';
+                // keep date as today or whatever was set
+                // keep type as is
+
+                // Re-focus amount for quick entry
+                amountInput.focus();
+
+                // Optional: subtle feedback
+                const submitBtn = form.querySelector('.btn-submit');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Added!';
+                submitBtn.style.background = '#0b7e3d';
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.style.background = '';
+                }, 1200);
+            }
+
+            // ----- Form submit -----
+            form.addEventListener('submit', addTransaction);
+
+            // ----- Init render -----
+            renderTransactions();
+
+            // ----- Set default active type (income) -----
+            setActiveType('income');
+
+            // ----- Keyboard shortcut: press "i" or "e" to toggle type -----
+            document.addEventListener('keydown', function(e) {
+                // only if not inside input/textarea
+                const tag = e.target.tagName.toLowerCase();
+                if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+
+                if (e.key === 'i' || e.key === 'I') {
+                    e.preventDefault();
+                    setActiveType('income');
+                } else if (e.key === 'e' || e.key === 'E') {
+                    e.preventDefault();
+                    setActiveType('expense');
                 }
             });
 
-            // On page load, make sure sidebar is closed on mobile
-            if (window.innerWidth <= 992) {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('show');
-                document.body.style.overflow = '';
-            }
         })();
     </script>
 
