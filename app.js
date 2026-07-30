@@ -736,12 +736,16 @@ async function startServer() {
 
 startServer();
 
-// TODO 2 : update balance according to transaction and spend money
-//Currently Balance is not showing
+app.get("/api/transaction/charts", async (req, res) => {
+    try {
+        const result = await db.query("SELECT category, SUM(amount) AS total_amount FROM transaction WHERE user_id = $1 GROUP BY category ORDER BY total_amount DESC", [req.user.id])
 
-//TODO 3 : apply view password functionality to the all password fields
-
-
-
-
-//TODO 4 : Show graph analysis of monthly and yearly transaction
+        if (result.rowCount === 0) {
+            return res.status(404).json({error: 'Transaction not found or unauthorized'});
+        }
+        res.json(result.rows)
+    } catch (err) {
+        console.error("Database error : ", err.message);
+        res.status(500).send("Server Error.");
+    }
+})
