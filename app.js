@@ -162,7 +162,7 @@ app.get("/", async (req, res) => {
         try {
             const user_id = req.user.id;
 
-            const transactionResult = await db.query("SELECT * FROM transaction WHERE user_id = $1", [user_id]);
+            const transactionResult = await db.query("SELECT * FROM transaction WHERE user_id = $1 ORDER BY id DESC", [user_id]);
             const eventResult = await db.query("SELECT * FROM events WHERE user_id = $1", [user_id]);
             const savingResult = await db.query("SELECT * FROM saving WHERE user_id = $1", [user_id]);
 

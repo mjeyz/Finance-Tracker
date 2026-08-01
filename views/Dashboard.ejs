@@ -247,7 +247,8 @@
             <!--  Transaction List-->
             <div class="list-section transaction-list active" id="transactionList">
                 <% if ( transaction.length > 0 ) { %>
-                    <% for (const tx of transaction) { %>
+                    <% for (let i = 0; i<  Math.min(transaction.length, 4); i++) { %>
+                        <% const tx = transaction[i] %>
                         <div class="transaction-item" data-id="<%= tx.id %>">
                             <div style="width: 42px; height: 42px; background: #E0E7FF; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -483,7 +484,7 @@
         </div>
     </div>
 
-    <div class="chart">
+    <div class="pie-chart">
         <canvas id="pieChart" style="width:100%;max-width:700px;height: 400px"></canvas>
     </div>
 </main>
