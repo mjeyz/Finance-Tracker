@@ -31,7 +31,8 @@
 <!--  Events List-->
 <div class="list-section events-list" id="eventList">
     <% if ( events.length > 0 ) { %>
-        <% events.forEach( ev => { %>
+    <% for (let i=0; i< Math.min(events.length, 4); i++) {%>
+            <% const ev = events[i] %>
             <div class="event-item" data-id="<%= ev.id %>">
                 <div style="flex: 1; min-width: 0; border-left: 5px solid orangered; border-radius: 4px; padding-left: 10px">
                     <p style="margin: 0; font-size: 14px;font-weight: 500; color: #3B3B3B">
@@ -46,7 +47,7 @@
                     <i class="fa-regular fa-trash-can trash-icon"></i>
                 </div>
             </div>
-        <% }) %>
+        <% } %>
     <% } else { %>
         <div class="empty-message">No Events Found</div>
     <% } %>
@@ -55,8 +56,8 @@
 <!--  Saving List-->
 <div class="list-section saving-goals" id="savingList">
     <% if ( saving.length > 0 ) { %>
-        <% saving.forEach( sv => { %>
-
+        <% for (let i=0; i < Math.min(saving.length, 2); i++) {%>
+            <% const sv = saving[i] %>
             <%
                 const percent = (sv.savedamount / sv.targetamount) * 100;
                 const percentRounded = Math.min(100, Math.floor(percent));
@@ -79,7 +80,7 @@
                 </div>
 
             </div>
-        <% }) %>
+        <% } %>
     <% } else { %>
         <div class="empty-message">No Saving Found</div>
     <% } %>

@@ -625,14 +625,14 @@ app.post("/add-saving", async (req, res) => {
         }
 
         await db.query(
-            "INSERT INTO saving (user_id, goal, targetAmount, savedAmount) VALUES ($1, $2, $3, $4)",
+            "INSERT INTO saving.ejs (user_id, goal, targetAmount, savedAmount) VALUES ($1, $2, $3, $4)",
             [req.user.id, purpose, Number(targetAmount), savedAmount ? Number(savedAmount) : 0]
         );
 
         req.flash("success", "Saving goal added successfully.");
         return res.status(201).json({success: true});
     } catch (err) {
-        console.log("Add saving error:", err);
+        console.log("Add saving.ejs error:", err);
         req.flash("error", "Unable to save goal right now.");
         return res.status(500).json({success: false, error: "Unable to save goal right now."});
     }
@@ -693,7 +693,7 @@ app.delete("/api/delete/goal", async (req, res) => {
     const goalId = req.query.id;
 
     try {
-        const result = await db.query("DELETE FROM saving WHERE id = $1 AND user_id = $2 RETURNING *", [goalId, req.user.id]);
+        const result = await db.query("DELETE FROM saving.ejs WHERE id = $1 AND user_id = $2 RETURNING *", [goalId, req.user.id]);
         req.flash("success", "Goal deleted successfully");
         res.status(200).json({message: "Deleted successfully", deleted: result.rows[0]});
     } catch (err) {
@@ -750,3 +750,5 @@ app.get("/api/transaction/charts", async (req, res) => {
         res.status(500).send("Server Error.");
     }
 })
+
+

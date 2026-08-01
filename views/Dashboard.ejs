@@ -131,6 +131,12 @@
         </div>
         <div id="listContainer" class="listContainer active">
             <%- include ("transaction-list") %>
+
+            <% if (transaction.length > 4 || events.length > 4 || saving.length > 2) {%>
+            <div class="view-more">
+                <a href="/transaction">View more....</a>
+            </div>
+            <% }%>
             <button class="add-transaction" id="addTransaction"><i class="fa-solid fa-plus"></i> Add Transaction
             </button>
 

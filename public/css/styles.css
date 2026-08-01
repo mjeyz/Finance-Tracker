@@ -1027,6 +1027,24 @@ body {
     justify-content: center;
 }
 
+.view-more {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    background-color: #ffffff;
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+.view-more a {
+    text-decoration: none;
+    color: #4f6ef7;
+    font-weight: 600;
+    transition: all 0.5s ease;
+}
+.view-more a:hover {
+    color: #7392ea;
+    text-decoration: underline;
+}
+
 @media (max-width: 600px) {
     .sidebar {
         width: 260px;
