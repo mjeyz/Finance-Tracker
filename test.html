@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Transaction Form</title>
     <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
     <style>
         /* ----- Reset & Base ----- */
         * {
@@ -398,199 +398,201 @@
 </head>
 <body>
 
-    <div class="form-card">
+<div class="form-card">
 
-        <!-- Header -->
-        <div class="form-header">
-            <h1><i class="fas fa-receipt"></i> New Transaction</h1>
-            <span class="badge"><i class="far fa-calendar-alt"></i> Today</span>
-        </div>
-
-        <!-- Form -->
-        <form id="transactionForm" autocomplete="off">
-
-            <!-- Type Toggle -->
-            <div class="form-group">
-                <label>Transaction type <span class="required">*</span></label>
-                <div class="type-toggle" id="typeToggle">
-                    <button type="button" class="type-option active-income" data-type="income">
-                        <i class="fas fa-arrow-up"></i> Income
-                    </button>
-                    <button type="button" class="type-option" data-type="expense">
-                        <i class="fas fa-arrow-down"></i> Expense
-                    </button>
-                </div>
-                <input type="hidden" name="type" id="transactionType" value="income" />
-            </div>
-
-            <!-- Row: Amount + Category -->
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="amount">Amount <span class="required">*</span></label>
-                    <div class="amount-wrapper">
-                        <span class="currency-symbol">$</span>
-                        <input type="number" id="amount" name="amount" placeholder="0.00" step="0.01" min="0.01" required />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="category">Category <span class="required">*</span></label>
-                    <select id="category" name="category" required>
-                        <option value="" disabled selected>Select category</option>
-                        <option value="salary">Salary</option>
-                        <option value="freelance">Freelance</option>
-                        <option value="investment">Investment</option>
-                        <option value="food">Food & Dining</option>
-                        <option value="transport">Transport</option>
-                        <option value="shopping">Shopping</option>
-                        <option value="bills">Bills & Utilities</option>
-                        <option value="health">Health</option>
-                        <option value="entertainment">Entertainment</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Row: Date + Payment Method -->
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="date">Date <span class="required">*</span></label>
-                    <input type="date" id="date" name="date" required />
-                </div>
-                <div class="form-group">
-                    <label for="payment">Payment method</label>
-                    <select id="payment" name="payment">
-                        <option value="cash">Cash</option>
-                        <option value="credit_card">Credit Card</option>
-                        <option value="debit_card">Debit Card</option>
-                        <option value="bank_transfer">Bank Transfer</option>
-                        <option value="paypal">PayPal</option>
-                        <option value="crypto">Cryptocurrency</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Note -->
-            <div class="form-group">
-                <label for="note">Note</label>
-                <textarea id="note" name="note" placeholder="Add a note (optional)"></textarea>
-            </div>
-
-            <!-- Submit -->
-            <button type="submit" class="btn-submit">
-                <i class="fas fa-plus-circle"></i> Add Transaction
-            </button>
-        </form>
-
-        <!-- Transaction List (demo preview) -->
-        <div class="transaction-list">
-            <div class="list-header">
-                <h3><i class="fas fa-list-ul" style="margin-right: 8px; color:#2a7de1;"></i>Recent transactions</h3>
-                <span>3 entries</span>
-            </div>
-
-            <div id="transactionList">
-                <!-- Items will be injected by JS -->
-            </div>
-        </div>
-
+    <!-- Header -->
+    <div class="form-header">
+        <h1><i class="fas fa-receipt"></i> New Transaction</h1>
+        <span class="badge"><i class="far fa-calendar-alt"></i> Today</span>
     </div>
 
-    <script>
-        (function() {
-            'use strict';
+    <!-- Form -->
+    <form id="transactionForm" autocomplete="off">
 
-            // ----- DOM refs -----
-            const form = document.getElementById('transactionForm');
-            const typeToggle = document.getElementById('typeToggle');
-            const typeInput = document.getElementById('transactionType');
-            const amountInput = document.getElementById('amount');
-            const categorySelect = document.getElementById('category');
-            const dateInput = document.getElementById('date');
-            const paymentSelect = document.getElementById('payment');
-            const noteInput = document.getElementById('note');
-            const listContainer = document.getElementById('transactionList');
+        <!-- Type Toggle -->
+        <div class="form-group">
+            <label>Transaction type <span class="required">*</span></label>
+            <div class="type-toggle" id="typeToggle">
+                <button type="button" class="type-option active-income" data-type="income">
+                    <i class="fas fa-arrow-up"></i> Income
+                </button>
+                <button type="button" class="type-option" data-type="expense">
+                    <i class="fas fa-arrow-down"></i> Expense
+                </button>
+            </div>
+            <input type="hidden" name="type" id="transactionType" value="income"/>
+        </div>
 
-            // ----- Set default date to today -----
-            const today = new Date().toISOString().split('T')[0];
-            dateInput.value = today;
+        <!-- Row: Amount + Category -->
+        <div class="form-row">
+            <div class="form-group">
+                <label for="amount">Amount <span class="required">*</span></label>
+                <div class="amount-wrapper">
+                    <span class="currency-symbol">$</span>
+                    <input type="number" id="amount" name="amount" placeholder="0.00" step="0.01" min="0.01" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="category">Category <span class="required">*</span></label>
+                <select id="category" name="category" required>
+                    <option value="" disabled selected>Select category</option>
+                    <option value="salary">Salary</option>
+                    <option value="freelance">Freelance</option>
+                    <option value="investment">Investment</option>
+                    <option value="food">Food & Dining</option>
+                    <option value="transport">Transport</option>
+                    <option value="shopping">Shopping</option>
+                    <option value="bills">Bills & Utilities</option>
+                    <option value="health">Health</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+        </div>
 
-            // ----- Type toggle logic -----
-            const typeOptions = typeToggle.querySelectorAll('.type-option');
+        <!-- Row: Date + Payment Method -->
+        <div class="form-row">
+            <div class="form-group">
+                <label for="date">Date <span class="required">*</span></label>
+                <input type="date" id="date" name="date" required/>
+            </div>
+            <div class="form-group">
+                <label for="payment">Payment method</label>
+                <select id="payment" name="payment">
+                    <option value="cash">Cash</option>
+                    <option value="credit_card">Credit Card</option>
+                    <option value="debit_card">Debit Card</option>
+                    <option value="bank_transfer">Bank Transfer</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="crypto">Cryptocurrency</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+        </div>
 
-            function setActiveType(type) {
-                typeOptions.forEach(btn => {
-                    btn.classList.remove('active-income', 'active-expense');
-                    if (btn.dataset.type === type) {
-                        btn.classList.add(type === 'income' ? 'active-income' : 'active-expense');
-                    }
-                });
-                typeInput.value = type;
-            }
+        <!-- Note -->
+        <div class="form-group">
+            <label for="note">Note</label>
+            <textarea id="note" name="note" placeholder="Add a note (optional)"></textarea>
+        </div>
 
+        <!-- Submit -->
+        <button type="submit" class="btn-submit">
+            <i class="fas fa-plus-circle"></i> Add Transaction
+        </button>
+    </form>
+
+    <!-- Transaction List (demo preview) -->
+    <div class="transaction-list">
+        <div class="list-header">
+            <h3><i class="fas fa-list-ul" style="margin-right: 8px; color:#2a7de1;"></i>Recent transactions</h3>
+            <span>3 entries</span>
+        </div>
+
+        <div id="transactionList">
+            <!-- Items will be injected by JS -->
+        </div>
+    </div>
+
+</div>
+
+<script>
+    (function () {
+        'use strict';
+
+        // ----- DOM refs -----
+        const form = document.getElementById('transactionForm');
+        const typeToggle = document.getElementById('typeToggle');
+        const typeInput = document.getElementById('transactionType');
+        const amountInput = document.getElementById('amount');
+        const categorySelect = document.getElementById('category');
+        const dateInput = document.getElementById('date');
+        const paymentSelect = document.getElementById('payment');
+        const noteInput = document.getElementById('note');
+        const listContainer = document.getElementById('transactionList');
+
+        // ----- Set default date to today -----
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
+
+        // ----- Type toggle logic -----
+        const typeOptions = typeToggle.querySelectorAll('.type-option');
+
+        function setActiveType(type) {
             typeOptions.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    const type = this.dataset.type;
-                    setActiveType(type);
-                });
+                btn.classList.remove('active-income', 'active-expense');
+                if (btn.dataset.type === type) {
+                    btn.classList.add(type === 'income' ? 'active-income' : 'active-expense');
+                }
             });
+            typeInput.value = type;
+        }
 
-            // ----- Sample data (initial) -----
-            let transactions = [{
-                id: 1,
-                type: 'income',
-                amount: 2450.00,
-                category: 'Salary',
-                date: '2026-07-24',
-                payment: 'Bank Transfer',
-                note: 'Monthly salary'
-            }, {
-                id: 2,
-                type: 'expense',
-                amount: 128.50,
-                category: 'Food & Dining',
-                date: '2026-07-25',
-                payment: 'Credit Card',
-                note: 'Dinner at Stefano\'s'
-            }, {
-                id: 3,
-                type: 'expense',
-                amount: 45.00,
-                category: 'Transport',
-                date: '2026-07-26',
-                payment: 'Debit Card',
-                note: 'Gas station'
-            }];
+        typeOptions.forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                const type = this.dataset.type;
+                setActiveType(type);
+            });
+        });
 
-            let nextId = 4;
+        // ----- Sample data (initial) -----
+        let transactions = [{
+            id: 1,
+            type: 'income',
+            amount: 2450.00,
+            category: 'Salary',
+            date: '2026-07-24',
+            payment: 'Bank Transfer',
+            note: 'Monthly salary'
+        }, {
+            id: 2,
+            type: 'expense',
+            amount: 128.50,
+            category: 'Food & Dining',
+            date: '2026-07-25',
+            payment: 'Credit Card',
+            note: 'Dinner at Stefano\'s'
+        }, {
+            id: 3,
+            type: 'expense',
+            amount: 45.00,
+            category: 'Transport',
+            date: '2026-07-26',
+            payment: 'Debit Card',
+            note: 'Gas station'
+        }];
 
-            // ----- Render list -----
-            function renderTransactions() {
-                if (transactions.length === 0) {
-                    listContainer.innerHTML = `
+        let nextId = 4;
+
+        // ----- Render list -----
+        function renderTransactions() {
+            if (transactions.length === 0) {
+                listContainer.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-inbox"></i>
                             No transactions yet — add one above!
                         </div>
                     `;
-                    return;
-                }
+                return;
+            }
 
-                let html = '';
-                // show latest first
-                const sorted = [...transactions].reverse();
-                sorted.forEach(tx => {
-                    const isIncome = tx.type === 'income';
-                    const iconClass = isIncome ? 'income' : 'expense';
-                    const icon = isIncome ? 'fa-arrow-up' : 'fa-arrow-down';
-                    const sign = isIncome ? '+' : '-';
-                    const amountClass = isIncome ? 'income' : 'expense';
+            let html = '';
+            // show latest first
+            const sorted = [...transactions].reverse();
+            sorted.forEach(tx => {
+                const isIncome = tx.type === 'income';
+                const iconClass = isIncome ? 'income' : 'expense';
+                const icon = isIncome ? 'fa-arrow-up' : 'fa-arrow-down';
+                const sign = isIncome ? '+' : '-';
+                const amountClass = isIncome ? 'income' : 'expense';
 
-                    const dateObj = new Date(tx.date + 'T00:00:00');
-                    const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric',
-                        year: 'numeric' });
+                const dateObj = new Date(tx.date + 'T00:00:00');
+                const dateStr = dateObj.toLocaleDateString('en-US', {
+                    month: 'short', day: 'numeric',
+                    year: 'numeric'
+                });
 
-                    html += `
+                html += `
                         <div class="tx-item">
                             <div class="tx-left">
                                 <div class="tx-icon ${iconClass}">
@@ -609,107 +611,107 @@
                             </div>
                         </div>
                     `;
-                });
-
-                listContainer.innerHTML = html;
-                // update badge count
-                const badge = document.querySelector('.list-header span');
-                if (badge) badge.textContent = `${transactions.length} entries`;
-            }
-
-            // ----- Add transaction -----
-            function addTransaction(event) {
-                event.preventDefault();
-
-                // Gather data
-                const type = typeInput.value;
-                const amount = parseFloat(amountInput.value);
-                const category = categorySelect.value;
-                const date = dateInput.value;
-                const payment = paymentSelect.value;
-                const note = noteInput.value.trim();
-
-                // Validations
-                if (!amount || amount <= 0) {
-                    alert('Please enter a valid amount greater than 0.');
-                    amountInput.focus();
-                    return;
-                }
-
-                if (!category) {
-                    alert('Please select a category.');
-                    categorySelect.focus();
-                    return;
-                }
-
-                if (!date) {
-                    alert('Please select a date.');
-                    dateInput.focus();
-                    return;
-                }
-
-                // Create transaction object
-                const newTx = {
-                    id: nextId++,
-                    type: type,
-                    amount: amount,
-                    category: category,
-                    date: date,
-                    payment: payment,
-                    note: note || '—'
-                };
-
-                transactions.push(newTx);
-                renderTransactions();
-
-                // Reset form (keep type and date)
-                amountInput.value = '';
-                categorySelect.value = '';
-                paymentSelect.value = 'cash';
-                noteInput.value = '';
-                // keep date as today or whatever was set
-                // keep type as is
-
-                // Re-focus amount for quick entry
-                amountInput.focus();
-
-                // Optional: subtle feedback
-                const submitBtn = form.querySelector('.btn-submit');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Added!';
-                submitBtn.style.background = '#0b7e3d';
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.style.background = '';
-                }, 1200);
-            }
-
-            // ----- Form submit -----
-            form.addEventListener('submit', addTransaction);
-
-            // ----- Init render -----
-            renderTransactions();
-
-            // ----- Set default active type (income) -----
-            setActiveType('income');
-
-            // ----- Keyboard shortcut: press "i" or "e" to toggle type -----
-            document.addEventListener('keydown', function(e) {
-                // only if not inside input/textarea
-                const tag = e.target.tagName.toLowerCase();
-                if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
-
-                if (e.key === 'i' || e.key === 'I') {
-                    e.preventDefault();
-                    setActiveType('income');
-                } else if (e.key === 'e' || e.key === 'E') {
-                    e.preventDefault();
-                    setActiveType('expense');
-                }
             });
 
-        })();
-    </script>
+            listContainer.innerHTML = html;
+            // update badge count
+            const badge = document.querySelector('.list-header span');
+            if (badge) badge.textContent = `${transactions.length} entries`;
+        }
+
+        // ----- Add transaction -----
+        function addTransaction(event) {
+            event.preventDefault();
+
+            // Gather data
+            const type = typeInput.value;
+            const amount = parseFloat(amountInput.value);
+            const category = categorySelect.value;
+            const date = dateInput.value;
+            const payment = paymentSelect.value;
+            const note = noteInput.value.trim();
+
+            // Validations
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount greater than 0.');
+                amountInput.focus();
+                return;
+            }
+
+            if (!category) {
+                alert('Please select a category.');
+                categorySelect.focus();
+                return;
+            }
+
+            if (!date) {
+                alert('Please select a date.');
+                dateInput.focus();
+                return;
+            }
+
+            // Create transaction object
+            const newTx = {
+                id: nextId++,
+                type: type,
+                amount: amount,
+                category: category,
+                date: date,
+                payment: payment,
+                note: note || '—'
+            };
+
+            transactions.push(newTx);
+            renderTransactions();
+
+            // Reset form (keep type and date)
+            amountInput.value = '';
+            categorySelect.value = '';
+            paymentSelect.value = 'cash';
+            noteInput.value = '';
+            // keep date as today or whatever was set
+            // keep type as is
+
+            // Re-focus amount for quick entry
+            amountInput.focus();
+
+            // Optional: subtle feedback
+            const submitBtn = form.querySelector('.btn-submit');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Added!';
+            submitBtn.style.background = '#0b7e3d';
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.style.background = '';
+            }, 1200);
+        }
+
+        // ----- Form submit -----
+        form.addEventListener('submit', addTransaction);
+
+        // ----- Init render -----
+        renderTransactions();
+
+        // ----- Set default active type (income) -----
+        setActiveType('income');
+
+        // ----- Keyboard shortcut: press "i" or "e" to toggle type -----
+        document.addEventListener('keydown', function (e) {
+            // only if not inside input/textarea
+            const tag = e.target.tagName.toLowerCase();
+            if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+
+            if (e.key === 'i' || e.key === 'I') {
+                e.preventDefault();
+                setActiveType('income');
+            } else if (e.key === 'e' || e.key === 'E') {
+                e.preventDefault();
+                setActiveType('expense');
+            }
+        });
+
+    })();
+</script>
 
 </body>
 </html>

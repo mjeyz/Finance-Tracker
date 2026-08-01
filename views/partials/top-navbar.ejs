@@ -1,0 +1,29 @@
+<header class="header top-nav">
+    <button class="toggle-btn" id="toggleBtn" aria-label="Toggle sidebar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="search-group">
+        <i class="fas fa-search icon"></i>
+        <input
+                type="search"
+                id="dashboardSearch"
+                placeholder="Search transactions, events, or goals..."
+                name="search"
+                class="search-input"
+                aria-label="Search dashboard items"/>
+    </div>
+    <div
+            class="user-menu"
+            style="display: flex; align-items: center; gap: 1rem">
+        <div class="notifications">
+            <i class="bx bx-bell" style="font-size: 1.25rem; color: #6b7280"></i>
+        </div>
+        <div class="profile">
+            <div class="avatar">
+                <%= user.name[0].toUpperCase() %>
+            </div>
+            <span style="font-weight: 500"><%= user.email %></span>
+        </div>
+    </div>
+</header>

@@ -79,9 +79,9 @@ async function ensureOtpSchema() {
     try {
         await db.query(`
             ALTER TABLE users
-            ADD COLUMN IF NOT EXISTS otp TEXT,
-            ADD COLUMN IF NOT EXISTS otp_expiry TIMESTAMP,
-            ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT FALSE
+                ADD COLUMN IF NOT EXISTS otp TEXT,
+                ADD COLUMN IF NOT EXISTS otp_expiry TIMESTAMP,
+                ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT FALSE
         `);
 
         const schemaResult = await db.query(`
@@ -104,7 +104,8 @@ async function ensureOtpSchema() {
             if (columnTypes.otp_expiry === "time without time zone") {
                 await db.query(`
                     ALTER TABLE users
-                    ALTER COLUMN otp_expiry TYPE TIMESTAMP
+                    ALTER
+                    COLUMN otp_expiry TYPE TIMESTAMP
                     USING CASE
                         WHEN otp_expiry IS NULL THEN NULL
                         ELSE CURRENT_DATE + otp_expiry
@@ -644,36 +645,36 @@ app.post("/api/update/income", async (req, res) => {
 
     req.user.income = Number(income);
     req.user.expenses = Number(expense);
-    res.status(200).json({message: "Update successfully.",  deleted: result.rows[0]});
+    res.status(200).json({message: "Update successfully.", deleted: result.rows[0]});
     console.log(`Income : ${income}, Expense : ${expense}`);
 })
 
 
 app.delete('/api/transactions', async (req, res) => {
-  const transactionId = req.query.id;
+    const transactionId = req.query.id;
 
-  if (!req.user) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-
-  try {
-    const result = await db.query(
-      "DELETE FROM transaction WHERE id = $1 AND user_id = $2 RETURNING *",
-      [transactionId, req.user.id]
-    );
-
-    // If no rows were deleted, the ID doesn't exist or doesn't belong to the user
-    if (result.rowCount === 0) {
-        req.flash("error", 'Transaction not found or unauthorized');
-      return res.status(404).json({ error: 'Transaction not found or unauthorized' });
+    if (!req.user) {
+        return res.status(401).json({error: 'Unauthorized'});
     }
 
-    req.query("success", "Deleted successfully");
-    res.status(200).json({ message: 'Deleted successfully', deleted: result.rows[0] });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Server error' });
-  }
+    try {
+        const result = await db.query(
+            "DELETE FROM transaction WHERE id = $1 AND user_id = $2 RETURNING *",
+            [transactionId, req.user.id]
+        );
+
+        // If no rows were deleted, the ID doesn't exist or doesn't belong to the user
+        if (result.rowCount === 0) {
+            req.flash("error", 'Transaction not found or unauthorized');
+            return res.status(404).json({error: 'Transaction not found or unauthorized'});
+        }
+
+        req.query("success", "Deleted successfully");
+        res.status(200).json({message: 'Deleted successfully', deleted: result.rows[0]});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: 'Server error'});
+    }
 });
 
 app.delete("/api/delete/event", async (req, res) => {
@@ -682,7 +683,7 @@ app.delete("/api/delete/event", async (req, res) => {
     try {
         const result = await db.query("DELETE FROM events WHERE id = $1 AND user_id = $2 RETURNING *", [transactionId, req.user.id]);
         req.flash("success", "Event deleted successfully");
-       res.status(200).json({message: "Deleted successfully",  deleted: result.rows[0]});
+        res.status(200).json({message: "Deleted successfully", deleted: result.rows[0]});
     } catch (err) {
         console.log(err);
     }
@@ -694,7 +695,7 @@ app.delete("/api/delete/goal", async (req, res) => {
     try {
         const result = await db.query("DELETE FROM saving WHERE id = $1 AND user_id = $2 RETURNING *", [goalId, req.user.id]);
         req.flash("success", "Goal deleted successfully");
-        res.status(200).json({message: "Deleted successfully",  deleted: result.rows[0]});
+        res.status(200).json({message: "Deleted successfully", deleted: result.rows[0]});
     } catch (err) {
         console.log(err);
     }

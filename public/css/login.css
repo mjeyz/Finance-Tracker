@@ -52,7 +52,7 @@ body {
     z-index: 1;
     animation: liftCard 1.6s cubic-bezier(0.6, 1, 0.3, 1) forwards;
     border-top: 2px solid #4f6ef7;
-    
+
 }
 
 .flash-stack {
@@ -118,11 +118,11 @@ body {
 }
 
 .eye-icon {
-   position: absolute;
-   right: 14px;
-   color: var(--text-muted);
-   cursor: pointer;
-   z-index: 1;
+    position: absolute;
+    right: 14px;
+    color: var(--text-muted);
+    cursor: pointer;
+    z-index: 1;
 }
 
 .form-group .icon {
@@ -168,16 +168,17 @@ body {
 }
 
 
-    @media (max-width: 680px) {
-      .form-card {
+@media (max-width: 680px) {
+    .form-card {
         padding: 32px 20px;
         border-radius: 16px;
         margin: 0;
-      }
-      .social-buttons {
-        flex-direction: column;
-      }
     }
+
+    .social-buttons {
+        flex-direction: column;
+    }
+}
 
 .forgot-link {
     color: var(--accent);
@@ -310,8 +311,8 @@ body {
 }
 
 .change-password-container input[type="email"],
- .change-password-container input[type="password"],
-  .change-password-container input[type="text"] {
+.change-password-container input[type="password"],
+.change-password-container input[type="text"] {
     padding-left: 2.5rem;
 }
 
