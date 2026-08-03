@@ -702,6 +702,37 @@ app.delete("/api/delete/goal", async (req, res) => {
 })
 
 
+
+app.get("/api/transaction/charts", async (req, res) => {
+    try {
+        const result = await db.query("SELECT category, SUM(amount) AS total_amount FROM transaction WHERE user_id = $1 GROUP BY category ORDER BY total_amount DESC", [req.user.id])
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({error: 'Transaction not found or unauthorized'});
+        }
+        res.json(result.rows)
+    } catch (err) {
+        console.error("Database error : ", err.message);
+        res.status(500).send("Server Error.");
+    }
+})
+
+app.get("/transaction", async (req, res) => {
+    const result = await db.query("SELECT * FROM transaction WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
+    res.render("transactions.ejs", {user: req.user, transaction: result.rows})
+});
+
+app.get("/events", async (req, res) => {
+    const result = await db.query("SELECT * FROM events WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
+    res.render("event.ejs", { user: req.user, events: result.rows })
+});
+
+app.get("/saving",async (req, res) => {
+    const result = await db.query("SELECT * FROM saving WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
+    res.render("saving.ejs", { user: req.user, saving: result.rows })
+})
+
+
 async function startServer() {
     try {
         const requiredDbEnv = [
@@ -736,19 +767,5 @@ async function startServer() {
 }
 
 startServer();
-
-app.get("/api/transaction/charts", async (req, res) => {
-    try {
-        const result = await db.query("SELECT category, SUM(amount) AS total_amount FROM transaction WHERE user_id = $1 GROUP BY category ORDER BY total_amount DESC", [req.user.id])
-
-        if (result.rowCount === 0) {
-            return res.status(404).json({error: 'Transaction not found or unauthorized'});
-        }
-        res.json(result.rows)
-    } catch (err) {
-        console.error("Database error : ", err.message);
-        res.status(500).send("Server Error.");
-    }
-})
 
 
