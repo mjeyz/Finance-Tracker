@@ -1,4 +1,321 @@
 <%- include ("partials/base.ejs") %>
 <%- include ("partials/sidebar.ejs") %>
-<%- include ("partials/top-navbar.ejs") %>
-<%- include ("transaction-list") %>
+
+<%
+const rows = Array.isArray(transaction) ? transaction : [];
+const currencyFormatter = new Intl.NumberFormat("en-PK", {
+    maximumFractionDigits: 0
+});
+
+const formatAmount = (value) => {
+    const numericValue = Number(value) || 0;
+    return currencyFormatter.format(Math.abs(numericValue));
+};
+
+const formatDate = (value) => {
+    const dateValue = value ? new Date(value) : null;
+    if (!dateValue || Number.isNaN(dateValue.getTime())) {
+        return { date: "May 25, 2026", time: "10:30 AM" };
+    }
+
+    return {
+        date: dateValue.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        }),
+        time: dateValue.toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "2-digit"
+        })
+    };
+};
+
+const toTitleCase = (value) => String(value || "").replace(/\b\w/g, (letter) => letter.toUpperCase());
+
+const sampleTransactions = [
+    {
+        date: "May 25, 2026 10:30 AM",
+        description: "Grocery Shopping",
+        note: "Metro Super Store",
+        category: "Food & Groceries",
+        type: "Expense",
+        amount: -3250,
+        method: "Debit Card",
+        methodNote: "•••• 4567",
+        tone: "mint",
+        icon: "bx bx-cart"
+    },
+    {
+        date: "May 24, 2026 02:15 PM",
+        description: "Monthly Salary",
+        note: "Company Payroll",
+        category: "Salary",
+        type: "Income",
+        amount: 120000,
+        method: "Bank Transfer",
+        methodNote: "HBL •••• 1234",
+        tone: "blue",
+        icon: "bx bx-wallet"
+    },
+    {
+        date: "May 23, 2026 08:45 PM",
+        description: "Coffee with Friends",
+        note: "Cafe De Mocha",
+        category: "Food & Dining",
+        type: "Expense",
+        amount: -850,
+        method: "JazzCash",
+        methodNote: "•••• 7890",
+        tone: "orange",
+        icon: "bx bx-coffee"
+    },
+    {
+        date: "May 22, 2026 11:20 AM",
+        description: "Fuel Refill",
+        note: "PSO Pump",
+        category: "Transportation",
+        type: "Expense",
+        amount: -4500,
+        method: "Debit Card",
+        methodNote: "•••• 4567",
+        tone: "indigo",
+        icon: "bx bx-car"
+    },
+    {
+        date: "May 21, 2026 09:10 AM",
+        description: "Freelance Work",
+        note: "UI/UX Project",
+        category: "Freelance",
+        type: "Income",
+        amount: 15000,
+        method: "Bank Transfer",
+        methodNote: "Meezan •••• 5678",
+        tone: "green",
+        icon: "bx bx-briefcase"
+    },
+    {
+        date: "May 20, 2026 07:30 PM",
+        description: "Movie Tickets",
+        note: "Cinepax",
+        category: "Entertainment",
+        type: "Expense",
+        amount: -1200,
+        method: "EasyPaisa",
+        methodNote: "•••• 3456",
+        tone: "yellow",
+        icon: "bx bx-movie-play"
+    }
+];
+
+const transactionRows = rows.length
+    ? rows.slice(0, 6).map((row, index) => {
+        const formattedDate = formatDate(row.date);
+        const type = String(row.type || "Expense").toLowerCase();
+        const amountValue = Number(row.amount) || 0;
+        const category = toTitleCase(row.category || "Uncategorized");
+
+        return {
+            date: formattedDate.date,
+            time: formattedDate.time,
+            description: row.description || "Transaction",
+            note: row.category || "Personal",
+            category,
+            type: type === "income" ? "Income" : "Expense",
+            amount: `${amountValue < 0 ? "-" : "+"} PKR ${formatAmount(amountValue)}`,
+            method: row.method || "Cash",
+            methodNote: row.method || "Primary wallet",
+            tone: ["mint", "blue", "orange", "indigo", "green", "yellow"][index % 6],
+            icon: type === "income" ? "bx bx-wallet" : "bx bx-cart"
+        };
+    })
+    : sampleTransactions;
+
+const totalIncome = rows
+    .filter((row) => String(row.type || "").toLowerCase() === "income")
+    .reduce((sum, row) => sum + (Number(row.amount) || 0), 0);
+const totalExpenses = rows
+    .filter((row) => String(row.type || "").toLowerCase() === "expense")
+    .reduce((sum, row) => sum + Math.abs(Number(row.amount) || 0), 0);
+const totalTransactions = rows.length || sampleTransactions.length;
+const netBalance = totalIncome - totalExpenses;
+
+const summaryCards = rows.length
+    ? [
+        { label: "Total Income", value: `PKR ${formatAmount(totalIncome)}`, tone: "mint", icon: "bx bx-arrow-up", delta: "+ 12%" },
+        { label: "Total Expenses", value: `PKR ${formatAmount(totalExpenses)}`, tone: "rose", icon: "bx bx-arrow-down", delta: "+ 8%" },
+        { label: "Net Balance", value: `PKR ${formatAmount(netBalance)}`, tone: "blue", icon: "bx bx-wallet", delta: "+ 15%" },
+        { label: "Total Transactions", value: String(totalTransactions), tone: "violet", icon: "bx bx-list-ul", delta: "—" }
+    ]
+    : [
+        { label: "Total Income", value: "PKR 120,000", tone: "mint", icon: "bx bx-arrow-up", delta: "+ 12%" },
+        { label: "Total Expenses", value: "PKR 68,540", tone: "rose", icon: "bx bx-arrow-down", delta: "+ 8%" },
+        { label: "Net Balance", value: "PKR 51,460", tone: "blue", icon: "bx bx-wallet", delta: "+ 15%" },
+        { label: "Total Transactions", value: "24", tone: "violet", icon: "bx bx-list-ul", delta: "—" }
+    ];
+%>
+
+<main class="transaction-main">
+    <section class="transaction-page">
+        <header class="transaction-header">
+            <div class="transaction-heading">
+                <h1 class="transaction-title">Transactions</h1>
+                <p class="transaction-subtitle">Manage and track all your income and expenses</p>
+            </div>
+
+            <div class="transaction-actions">
+                <button class="transaction-action transaction-action--primary" type="button">
+                    <i class="bx bx-plus"></i>
+                    New Transaction
+                </button>
+                <button class="transaction-action transaction-action--ghost" type="button">
+                    <i class="bx bx-calendar"></i>
+                    May 2026
+                    <i class="bx bx-chevron-down transaction-chevron"></i>
+                </button>
+                <button class="transaction-icon-btn" type="button" aria-label="Notifications">
+                    <i class="bx bx-bell"></i>
+                </button>
+            </div>
+        </header>
+
+        <section class="transaction-summary-grid" aria-label="Transaction summaries">
+            <% summaryCards.forEach((card) => { %>
+                <article class="summary-card summary-card--<%= card.tone %>">
+                    <div class="summary-card__icon">
+                        <i class="<%= card.icon %>"></i>
+                    </div>
+                    <div class="summary-card__content">
+                        <span class="summary-card__label"><%= card.label %></span>
+                        <strong class="summary-card__value"><%= card.value %></strong>
+                        <div class="summary-card__meta">
+                            <span>This Month</span>
+                            <span class="summary-card__delta"><%= card.delta %></span>
+                        </div>
+                    </div>
+                </article>
+            <% }); %>
+        </section>
+
+        <section class="transaction-table-card">
+            <div class="transaction-toolbar">
+                <label class="transaction-search" for="transactionSearch">
+                    <i class="bx bx-search"></i>
+                    <input id="transactionSearch" type="search" placeholder="Search transactions..." />
+                </label>
+
+                <select class="transaction-select" aria-label="Transaction type filter">
+                    <option>All Types</option>
+                    <option>Income</option>
+                    <option>Expense</option>
+                </select>
+
+                <select class="transaction-select" aria-label="Category filter">
+                    <option>All Categories</option>
+                    <option>Salary</option>
+                    <option>Food & Groceries</option>
+                    <option>Transportation</option>
+                </select>
+
+                <button class="transaction-action transaction-action--ghost transaction-filter-btn" type="button">
+                    <i class="bx bx-filter-alt"></i>
+                    Filter
+                </button>
+
+                <button class="transaction-action transaction-action--ghost transaction-export-btn" type="button">
+                    <i class="bx bx-download"></i>
+                    Export
+                </button>
+            </div>
+
+            <div class="transaction-table-wrap">
+                <table class="transactions-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Payment Method</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% transactionRows.forEach((row) => { %>
+                            <tr>
+                                <td>
+                                    <div class="date-cell">
+                                        <strong><%= row.date %></strong>
+                                        <span><%= row.time %></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="description-cell">
+                                        <span class="description-cell__icon description-cell__icon--<%= row.tone %>">
+                                            <i class="<%= row.icon %>"></i>
+                                        </span>
+                                        <div>
+                                            <strong><%= row.description %></strong>
+                                            <span><%= row.note %></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="pill pill--<%= row.tone %>"><%= row.category %></span>
+                                </td>
+                                <td>
+                                    <span class="pill pill--<%= row.type.toLowerCase() %>"><%= row.type %></span>
+                                </td>
+                                <td>
+                                    <strong class="amount-cell amount-cell--<%= row.type.toLowerCase() %>"><%= row.amount %></strong>
+                                </td>
+                                <td>
+                                    <div class="payment-cell">
+                                        <span class="payment-cell__icon payment-cell__icon--<%= row.tone %>">
+                                            <i class="bx bx-credit-card"></i>
+                                        </span>
+                                        <div>
+                                            <strong><%= row.method %></strong>
+                                            <span><%= row.methodNote %></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="action-dots" type="button" aria-label="Transaction actions">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-footer">
+                <p>Showing 1 to <%= Math.min(transactionRows.length, 6) %> of <%= totalTransactions %> transactions</p>
+                <nav class="pagination" aria-label="Transaction pagination">
+                    <button type="button" aria-label="Previous page">
+                        <i class="bx bx-chevron-left"></i>
+                    </button>
+                    <button type="button" class="is-active">1</button>
+                    <button type="button">2</button>
+                    <button type="button">3</button>
+                    <button type="button">4</button>
+                    <button type="button" aria-label="Next page">
+                        <i class="bx bx-chevron-right"></i>
+                    </button>
+                </nav>
+            </div>
+        </section>
+    </section>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var sidebarLink = document.querySelector('.sidebar .nav-link[href="/transaction"]');
+        if (sidebarLink) {
+            sidebarLink.classList.add("active");
+        }
+    });
+</script>

@@ -29,7 +29,10 @@
 }
 
 body {
-    background-color: #f3f4f6;
+    background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.06), transparent 30%),
+        radial-gradient(circle at top right, rgba(16, 185, 129, 0.05), transparent 24%),
+        #f3f6fb;
     color: #1f2937;
     margin: 0;
     padding: 0;
@@ -1065,4 +1068,459 @@ body {
     }
 
 }
+
+.transaction-main {
+    margin-left: 250px;
+    margin-top: 64px;
+    padding: 28px;
+    min-height: calc(100vh - 64px);
+}
+
+.transaction-page {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.transaction-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 18px;
+}
+
+.transaction-heading {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.transaction-title {
+    margin: 0;
+    font-size: 1.75rem;
+    line-height: 1.2;
+    font-weight: 800;
+    color: #24324a;
+}
+
+.transaction-subtitle {
+    margin: 0;
+    color: #718096;
+    font-size: 0.95rem;
+}
+
+.transaction-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.transaction-action,
+.transaction-select,
+.transaction-search {
+    border: 1px solid #dbe3ee;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+}
+
+.transaction-action {
+    height: 42px;
+    padding: 0 16px;
+    border-radius: 10px;
+    color: #24324a;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    cursor: pointer;
+}
+
+.transaction-action--primary {
+    background: linear-gradient(135deg, #2fb67c, #26a56f);
+    color: #fff;
+    border-color: transparent;
+}
+
+.transaction-action--ghost {
+    background: #fff;
+}
+
+.transaction-chevron {
+    font-size: 1rem;
+    color: #6b7280;
+}
+
+.transaction-icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid #dbe3ee;
+    background: #fff;
+    color: #3b4a66;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.transaction-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.summary-card {
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid #e3e9f2;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    padding: 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    min-height: 118px;
+}
+
+.summary-card__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex: 0 0 auto;
+}
+
+.summary-card__content {
+    display: grid;
+    gap: 0.35rem;
+    min-width: 0;
+}
+
+.summary-card__label {
+    color: #6b778c;
+    font-size: 0.92rem;
+}
+
+.summary-card__value {
+    font-size: 1.45rem;
+    line-height: 1.1;
+    font-weight: 800;
+}
+
+.summary-card__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    color: #718096;
+    font-size: 0.88rem;
+    margin-top: 0.15rem;
+}
+
+.summary-card__delta {
+    font-weight: 700;
+}
+
+.summary-card--mint .summary-card__icon {
+    background: #e9f9ef;
+    color: #22a86d;
+}
+
+.summary-card--rose .summary-card__icon {
+    background: #fdeeee;
+    color: #ef4444;
+}
+
+.summary-card--blue .summary-card__icon {
+    background: #e7f0ff;
+    color: #2563eb;
+}
+
+.summary-card--violet .summary-card__icon {
+    background: #f0eaff;
+    color: #7c3aed;
+}
+
+.summary-card--mint .summary-card__value,
+.summary-card--mint .summary-card__delta {
+    color: #22a86d;
+}
+
+.summary-card--rose .summary-card__value,
+.summary-card--rose .summary-card__delta {
+    color: #f43f5e;
+}
+
+.summary-card--blue .summary-card__value,
+.summary-card--blue .summary-card__delta {
+    color: #2563eb;
+}
+
+.summary-card--violet .summary-card__value,
+.summary-card--violet .summary-card__delta {
+    color: #7c3aed;
+}
+
+.transaction-table-card {
+    background: rgba(255, 255, 255, 0.97);
+    border: 1px solid #e3e9f2;
+    border-radius: 16px;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+    padding: 18px 18px 12px;
+}
+
+.transaction-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.transaction-search {
+    height: 42px;
+    border-radius: 10px;
+    padding: 0 14px;
+    min-width: 280px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #96a1b2;
+}
+
+.transaction-search input {
+    border: 0;
+    outline: none;
+    width: 100%;
+    background: transparent;
+    color: #24324a;
+}
+
+.transaction-select {
+    height: 42px;
+    border-radius: 10px;
+    padding: 0 14px;
+    color: #24324a;
+    outline: none;
+}
+
+.transaction-filter-btn,
+.transaction-export-btn {
+    margin-left: auto;
+}
+
+.transaction-filter-btn {
+    margin-left: 0;
+}
+
+.transaction-table-wrap {
+    overflow-x: auto;
+}
+
+.transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 980px;
+}
+
+.transactions-table thead th {
+    text-align: left;
+    padding: 14px 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #5f6b82;
+    background: transparent;
+    border-bottom: 1px solid #e6ebf2;
+}
+
+.transactions-table tbody td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #edf1f6;
+    vertical-align: middle;
+    color: #24324a;
+}
+
+.transactions-table tbody tr:hover {
+    background: #fafcff;
+}
+
+.date-cell,
+.payment-cell,
+.description-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.date-cell strong,
+.payment-cell strong,
+.description-cell strong {
+    font-weight: 700;
+}
+
+.date-cell span,
+.payment-cell span,
+.description-cell span {
+    color: #7a8699;
+    font-size: 0.86rem;
+}
+
+.description-cell,
+.payment-cell {
+    align-items: center;
+    flex-direction: row;
+    gap: 12px;
+}
+
+.description-cell__icon,
+.payment-cell__icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+.description-cell__icon--mint,
+.payment-cell__icon--mint { background: #e9f9ef; color: #22a86d; }
+.description-cell__icon--blue,
+.payment-cell__icon--blue { background: #e7f0ff; color: #2563eb; }
+.description-cell__icon--orange,
+.payment-cell__icon--orange { background: #fff1df; color: #f59e0b; }
+.description-cell__icon--indigo,
+.payment-cell__icon--indigo { background: #e8edff; color: #4f46e5; }
+.description-cell__icon--green,
+.payment-cell__icon--green { background: #e7f9ec; color: #16a34a; }
+.description-cell__icon--yellow,
+.payment-cell__icon--yellow { background: #fff7d6; color: #eab308; }
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.pill--mint { background: #e9f9ef; color: #22a86d; }
+.pill--blue { background: #e7f0ff; color: #2563eb; }
+.pill--orange { background: #fff1df; color: #f59e0b; }
+.pill--indigo { background: #e8edff; color: #4f46e5; }
+.pill--green { background: #e7f9ec; color: #16a34a; }
+.pill--yellow { background: #fff7d6; color: #eab308; }
+.pill--income { background: #e9f9ef; color: #22a86d; }
+.pill--expense { background: #fdeeee; color: #ef4444; }
+
+.amount-cell {
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.amount-cell--income { color: #16a34a; }
+.amount-cell--expense { color: #ef4444; }
+
+.action-dots {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #748198;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 14px;
+    color: #657086;
+    font-size: 0.9rem;
+}
+
+.pagination {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pagination button {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid #dbe3ee;
+    background: #fff;
+    color: #334155;
+}
+
+.pagination .is-active {
+    background: #f1fbf6;
+    border-color: #bfe8cf;
+    color: #22a86d;
+    font-weight: 700;
+}
+
+@media (max-width: 1200px) {
+    .transaction-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .transaction-main {
+        margin-left: 0;
+        padding: 20px 16px;
+    }
+
+    .transaction-header {
+        flex-direction: column;
+    }
+
+    .transaction-actions {
+        justify-content: flex-start;
+    }
+
+    .transaction-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .transaction-filter-btn,
+    .transaction-export-btn {
+        margin-left: 0;
+    }
+
+    .table-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 600px) {
+    .transaction-main {
+        padding: 16px 12px;
+    }
+
+    .transaction-search,
+    .transaction-select {
+        width: 100%;
+    }
+
+    .transaction-toolbar {
+        gap: 10px;
+    }
+}
+
+
+
 

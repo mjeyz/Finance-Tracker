@@ -1,4 +1,36 @@
 <%- include ("partials/base.ejs") %>
 <%- include ("partials/sidebar.ejs") %>
 <%- include ("partials/top-navbar.ejs") %>
-<%- include ("transaction-list.ejs") %>
+
+<!--  Saving List-->
+<div class="list-section saving-goals" id="savingList">
+    <% if ( saving.length > 0 ) { %>
+        <% for (let i=0; i < Math.min(saving.length, 2); i++) {%>
+            <% const sv = saving[i] %>
+            <%
+                const percent = (sv.savedamount / sv.targetamount) * 100;
+                const percentRounded = Math.min(100, Math.floor(percent));
+            %>
+
+            <div class="goal-card" data-id="<%= sv.id %>">
+                <div class="goal-header">
+                    <span class="goal-name"><%= sv.goal %></span>
+                    <span class="goal-pct"><%= percentRounded %>%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: <%= percentRounded %>%"></div>
+                </div>
+                <div class="goal-footer">
+                    <span>Rs <%= sv.savedamount %> saved</span>
+                    <span>Goal: Rs <%= sv.targetamount %></span>
+                    <div class="delete" id="deleteBtn">
+                        <i class="fa-regular fa-trash-can trash-icon"></i>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    <% } else { %>
+        <div class="empty-message">No Saving Found</div>
+    <% } %>
+</div>
+</div>

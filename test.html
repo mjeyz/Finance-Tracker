@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Transaction Form</title>
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>finTracker — Transactions</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
     <style>
-        /* ----- Reset & Base ----- */
+        /* ——— Reset & Base ——— */
         * {
             margin: 0;
             padding: 0;
@@ -15,703 +22,706 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(145deg, #f6f9fc 0%, #eef2f7 100%);
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: #f4f6fb;
             display: flex;
-            align-items: center;
             justify-content: center;
-            padding: 2rem 1.5rem;
+            align-items: center;
+            min-height: 100vh;
+            padding: 24px;
         }
 
-        /* ----- Card Container ----- */
-        .form-card {
-            max-width: 720px;
+        /* ——— Card Container ——— */
+        .transaction-card {
+            max-width: 820px;
             width: 100%;
             background: #ffffff;
-            border-radius: 2rem;
-            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.12), 0 8px 24px rgba(0, 0, 0, 0.04);
-            padding: 2.5rem 2.8rem;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            padding: 32px 28px 36px;
             transition: all 0.2s ease;
         }
 
-        /* ----- Header ----- */
-        .form-header {
+        /* ——— Header ——— */
+        .card-header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            margin-bottom: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
-        .form-header h1 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #0b1a2e;
-            letter-spacing: -0.02em;
-        }
-
-        .form-header h1 i {
-            color: #2a7de1;
-            margin-right: 10px;
-        }
-
-        .badge {
-            background: #eef5ff;
-            color: #1a5bbf;
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.3rem 0.9rem;
-            border-radius: 100px;
-            letter-spacing: 0.3px;
-        }
-
-        /* ----- Form Elements ----- */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.2rem;
-        }
-
-        label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #1e2f44;
-            margin-bottom: 0.4rem;
-            letter-spacing: 0.2px;
-        }
-
-        label .required {
-            color: #d14545;
-            margin-left: 2px;
-        }
-
-        input,
-        select,
-        textarea {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            font-size: 0.95rem;
-            font-family: inherit;
-            background: #f8fafd;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 12px;
-            transition: 0.2s ease;
-            color: #0b1a2e;
-            outline: none;
-        }
-
-        input:focus,
-        select:focus,
-        textarea:focus {
-            border-color: #2a7de1;
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(42, 125, 225, 0.12);
-        }
-
-        input::placeholder,
-        textarea::placeholder {
-            color: #9aabbb;
-            font-weight: 400;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        /* ----- Type Toggle (Income / Expense) ----- */
-        .type-toggle {
-            display: flex;
-            gap: 0.75rem;
-            background: #f1f5f9;
-            border-radius: 14px;
-            padding: 0.4rem;
-            border: 1.5px solid #e2e8f0;
-        }
-
-        .type-option {
-            flex: 1;
-            text-align: center;
-            padding: 0.6rem 0.2rem;
-            border-radius: 11px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: 0.2s ease;
-            color: #4a5c72;
-            background: transparent;
-            border: none;
-            font-family: inherit;
-            letter-spacing: 0.2px;
-        }
-
-        .type-option i {
-            margin-right: 6px;
-        }
-
-        .type-option.active-income {
-            background: #ffffff;
-            color: #0b7e3d;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(11, 126, 61, 0.15);
-        }
-
-        .type-option.active-expense {
-            background: #ffffff;
-            color: #b13a3a;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(177, 58, 58, 0.15);
-        }
-
-        .type-option:hover:not(.active-income):not(.active-expense) {
-            background: #e9eef5;
-        }
-
-        /* ----- Amount input with currency symbol ----- */
-        .amount-wrapper {
-            position: relative;
-        }
-
-        .amount-wrapper .currency-symbol {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            font-weight: 600;
-            color: #4a5c72;
-            font-size: 1rem;
-        }
-
-        .amount-wrapper input {
-            padding-left: 2.2rem;
-        }
-
-        /* ----- Submit Button ----- */
-        .btn-submit {
-            width: 100%;
-            padding: 0.9rem 1.5rem;
-            background: #0b1a2e;
-            color: #fff;
-            font-weight: 600;
-            font-size: 1rem;
-            border: none;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: 0.2s ease;
+        .card-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: #0b1a33;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 10px;
-            margin-top: 0.5rem;
-            letter-spacing: 0.3px;
-            font-family: inherit;
         }
 
-        .btn-submit i {
-            font-size: 1.1rem;
+        .card-header h1 i {
+            color: #2a7de1;
+            font-size: 26px;
         }
 
-        .btn-submit:hover {
-            background: #142b44;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(11, 26, 46, 0.20);
-        }
-
-        .btn-submit:active {
-            transform: translateY(0);
-        }
-
-        /* ----- Transaction List (demo) ----- */
-        .transaction-list {
-            margin-top: 2.5rem;
-            border-top: 1.5px solid #eef2f7;
-            padding-top: 1.8rem;
-        }
-
-        .transaction-list .list-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .transaction-list .list-header h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #1e2f44;
-        }
-
-        .transaction-list .list-header span {
-            font-size: 0.8rem;
-            color: #6b7f94;
-            background: #f1f5f9;
-            padding: 0.2rem 0.8rem;
-            border-radius: 100px;
-        }
-
-        .tx-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #fafcff;
-            padding: 0.8rem 1rem;
-            border-radius: 12px;
-            border: 1px solid #eef2f7;
-            margin-bottom: 0.6rem;
-            transition: 0.15s ease;
-        }
-
-        .tx-item:hover {
-            background: #f5f9ff;
-            border-color: #dce5f0;
-        }
-
-        .tx-left {
+        .header-actions {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .tx-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
+        .btn-add {
+            background: #2a7de1;
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 10px 20px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 8px 16px -6px rgba(42, 125, 225, 0.30);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-add:hover {
+            background: #1b6ad0;
+        }
+        .btn-add:active {
+            transform: scale(0.96);
+        }
+
+        .btn-add i {
+            font-size: 14px;
+        }
+
+        /* ——— Summary Row ——— */
+        .summary-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 24px;
+            background: #f8faff;
+            border-radius: 20px;
+            padding: 16px 22px;
+            margin-bottom: 28px;
+            border: 1px solid #eef2f9;
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1f2a44;
+        }
+
+        .summary-item i {
+            font-size: 16px;
+            width: 28px;
+            height: 28px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
-            background: #eef5ff;
-            color: #1a5bbf;
+            background: #e9effa;
+            color: #2a7de1;
         }
 
-        .tx-icon.income {
-            background: #e3f3e9;
-            color: #0b7e3d;
+        .summary-item .amount {
+            font-weight: 700;
+            font-size: 16px;
         }
 
-        .tx-icon.expense {
-            background: #fce8e8;
-            color: #b13a3a;
+        .summary-item .amount.income {
+            color: #0f973d;
+        }
+        .summary-item .amount.expense {
+            color: #d43f34;
         }
 
-        .tx-info {
+        .summary-divider {
+            width: 1px;
+            height: 32px;
+            background: #dce3ef;
+        }
+
+        /* ——— Filters ——— */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .filter-search {
+            display: flex;
+            align-items: center;
+            background: #f2f5fc;
+            border-radius: 40px;
+            padding: 0 16px;
+            flex: 1 1 220px;
+            border: 1px solid transparent;
+            transition: 0.2s;
+        }
+
+        .filter-search:focus-within {
+            border-color: #2a7de1;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(42, 125, 225, 0.15);
+        }
+
+        .filter-search i {
+            color: #7a8aa3;
+            font-size: 15px;
+        }
+
+        .filter-search input {
+            border: none;
+            background: transparent;
+            padding: 12px 12px 12px 10px;
+            font-size: 14px;
+            font-weight: 400;
+            width: 100%;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            color: #0b1a33;
+        }
+
+        .filter-search input::placeholder {
+            color: #9aabbf;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 6px;
+            background: #f2f5fc;
+            padding: 4px;
+            border-radius: 40px;
+        }
+
+        .filter-tab {
+            border: none;
+            background: transparent;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #5a6e8a;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .filter-tab:hover {
+            color: #0b1a33;
+        }
+
+        .filter-tab.active {
+            background: #ffffff;
+            color: #0b1a33;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        /* ——— Transaction List ——— */
+        .transaction-list {
             display: flex;
             flex-direction: column;
+            gap: 6px;
+            margin-top: 4px;
         }
 
-        .tx-info .tx-category {
-            font-weight: 500;
-            color: #0b1a2e;
-            font-size: 0.9rem;
-        }
-
-        .tx-info .tx-meta {
-            font-size: 0.75rem;
-            color: #6b7f94;
+        .transaction-item {
             display: flex;
-            gap: 10px;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 18px;
+            border-radius: 18px;
+            background: #ffffff;
+            transition: background 0.15s, transform 0.1s;
+            border: 1px solid transparent;
+            cursor: default;
+        }
+
+        .transaction-item:hover {
+            background: #fafcff;
+            border-color: #eaf0fa;
+            transform: translateX(4px);
+        }
+
+        .transaction-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+            color: #fff;
+        }
+
+        .transaction-icon.income {
+            background: linear-gradient(135deg, #0f973d, #12b34a);
+        }
+        .transaction-icon.expense {
+            background: linear-gradient(135deg, #d43f34, #e85a4a);
+        }
+        .transaction-icon.transfer {
+            background: linear-gradient(135deg, #6c7a9a, #8a9bb8);
+        }
+        .transaction-icon.shopping {
+            background: linear-gradient(135deg, #b9762b, #d49b3a);
+        }
+        .transaction-icon.food {
+            background: linear-gradient(135deg, #c06d4b, #dc8a67);
+        }
+        .transaction-icon.bills {
+            background: linear-gradient(135deg, #4f6a9c, #6f8bc2);
+        }
+        .transaction-icon.entertainment {
+            background: linear-gradient(135deg, #9b5e9b, #c07fc0);
+        }
+
+        .transaction-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .transaction-details .title {
+            font-weight: 600;
+            font-size: 15px;
+            color: #0b1a33;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .transaction-details .title .badge {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 2px 10px;
+            border-radius: 30px;
+            background: #eef2f9;
+            color: #4a5f7a;
+        }
+
+        .transaction-details .title .badge.pending {
+            background: #fef3d7;
+            color: #b47d2c;
+        }
+        .transaction-details .title .badge.completed {
+            background: #e0f3e6;
+            color: #0f7a34;
+        }
+        .transaction-details .title .badge.failed {
+            background: #fde8e5;
+            color: #b33a2e;
+        }
+
+        .transaction-details .sub {
+            font-size: 13px;
+            color: #7a8aa3;
+            margin-top: 3px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .transaction-details .sub i {
+            font-size: 12px;
+            margin-right: 4px;
+            color: #9aabbf;
+        }
+
+        .transaction-amount {
+            text-align: right;
+            flex-shrink: 0;
+            min-width: 80px;
+        }
+
+        .transaction-amount .amount {
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: -0.2px;
+        }
+
+        .transaction-amount .amount.income {
+            color: #0f973d;
+        }
+        .transaction-amount .amount.expense {
+            color: #d43f34;
+        }
+
+        .transaction-amount .amount .currency {
+            font-weight: 400;
+            font-size: 13px;
+            color: #8a9bb0;
+            margin-right: 2px;
+        }
+
+        .transaction-amount .meta {
+            font-size: 12px;
+            color: #9aabbf;
             margin-top: 2px;
         }
 
-        .tx-amount {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .tx-amount.income {
-            color: #0b7e3d;
-        }
-
-        .tx-amount.expense {
-            color: #b13a3a;
-        }
-
+        /* ——— Empty State (hidden by default) ——— */
         .empty-state {
-            text-align: center;
-            padding: 1.8rem 0.5rem;
-            color: #8a9eb0;
-            font-size: 0.9rem;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 48px 20px 36px;
+            color: #7a8aa3;
         }
 
         .empty-state i {
-            font-size: 2.2rem;
-            color: #d0dce8;
-            margin-bottom: 0.5rem;
-            display: block;
+            font-size: 48px;
+            color: #dce3ef;
+            margin-bottom: 16px;
+        }
+        .empty-state h3 {
+            font-weight: 600;
+            font-size: 18px;
+            color: #1f2a44;
+            margin-bottom: 4px;
+        }
+        .empty-state p {
+            font-size: 14px;
         }
 
-        /* ----- Responsive ----- */
+        /* ——— Responsive ——— */
         @media (max-width: 600px) {
-            .form-card {
-                padding: 1.8rem 1.2rem;
+            .transaction-card {
+                padding: 20px 16px 28px;
+                border-radius: 24px;
             }
 
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 0.8rem;
+            .card-header h1 {
+                font-size: 20px;
+            }
+            .btn-add {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+            .btn-add span {
+                display: none;
             }
 
-            .form-header h1 {
-                font-size: 1.4rem;
+            .summary-row {
+                padding: 14px 16px;
+                gap: 12px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .summary-divider {
+                display: none;
             }
 
-            .type-option {
-                font-size: 0.8rem;
-                padding: 0.5rem 0.2rem;
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-tabs {
+                justify-content: center;
+            }
+            .filter-tab {
+                padding: 6px 14px;
+                font-size: 12px;
             }
 
-            .tx-item {
+            .transaction-item {
+                padding: 12px 14px;
                 flex-wrap: wrap;
-                gap: 6px;
+                gap: 12px;
             }
-
-            .tx-left {
-                width: 100%;
+            .transaction-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
             }
-
-            .tx-amount {
+            .transaction-details .title {
+                font-size: 14px;
+            }
+            .transaction-amount {
+                min-width: 70px;
                 margin-left: auto;
             }
+            .transaction-amount .amount {
+                font-size: 15px;
+            }
         }
 
-        @media (max-width: 400px) {
-            .form-card {
-                padding: 1.2rem 0.8rem;
+        @media (max-width: 420px) {
+            .transaction-item {
+                flex-direction: row;
+                align-items: center;
             }
-
-            .type-toggle {
-                flex-direction: column;
-                gap: 0.4rem;
+            .transaction-details .sub {
+                font-size: 12px;
+                gap: 8px;
+                flex-wrap: wrap;
             }
-
-            .btn-submit {
-                font-size: 0.9rem;
-                padding: 0.8rem;
+            .transaction-amount .meta {
+                font-size: 11px;
             }
         }
     </style>
 </head>
 <body>
 
-<div class="form-card">
+    <div class="transaction-card">
 
-    <!-- Header -->
-    <div class="form-header">
-        <h1><i class="fas fa-receipt"></i> New Transaction</h1>
-        <span class="badge"><i class="far fa-calendar-alt"></i> Today</span>
-    </div>
-
-    <!-- Form -->
-    <form id="transactionForm" autocomplete="off">
-
-        <!-- Type Toggle -->
-        <div class="form-group">
-            <label>Transaction type <span class="required">*</span></label>
-            <div class="type-toggle" id="typeToggle">
-                <button type="button" class="type-option active-income" data-type="income">
-                    <i class="fas fa-arrow-up"></i> Income
-                </button>
-                <button type="button" class="type-option" data-type="expense">
-                    <i class="fas fa-arrow-down"></i> Expense
+        <!-- HEADER -->
+        <div class="card-header">
+            <h1>
+                <i class="fas fa-list-ul"></i>
+                Transactions
+            </h1>
+            <div class="header-actions">
+                <button class="btn-add">
+                    <i class="fas fa-plus"></i>
+                    <span>Add</span>
                 </button>
             </div>
-            <input type="hidden" name="type" id="transactionType" value="income"/>
         </div>
 
-        <!-- Row: Amount + Category -->
-        <div class="form-row">
-            <div class="form-group">
-                <label for="amount">Amount <span class="required">*</span></label>
-                <div class="amount-wrapper">
-                    <span class="currency-symbol">$</span>
-                    <input type="number" id="amount" name="amount" placeholder="0.00" step="0.01" min="0.01" required/>
+        <!-- SUMMARY -->
+        <div class="summary-row">
+            <div class="summary-item">
+                <i class="fas fa-wallet"></i>
+                Balance
+                <span class="amount" style="color:#0b1a33;">$8,420.50</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-item">
+                <i class="fas fa-arrow-up" style="background:#e1f5e8; color:#0f973d;"></i>
+                Income
+                <span class="amount income">+$4,250.00</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-item">
+                <i class="fas fa-arrow-down" style="background:#fde8e5; color:#d43f34;"></i>
+                Expenses
+                <span class="amount expense">-$2,380.00</span>
+            </div>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="filter-bar">
+            <div class="filter-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search transactions..." />
+            </div>
+            <div class="filter-tabs">
+                <button class="filter-tab active">All</button>
+                <button class="filter-tab">Income</button>
+                <button class="filter-tab">Expense</button>
+            </div>
+        </div>
+
+        <!-- TRANSACTION LIST -->
+        <div class="transaction-list">
+
+            <!-- Item 1 – Income -->
+            <div class="transaction-item">
+                <div class="transaction-icon income">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+                <div class="transaction-details">
+                    <div class="title">
+                        Salary deposit
+                        <span class="badge completed">completed</span>
+                    </div>
+                    <div class="sub">
+                        <span><i class="far fa-calendar-alt"></i> Apr 28, 2026</span>
+                        <span><i class="far fa-clock"></i> 09:30 AM</span>
+                        <span><i class="fas fa-tag"></i> Work</span>
+                    </div>
+                </div>
+                <div class="transaction-amount">
+                    <div class="amount income"><span class="currency">$</span>3,200.00</div>
+                    <div class="meta">+ deposit</div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="category">Category <span class="required">*</span></label>
-                <select id="category" name="category" required>
-                    <option value="" disabled selected>Select category</option>
-                    <option value="salary">Salary</option>
-                    <option value="freelance">Freelance</option>
-                    <option value="investment">Investment</option>
-                    <option value="food">Food & Dining</option>
-                    <option value="transport">Transport</option>
-                    <option value="shopping">Shopping</option>
-                    <option value="bills">Bills & Utilities</option>
-                    <option value="health">Health</option>
-                    <option value="entertainment">Entertainment</option>
-                    <option value="other">Other</option>
-                </select>
+
+            <!-- Item 2 – Expense (Shopping) -->
+            <div class="transaction-item">
+                <div class="transaction-icon shopping">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div class="transaction-details">
+                    <div class="title">
+                        Online shopping
+                        <span class="badge completed">completed</span>
+                    </div>
+                    <div class="sub">
+                        <span><i class="far fa-calendar-alt"></i> Apr 27, 2026</span>
+                        <span><i class="far fa-clock"></i> 02:15 PM</span>
+                        <span><i class="fas fa-tag"></i> Retail</span>
+                    </div>
+                </div>
+                <div class="transaction-amount">
+                    <div class="amount expense"><span class="currency">$</span>124.50</div>
+                    <div class="meta">• 3 items</div>
+                </div>
             </div>
-        </div>
 
-        <!-- Row: Date + Payment Method -->
-        <div class="form-row">
-            <div class="form-group">
-                <label for="date">Date <span class="required">*</span></label>
-                <input type="date" id="date" name="date" required/>
+            <!-- Item 3 – Expense (Food) -->
+            <div class="transaction-item">
+                <div class="transaction-icon food">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <div class="transaction-details">
+                    <div class="title">
+                        Dinner at The Grill
+                        <span class="badge completed">completed</span>
+                    </div>
+                    <div class="sub">
+                        <span><i class="far fa-calendar-alt"></i> Apr 26, 2026</span>
+                        <span><i class="far fa-clock"></i> 07:45 PM</span>
+                        <span><i class="fas fa-tag"></i> Food</span>
+                    </div>
+                </div>
+                <div class="transaction-amount">
+                    <div class="amount expense"><span class="currency">$</span>68.20</div>
+                    <div class="meta">• 2 people</div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="payment">Payment method</label>
-                <select id="payment" name="payment">
-                    <option value="cash">Cash</option>
-                    <option value="credit_card">Credit Card</option>
-                    <option value="debit_card">Debit Card</option>
-                    <option value="bank_transfer">Bank Transfer</option>
-                    <option value="paypal">PayPal</option>
-                    <option value="crypto">Cryptocurrency</option>
-                    <option value="other">Other</option>
-                </select>
+
+            <!-- Item 4 – Income (Freelance) -->
+            <div class="transaction-item">
+                <div class="transaction-icon income">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <div class="transaction-details">
+                    <div class="title">
+                        Freelance project
+                        <span class="badge pending">pending</span>
+                    </div>
+                    <div class="sub">
+                        <span><i class="far fa-calendar-alt"></i> Apr 25, 2026</span>
+                        <span><i class="far fa-clock"></i> 11:20 AM</span>
+                        <span><i class="fas fa-tag"></i> Design</span>
+                    </div>
+                </div>
+                <div class="transaction-amount">
+                    <div class="amount income"><span class="currency">$</span>480.00</div>
+                    <div class="meta">• invoice #102</div>
+                </div>
             </div>
+
+            <!-- Item 5 – Expense (Bills) -->
+            <div class="transaction-item">
+                <div class="transaction-icon bills">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="transaction-details">
+                    <div class="title">
+                        Electricity bill
+                        <span class="badge completed">completed</span>
+                    </div>
+                    <div class="sub">
+                        <span><i class="far fa-calendar-alt"></i> Apr 24, 2026</span>
+                        <span><i class="far fa-clock"></i> 08:00 AM</span>
+                        <span><i class="fas fa-tag"></i> Utilities</span>
+                    </div>
+                </div>
+                <div class="transaction-amount">
+                    <div class="amount expense"><span class="currency">$</span>89.00</div>
+                    <div class="meta">• monthly</div>
+                </div>
+            </div>
+
+            <!-- Item 6 – Transfer (between accounts) -->
+            <div class="transaction-item">
+                <div class="transaction-icon transfer">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div class="transaction-details">
+                    <div class="title">
+                        Transfer to Savings
+                        <span class="badge completed">completed</span>
+                    </div>
+                    <div class="sub">
+                        <span><i class="far fa-calendar-alt"></i> Apr 23, 2026</span>
+                        <span><i class="far fa-clock"></i> 04:00 PM</span>
+                        <span><i class="fas fa-tag"></i> Transfer</span>
+                    </div>
+                </div>
+                <div class="transaction-amount">
+                    <div class="amount expense"><span class="currency">$</span>500.00</div>
+                    <div class="meta">→ savings</div>
+                </div>
+            </div>
+
+            <!-- Item 7 – Expense (Entertainment) -->
+            <div class="transaction-item">
+                <div class="transaction-icon entertainment">
+                    <i class="fas fa-film"></i>
+                </div>
+                <div class="transaction-details">
+                    <div class="title">
+                        Cinema & snacks
+                        <span class="badge failed">failed</span>
+                    </div>
+                    <div class="sub">
+                        <span><i class="far fa-calendar-alt"></i> Apr 22, 2026</span>
+                        <span><i class="far fa-clock"></i> 08:30 PM</span>
+                        <span><i class="fas fa-tag"></i> Entertainment</span>
+                    </div>
+                </div>
+                <div class="transaction-amount">
+                    <div class="amount expense"><span class="currency">$</span>32.50</div>
+                    <div class="meta">• declined</div>
+                </div>
+            </div>
+
+            <!-- Item 8 – Income (Bonus) -->
+            <div class="transaction-item">
+                <div class="transaction-icon income">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="transaction-details">
+                    <div class="title">
+                        Performance bonus
+                        <span class="badge completed">completed</span>
+                    </div>
+                    <div class="sub">
+                        <span><i class="far fa-calendar-alt"></i> Apr 20, 2026</span>
+                        <span><i class="far fa-clock"></i> 10:00 AM</span>
+                        <span><i class="fas fa-tag"></i> Work</span>
+                    </div>
+                </div>
+                <div class="transaction-amount">
+                    <div class="amount income"><span class="currency">$</span>570.00</div>
+                    <div class="meta">+ Q2 bonus</div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- Note -->
-        <div class="form-group">
-            <label for="note">Note</label>
-            <textarea id="note" name="note" placeholder="Add a note (optional)"></textarea>
+        <!-- Empty state (hidden) -->
+        <div class="empty-state">
+            <i class="fas fa-receipt"></i>
+            <h3>No transactions found</h3>
+            <p>Try adjusting your search or filter.</p>
         </div>
 
-        <!-- Submit -->
-        <button type="submit" class="btn-submit">
-            <i class="fas fa-plus-circle"></i> Add Transaction
-        </button>
-    </form>
-
-    <!-- Transaction List (demo preview) -->
-    <div class="transaction-list">
-        <div class="list-header">
-            <h3><i class="fas fa-list-ul" style="margin-right: 8px; color:#2a7de1;"></i>Recent transactions</h3>
-            <span>3 entries</span>
-        </div>
-
-        <div id="transactionList">
-            <!-- Items will be injected by JS -->
-        </div>
     </div>
-
-</div>
-
-<script>
-    (function () {
-        'use strict';
-
-        // ----- DOM refs -----
-        const form = document.getElementById('transactionForm');
-        const typeToggle = document.getElementById('typeToggle');
-        const typeInput = document.getElementById('transactionType');
-        const amountInput = document.getElementById('amount');
-        const categorySelect = document.getElementById('category');
-        const dateInput = document.getElementById('date');
-        const paymentSelect = document.getElementById('payment');
-        const noteInput = document.getElementById('note');
-        const listContainer = document.getElementById('transactionList');
-
-        // ----- Set default date to today -----
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.value = today;
-
-        // ----- Type toggle logic -----
-        const typeOptions = typeToggle.querySelectorAll('.type-option');
-
-        function setActiveType(type) {
-            typeOptions.forEach(btn => {
-                btn.classList.remove('active-income', 'active-expense');
-                if (btn.dataset.type === type) {
-                    btn.classList.add(type === 'income' ? 'active-income' : 'active-expense');
-                }
-            });
-            typeInput.value = type;
-        }
-
-        typeOptions.forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                const type = this.dataset.type;
-                setActiveType(type);
-            });
-        });
-
-        // ----- Sample data (initial) -----
-        let transactions = [{
-            id: 1,
-            type: 'income',
-            amount: 2450.00,
-            category: 'Salary',
-            date: '2026-07-24',
-            payment: 'Bank Transfer',
-            note: 'Monthly salary'
-        }, {
-            id: 2,
-            type: 'expense',
-            amount: 128.50,
-            category: 'Food & Dining',
-            date: '2026-07-25',
-            payment: 'Credit Card',
-            note: 'Dinner at Stefano\'s'
-        }, {
-            id: 3,
-            type: 'expense',
-            amount: 45.00,
-            category: 'Transport',
-            date: '2026-07-26',
-            payment: 'Debit Card',
-            note: 'Gas station'
-        }];
-
-        let nextId = 4;
-
-        // ----- Render list -----
-        function renderTransactions() {
-            if (transactions.length === 0) {
-                listContainer.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-inbox"></i>
-                            No transactions yet — add one above!
-                        </div>
-                    `;
-                return;
-            }
-
-            let html = '';
-            // show latest first
-            const sorted = [...transactions].reverse();
-            sorted.forEach(tx => {
-                const isIncome = tx.type === 'income';
-                const iconClass = isIncome ? 'income' : 'expense';
-                const icon = isIncome ? 'fa-arrow-up' : 'fa-arrow-down';
-                const sign = isIncome ? '+' : '-';
-                const amountClass = isIncome ? 'income' : 'expense';
-
-                const dateObj = new Date(tx.date + 'T00:00:00');
-                const dateStr = dateObj.toLocaleDateString('en-US', {
-                    month: 'short', day: 'numeric',
-                    year: 'numeric'
-                });
-
-                html += `
-                        <div class="tx-item">
-                            <div class="tx-left">
-                                <div class="tx-icon ${iconClass}">
-                                    <i class="fas ${icon}"></i>
-                                </div>
-                                <div class="tx-info">
-                                    <span class="tx-category">${tx.category}</span>
-                                    <span class="tx-meta">
-                                        <span><i class="far fa-calendar-alt"></i> ${dateStr}</span>
-                                        <span><i class="fas fa-credit-card"></i> ${tx.payment || '—'}</span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="tx-amount ${amountClass}">
-                                ${sign}$${tx.amount.toFixed(2)}
-                            </div>
-                        </div>
-                    `;
-            });
-
-            listContainer.innerHTML = html;
-            // update badge count
-            const badge = document.querySelector('.list-header span');
-            if (badge) badge.textContent = `${transactions.length} entries`;
-        }
-
-        // ----- Add transaction -----
-        function addTransaction(event) {
-            event.preventDefault();
-
-            // Gather data
-            const type = typeInput.value;
-            const amount = parseFloat(amountInput.value);
-            const category = categorySelect.value;
-            const date = dateInput.value;
-            const payment = paymentSelect.value;
-            const note = noteInput.value.trim();
-
-            // Validations
-            if (!amount || amount <= 0) {
-                alert('Please enter a valid amount greater than 0.');
-                amountInput.focus();
-                return;
-            }
-
-            if (!category) {
-                alert('Please select a category.');
-                categorySelect.focus();
-                return;
-            }
-
-            if (!date) {
-                alert('Please select a date.');
-                dateInput.focus();
-                return;
-            }
-
-            // Create transaction object
-            const newTx = {
-                id: nextId++,
-                type: type,
-                amount: amount,
-                category: category,
-                date: date,
-                payment: payment,
-                note: note || '—'
-            };
-
-            transactions.push(newTx);
-            renderTransactions();
-
-            // Reset form (keep type and date)
-            amountInput.value = '';
-            categorySelect.value = '';
-            paymentSelect.value = 'cash';
-            noteInput.value = '';
-            // keep date as today or whatever was set
-            // keep type as is
-
-            // Re-focus amount for quick entry
-            amountInput.focus();
-
-            // Optional: subtle feedback
-            const submitBtn = form.querySelector('.btn-submit');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Added!';
-            submitBtn.style.background = '#0b7e3d';
-            setTimeout(() => {
-                submitBtn.innerHTML = originalText;
-                submitBtn.style.background = '';
-            }, 1200);
-        }
-
-        // ----- Form submit -----
-        form.addEventListener('submit', addTransaction);
-
-        // ----- Init render -----
-        renderTransactions();
-
-        // ----- Set default active type (income) -----
-        setActiveType('income');
-
-        // ----- Keyboard shortcut: press "i" or "e" to toggle type -----
-        document.addEventListener('keydown', function (e) {
-            // only if not inside input/textarea
-            const tag = e.target.tagName.toLowerCase();
-            if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
-
-            if (e.key === 'i' || e.key === 'I') {
-                e.preventDefault();
-                setActiveType('income');
-            } else if (e.key === 'e' || e.key === 'E') {
-                e.preventDefault();
-                setActiveType('expense');
-            }
-        });
-
-    })();
-</script>
 
 </body>
 </html>
