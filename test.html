@@ -3,725 +3,772 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>finTracker — Transactions</title>
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-
-    <!-- Font Awesome 6 (free) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
+    <title>Calendar Dashboard</title>
+    <!-- Font Awesome for icons (optional but adds polish) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-        /* ——— Reset & Base ——— */
+        /* ---------- RESET & BASE ---------- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: #f4f6fb;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: #f0f2f5;
             min-height: 100vh;
-            padding: 24px;
-        }
-
-        /* ——— Card Container ——— */
-        .transaction-card {
-            max-width: 820px;
-            width: 100%;
-            background: #ffffff;
-            border-radius: 32px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-            padding: 32px 28px 36px;
-            transition: all 0.2s ease;
-        }
-
-        /* ——— Header ——— */
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .card-header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -0.3px;
-            color: #0b1a33;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card-header h1 i {
-            color: #2a7de1;
-            font-size: 26px;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .btn-add {
-            background: #2a7de1;
-            border: none;
-            color: #fff;
-            font-weight: 600;
-            font-size: 14px;
-            padding: 10px 20px;
-            border-radius: 40px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-            box-shadow: 0 8px 16px -6px rgba(42, 125, 225, 0.30);
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-add:hover {
-            background: #1b6ad0;
-        }
-        .btn-add:active {
-            transform: scale(0.96);
-        }
-
-        .btn-add i {
-            font-size: 14px;
-        }
-
-        /* ——— Summary Row ——— */
-        .summary-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px 24px;
-            background: #f8faff;
-            border-radius: 20px;
-            padding: 16px 22px;
-            margin-bottom: 28px;
-            border: 1px solid #eef2f9;
-        }
-
-        .summary-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #1f2a44;
-        }
-
-        .summary-item i {
-            font-size: 16px;
-            width: 28px;
-            height: 28px;
-            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #e9effa;
-            color: #2a7de1;
+            padding: 20px;
         }
 
-        .summary-item .amount {
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .summary-item .amount.income {
-            color: #0f973d;
-        }
-        .summary-item .amount.expense {
-            color: #d43f34;
-        }
-
-        .summary-divider {
-            width: 1px;
-            height: 32px;
-            background: #dce3ef;
-        }
-
-        /* ——— Filters ——— */
-        .filter-bar {
+        /* ---------- MAIN CARD ---------- */
+        .calendar-dashboard {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
             display: flex;
             flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 14px;
-            margin-bottom: 24px;
+            transition: all 0.2s;
         }
 
-        .filter-search {
-            display: flex;
-            align-items: center;
-            background: #f2f5fc;
-            border-radius: 40px;
-            padding: 0 16px;
-            flex: 1 1 220px;
-            border: 1px solid transparent;
-            transition: 0.2s;
+        /* ---------- SIDEBAR (Upcoming Events) ---------- */
+        .sidebar {
+            width: 280px;
+            background: #f8faff;
+            padding: 32px 24px 28px;
+            border-right: 1px solid #eef1f6;
+            flex-shrink: 0;
         }
 
-        .filter-search:focus-within {
-            border-color: #2a7de1;
-            background: #ffffff;
-            box-shadow: 0 0 0 3px rgba(42, 125, 225, 0.15);
-        }
-
-        .filter-search i {
-            color: #7a8aa3;
-            font-size: 15px;
-        }
-
-        .filter-search input {
-            border: none;
-            background: transparent;
-            padding: 12px 12px 12px 10px;
+        .sidebar-title {
             font-size: 14px;
-            font-weight: 400;
-            width: 100%;
-            outline: none;
-            font-family: 'Inter', sans-serif;
-            color: #0b1a33;
-        }
-
-        .filter-search input::placeholder {
-            color: #9aabbf;
-        }
-
-        .filter-tabs {
-            display: flex;
-            gap: 6px;
-            background: #f2f5fc;
-            padding: 4px;
-            border-radius: 40px;
-        }
-
-        .filter-tab {
-            border: none;
-            background: transparent;
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-size: 13px;
             font-weight: 600;
-            color: #5a6e8a;
-            cursor: pointer;
-            transition: 0.2s;
-            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #7a7f8a;
+            margin-bottom: 20px;
         }
 
-        .filter-tab:hover {
-            color: #0b1a33;
-        }
-
-        .filter-tab.active {
-            background: #ffffff;
-            color: #0b1a33;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
-
-        /* ——— Transaction List ——— */
-        .transaction-list {
+        .event-list {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            margin-top: 4px;
+            gap: 16px;
         }
 
-        .transaction-item {
+        .event-item {
             display: flex;
             align-items: center;
-            gap: 16px;
-            padding: 14px 18px;
-            border-radius: 18px;
+            gap: 14px;
+            padding: 10px 12px;
+            border-radius: 12px;
             background: #ffffff;
-            transition: background 0.15s, transform 0.1s;
-            border: 1px solid transparent;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+            border: 1px solid #eef1f6;
+            transition: 0.15s;
             cursor: default;
         }
 
-        .transaction-item:hover {
-            background: #fafcff;
-            border-color: #eaf0fa;
-            transform: translateX(4px);
+        .event-item:hover {
+            border-color: #d0d7e5;
+            background: #fcfdff;
         }
 
-        .transaction-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
+        /* coloured dots */
+        .event-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
             flex-shrink: 0;
-            color: #fff;
         }
 
-        .transaction-icon.income {
-            background: linear-gradient(135deg, #0f973d, #12b34a);
+        .event-dot.orange {
+            background: #f97316;
         }
-        .transaction-icon.expense {
-            background: linear-gradient(135deg, #d43f34, #e85a4a);
+        .event-dot.green {
+            background: #22c55e;
         }
-        .transaction-icon.transfer {
-            background: linear-gradient(135deg, #6c7a9a, #8a9bb8);
+        .event-dot.blue {
+            background: #3b82f6;
         }
-        .transaction-icon.shopping {
-            background: linear-gradient(135deg, #b9762b, #d49b3a);
+        .event-dot.purple {
+            background: #8b5cf6;
         }
-        .transaction-icon.food {
-            background: linear-gradient(135deg, #c06d4b, #dc8a67);
+        .event-dot.pink {
+            background: #ec4899;
         }
-        .transaction-icon.bills {
-            background: linear-gradient(135deg, #4f6a9c, #6f8bc2);
+        .event-dot.teal {
+            background: #14b8a6;
         }
-        .transaction-icon.entertainment {
-            background: linear-gradient(135deg, #9b5e9b, #c07fc0);
+        .event-dot.red {
+            background: #ef4444;
         }
 
-        .transaction-details {
+        .event-info {
             flex: 1;
             min-width: 0;
         }
 
-        .transaction-details .title {
-            font-weight: 600;
+        .event-name {
             font-size: 15px;
-            color: #0b1a33;
-            letter-spacing: -0.2px;
+            font-weight: 500;
+            color: #1e1f28;
+            line-height: 1.3;
+        }
+
+        .event-sub {
+            font-size: 12px;
+            color: #8b90a0;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .event-date-badge {
+            font-size: 12px;
+            font-weight: 500;
+            color: #4b4f5e;
+            background: #f0f2f6;
+            padding: 4px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        /* ---------- MAIN CALENDAR ---------- */
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 32px 28px 28px;
+            background: #ffffff;
+        }
+
+        /* header / month picker */
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .month-year {
+            font-size: 22px;
+            font-weight: 600;
+            color: #0b0c12;
+            letter-spacing: -0.3px;
+        }
+
+        .month-year span {
+            color: #7a7f8a;
+            font-weight: 400;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .nav-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            border: 1px solid #e4e8ef;
+            background: #ffffff;
+            color: #2d313e;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            background: #f3f6fc;
+            border-color: #c8d0df;
+        }
+
+        .nav-btn:active {
+            background: #e6ebf5;
+        }
+
+        /* weekday headers */
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #7a7f8a;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 12px;
+            padding: 0 4px;
+        }
+
+        /* days grid */
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .day-cell {
+            aspect-ratio: 1 / 1;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 500;
+            color: #1e1f28;
+            background: #ffffff;
+            transition: 0.1s;
+            position: relative;
+            cursor: default;
+            padding: 4px 0;
+            min-height: 52px;
+        }
+
+        .day-cell.other-month {
+            color: #b8bdc9;
+        }
+
+        .day-cell.today {
+            background: #eef3fe;
+            font-weight: 600;
+            color: #1a4cba;
+        }
+
+        /* event indicators inside day cells */
+        .day-cell .indicators {
+            display: flex;
+            gap: 3px;
+            margin-top: 2px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .day-cell .indicator-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .indicator-dot.orange {
+            background: #f97316;
+        }
+        .indicator-dot.green {
+            background: #22c55e;
+        }
+        .indicator-dot.blue {
+            background: #3b82f6;
+        }
+        .indicator-dot.purple {
+            background: #8b5cf6;
+        }
+        .indicator-dot.pink {
+            background: #ec4899;
+        }
+        .indicator-dot.teal {
+            background: #14b8a6;
+        }
+        .indicator-dot.red {
+            background: #ef4444;
+        }
+
+        /* ---------- LEGEND ---------- */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px 28px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #eef1f6;
+        }
+
+        .legend-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .transaction-details .title .badge {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            padding: 2px 10px;
-            border-radius: 30px;
-            background: #eef2f9;
-            color: #4a5f7a;
-        }
-
-        .transaction-details .title .badge.pending {
-            background: #fef3d7;
-            color: #b47d2c;
-        }
-        .transaction-details .title .badge.completed {
-            background: #e0f3e6;
-            color: #0f7a34;
-        }
-        .transaction-details .title .badge.failed {
-            background: #fde8e5;
-            color: #b33a2e;
-        }
-
-        .transaction-details .sub {
             font-size: 13px;
-            color: #7a8aa3;
-            margin-top: 3px;
+            font-weight: 450;
+            color: #2d313e;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.orange {
+            background: #f97316;
+        }
+        .legend-dot.green {
+            background: #22c55e;
+        }
+        .legend-dot.blue {
+            background: #3b82f6;
+        }
+        .legend-dot.purple {
+            background: #8b5cf6;
+        }
+        .legend-dot.pink {
+            background: #ec4899;
+        }
+        .legend-dot.teal {
+            background: #14b8a6;
+        }
+        .legend-dot.red {
+            background: #ef4444;
+        }
+
+        /* ---------- TIP ---------- */
+        .tip {
+            margin-top: 18px;
+            padding: 14px 18px;
+            background: #f7f9fe;
+            border-radius: 14px;
+            font-size: 14px;
+            color: #3d4353;
             display: flex;
             align-items: center;
-            gap: 14px;
-            flex-wrap: wrap;
+            gap: 10px;
+            border: 1px solid #eaeef7;
         }
 
-        .transaction-details .sub i {
-            font-size: 12px;
-            margin-right: 4px;
-            color: #9aabbf;
-        }
-
-        .transaction-amount {
-            text-align: right;
-            flex-shrink: 0;
-            min-width: 80px;
-        }
-
-        .transaction-amount .amount {
-            font-weight: 700;
-            font-size: 16px;
-            letter-spacing: -0.2px;
-        }
-
-        .transaction-amount .amount.income {
-            color: #0f973d;
-        }
-        .transaction-amount .amount.expense {
-            color: #d43f34;
-        }
-
-        .transaction-amount .amount .currency {
-            font-weight: 400;
-            font-size: 13px;
-            color: #8a9bb0;
-            margin-right: 2px;
-        }
-
-        .transaction-amount .meta {
-            font-size: 12px;
-            color: #9aabbf;
-            margin-top: 2px;
-        }
-
-        /* ——— Empty State (hidden by default) ——— */
-        .empty-state {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            padding: 48px 20px 36px;
-            color: #7a8aa3;
-        }
-
-        .empty-state i {
-            font-size: 48px;
-            color: #dce3ef;
-            margin-bottom: 16px;
-        }
-        .empty-state h3 {
-            font-weight: 600;
+        .tip i {
+            color: #3b82f6;
             font-size: 18px;
-            color: #1f2a44;
-            margin-bottom: 4px;
-        }
-        .empty-state p {
-            font-size: 14px;
         }
 
-        /* ——— Responsive ——— */
-        @media (max-width: 600px) {
-            .transaction-card {
-                padding: 20px 16px 28px;
-                border-radius: 24px;
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 820px) {
+            .sidebar {
+                width: 100%;
+                border-right: 0;
+                border-bottom: 1px solid #eef1f6;
+                padding: 24px 20px 20px;
             }
 
-            .card-header h1 {
-                font-size: 20px;
+            .main {
+                padding: 24px 18px 20px;
             }
-            .btn-add {
-                padding: 8px 16px;
+
+            .month-year {
+                font-size: 19px;
+            }
+
+            .day-cell {
+                font-size: 14px;
+                min-height: 44px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .calendar-dashboard {
+                border-radius: 18px;
+            }
+
+            .sidebar {
+                padding: 18px 14px 16px;
+            }
+
+            .main {
+                padding: 18px 12px 16px;
+            }
+
+            .day-cell {
                 font-size: 13px;
-            }
-            .btn-add span {
-                display: none;
-            }
-
-            .summary-row {
-                padding: 14px 16px;
-                gap: 12px;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .summary-divider {
-                display: none;
+                min-height: 38px;
+                border-radius: 10px;
             }
 
-            .filter-bar {
-                flex-direction: column;
-                align-items: stretch;
+            .weekdays {
+                font-size: 11px;
             }
-            .filter-tabs {
-                justify-content: center;
+
+            .legend {
+                gap: 10px 16px;
             }
-            .filter-tab {
-                padding: 6px 14px;
+
+            .legend-item {
                 font-size: 12px;
             }
 
-            .transaction-item {
+            .tip {
+                font-size: 13px;
                 padding: 12px 14px;
                 flex-wrap: wrap;
-                gap: 12px;
-            }
-            .transaction-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
-            }
-            .transaction-details .title {
-                font-size: 14px;
-            }
-            .transaction-amount {
-                min-width: 70px;
-                margin-left: auto;
-            }
-            .transaction-amount .amount {
-                font-size: 15px;
             }
         }
 
-        @media (max-width: 420px) {
-            .transaction-item {
-                flex-direction: row;
-                align-items: center;
-            }
-            .transaction-details .sub {
-                font-size: 12px;
-                gap: 8px;
-                flex-wrap: wrap;
-            }
-            .transaction-amount .meta {
-                font-size: 11px;
+        /* small extra: hide indicators text on very small screens */
+        @media (max-width: 400px) {
+            .day-cell .indicators .indicator-dot {
+                width: 5px;
+                height: 5px;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="transaction-card">
+    <div class="calendar-dashboard">
 
-        <!-- HEADER -->
-        <div class="card-header">
-            <h1>
-                <i class="fas fa-list-ul"></i>
-                Transactions
-            </h1>
-            <div class="header-actions">
-                <button class="btn-add">
-                    <i class="fas fa-plus"></i>
-                    <span>Add</span>
-                </button>
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar">
+            <div class="sidebar-title">📌 Upcoming Events</div>
+            <div class="event-list" id="eventList">
+                <!-- Populated by JavaScript -->
             </div>
-        </div>
+        </aside>
 
-        <!-- SUMMARY -->
-        <div class="summary-row">
-            <div class="summary-item">
-                <i class="fas fa-wallet"></i>
-                Balance
-                <span class="amount" style="color:#0b1a33;">$8,420.50</span>
-            </div>
-            <div class="summary-divider"></div>
-            <div class="summary-item">
-                <i class="fas fa-arrow-up" style="background:#e1f5e8; color:#0f973d;"></i>
-                Income
-                <span class="amount income">+$4,250.00</span>
-            </div>
-            <div class="summary-divider"></div>
-            <div class="summary-item">
-                <i class="fas fa-arrow-down" style="background:#fde8e5; color:#d43f34;"></i>
-                Expenses
-                <span class="amount expense">-$2,380.00</span>
-            </div>
-        </div>
-
-        <!-- FILTERS -->
-        <div class="filter-bar">
-            <div class="filter-search">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search transactions..." />
-            </div>
-            <div class="filter-tabs">
-                <button class="filter-tab active">All</button>
-                <button class="filter-tab">Income</button>
-                <button class="filter-tab">Expense</button>
-            </div>
-        </div>
-
-        <!-- TRANSACTION LIST -->
-        <div class="transaction-list">
-
-            <!-- Item 1 – Income -->
-            <div class="transaction-item">
-                <div class="transaction-icon income">
-                    <i class="fas fa-arrow-up"></i>
+        <!-- ===== MAIN CALENDAR ===== -->
+        <main class="main">
+            <!-- header -->
+            <div class="calendar-header">
+                <div class="month-year" id="monthYearDisplay">
+                    August <span>2026</span>
                 </div>
-                <div class="transaction-details">
-                    <div class="title">
-                        Salary deposit
-                        <span class="badge completed">completed</span>
-                    </div>
-                    <div class="sub">
-                        <span><i class="far fa-calendar-alt"></i> Apr 28, 2026</span>
-                        <span><i class="far fa-clock"></i> 09:30 AM</span>
-                        <span><i class="fas fa-tag"></i> Work</span>
-                    </div>
-                </div>
-                <div class="transaction-amount">
-                    <div class="amount income"><span class="currency">$</span>3,200.00</div>
-                    <div class="meta">+ deposit</div>
+                <div class="nav-buttons">
+                    <button class="nav-btn" id="prevMonthBtn" aria-label="Previous month">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="nav-btn" id="nextMonthBtn" aria-label="Next month">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
             </div>
 
-            <!-- Item 2 – Expense (Shopping) -->
-            <div class="transaction-item">
-                <div class="transaction-icon shopping">
-                    <i class="fas fa-shopping-bag"></i>
-                </div>
-                <div class="transaction-details">
-                    <div class="title">
-                        Online shopping
-                        <span class="badge completed">completed</span>
-                    </div>
-                    <div class="sub">
-                        <span><i class="far fa-calendar-alt"></i> Apr 27, 2026</span>
-                        <span><i class="far fa-clock"></i> 02:15 PM</span>
-                        <span><i class="fas fa-tag"></i> Retail</span>
-                    </div>
-                </div>
-                <div class="transaction-amount">
-                    <div class="amount expense"><span class="currency">$</span>124.50</div>
-                    <div class="meta">• 3 items</div>
-                </div>
+            <!-- weekday names -->
+            <div class="weekdays">
+                <span>Sun</span>
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
             </div>
 
-            <!-- Item 3 – Expense (Food) -->
-            <div class="transaction-item">
-                <div class="transaction-icon food">
-                    <i class="fas fa-utensils"></i>
-                </div>
-                <div class="transaction-details">
-                    <div class="title">
-                        Dinner at The Grill
-                        <span class="badge completed">completed</span>
-                    </div>
-                    <div class="sub">
-                        <span><i class="far fa-calendar-alt"></i> Apr 26, 2026</span>
-                        <span><i class="far fa-clock"></i> 07:45 PM</span>
-                        <span><i class="fas fa-tag"></i> Food</span>
-                    </div>
-                </div>
-                <div class="transaction-amount">
-                    <div class="amount expense"><span class="currency">$</span>68.20</div>
-                    <div class="meta">• 2 people</div>
-                </div>
+            <!-- days grid -->
+            <div class="days-grid" id="daysGrid">
+                <!-- Populated by JavaScript -->
             </div>
 
-            <!-- Item 4 – Income (Freelance) -->
-            <div class="transaction-item">
-                <div class="transaction-icon income">
-                    <i class="fas fa-laptop-code"></i>
-                </div>
-                <div class="transaction-details">
-                    <div class="title">
-                        Freelance project
-                        <span class="badge pending">pending</span>
-                    </div>
-                    <div class="sub">
-                        <span><i class="far fa-calendar-alt"></i> Apr 25, 2026</span>
-                        <span><i class="far fa-clock"></i> 11:20 AM</span>
-                        <span><i class="fas fa-tag"></i> Design</span>
-                    </div>
-                </div>
-                <div class="transaction-amount">
-                    <div class="amount income"><span class="currency">$</span>480.00</div>
-                    <div class="meta">• invoice #102</div>
-                </div>
+            <!-- legend -->
+            <div class="legend">
+                <span class="legend-item"><span class="legend-dot orange"></span> Bill</span>
+                <span class="legend-item"><span class="legend-dot green"></span> Payment</span>
+                <span class="legend-item"><span class="legend-dot blue"></span> Birthday</span>
+                <span class="legend-item"><span class="legend-dot purple"></span> Reminder</span>
+                <span class="legend-item"><span class="legend-dot pink"></span> Other</span>
+                <span class="legend-item"><span class="legend-dot teal"></span> Trip</span>
+                <span class="legend-item"><span class="legend-dot red"></span> Insurance</span>
             </div>
 
-            <!-- Item 5 – Expense (Bills) -->
-            <div class="transaction-item">
-                <div class="transaction-icon bills">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <div class="transaction-details">
-                    <div class="title">
-                        Electricity bill
-                        <span class="badge completed">completed</span>
-                    </div>
-                    <div class="sub">
-                        <span><i class="far fa-calendar-alt"></i> Apr 24, 2026</span>
-                        <span><i class="far fa-clock"></i> 08:00 AM</span>
-                        <span><i class="fas fa-tag"></i> Utilities</span>
-                    </div>
-                </div>
-                <div class="transaction-amount">
-                    <div class="amount expense"><span class="currency">$</span>89.00</div>
-                    <div class="meta">• monthly</div>
-                </div>
+            <!-- tip -->
+            <div class="tip">
+                <i class="fas fa-lightbulb"></i>
+                <span>Tip: Add your bills, payments and important dates to stay on track with your finances.</span>
             </div>
-
-            <!-- Item 6 – Transfer (between accounts) -->
-            <div class="transaction-item">
-                <div class="transaction-icon transfer">
-                    <i class="fas fa-exchange-alt"></i>
-                </div>
-                <div class="transaction-details">
-                    <div class="title">
-                        Transfer to Savings
-                        <span class="badge completed">completed</span>
-                    </div>
-                    <div class="sub">
-                        <span><i class="far fa-calendar-alt"></i> Apr 23, 2026</span>
-                        <span><i class="far fa-clock"></i> 04:00 PM</span>
-                        <span><i class="fas fa-tag"></i> Transfer</span>
-                    </div>
-                </div>
-                <div class="transaction-amount">
-                    <div class="amount expense"><span class="currency">$</span>500.00</div>
-                    <div class="meta">→ savings</div>
-                </div>
-            </div>
-
-            <!-- Item 7 – Expense (Entertainment) -->
-            <div class="transaction-item">
-                <div class="transaction-icon entertainment">
-                    <i class="fas fa-film"></i>
-                </div>
-                <div class="transaction-details">
-                    <div class="title">
-                        Cinema & snacks
-                        <span class="badge failed">failed</span>
-                    </div>
-                    <div class="sub">
-                        <span><i class="far fa-calendar-alt"></i> Apr 22, 2026</span>
-                        <span><i class="far fa-clock"></i> 08:30 PM</span>
-                        <span><i class="fas fa-tag"></i> Entertainment</span>
-                    </div>
-                </div>
-                <div class="transaction-amount">
-                    <div class="amount expense"><span class="currency">$</span>32.50</div>
-                    <div class="meta">• declined</div>
-                </div>
-            </div>
-
-            <!-- Item 8 – Income (Bonus) -->
-            <div class="transaction-item">
-                <div class="transaction-icon income">
-                    <i class="fas fa-star"></i>
-                </div>
-                <div class="transaction-details">
-                    <div class="title">
-                        Performance bonus
-                        <span class="badge completed">completed</span>
-                    </div>
-                    <div class="sub">
-                        <span><i class="far fa-calendar-alt"></i> Apr 20, 2026</span>
-                        <span><i class="far fa-clock"></i> 10:00 AM</span>
-                        <span><i class="fas fa-tag"></i> Work</span>
-                    </div>
-                </div>
-                <div class="transaction-amount">
-                    <div class="amount income"><span class="currency">$</span>570.00</div>
-                    <div class="meta">+ Q2 bonus</div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Empty state (hidden) -->
-        <div class="empty-state">
-            <i class="fas fa-receipt"></i>
-            <h3>No transactions found</h3>
-            <p>Try adjusting your search or filter.</p>
-        </div>
-
+        </main>
     </div>
+
+    <script>
+        // ============================================================
+        //  DATA
+        // ============================================================
+
+        // Events store: each event has date (YYYY-MM-DD), label, type (for colour)
+        // The type maps to a CSS class: orange, green, blue, purple, pink, teal, red
+        const eventsData = [{
+            date: '2026-08-05',
+            label: 'Electricity Bill',
+            type: 'orange',
+            sub: 'Pay electricity bill'
+        }, {
+            date: '2026-08-12',
+            label: 'Salary Receipt',
+            type: 'green',
+            sub: 'Monthly salary'
+        }, {
+            date: '2026-08-19',
+            label: "Ahmed's Birthday",
+            type: 'blue',
+            sub: 'Wish him a happy birthday'
+        }, {
+            date: '2026-08-22',
+            label: 'Credit Card',
+            type: 'purple',
+            sub: 'Pay HBL Credit'
+        }, {
+            date: '2026-08-27',
+            label: 'Health Insurance',
+            type: 'red',
+            sub: 'Pay annual health insurance'
+        }, {
+            date: '2026-08-29',
+            label: 'Trip to Murree',
+            type: 'teal',
+            sub: 'Weekend trip'
+        }, {
+            date: '2026-08-14',
+            label: 'Dentist Appointment',
+            type: 'pink',
+            sub: '2:30 PM'
+        }, {
+            date: '2026-08-01',
+            label: 'Rent Due',
+            type: 'orange',
+            sub: 'Monthly rent'
+        }, {
+            date: '2026-08-25',
+            label: 'Project Deadline',
+            type: 'purple',
+            sub: 'Submit report'
+        }, {
+            date: '2026-08-10',
+            label: 'Team Lunch',
+            type: 'green',
+            sub: '12:30 PM'
+        }, {
+            date: '2026-08-18',
+            label: 'Gym Session',
+            type: 'pink',
+            sub: '6:00 AM'
+        }, {
+            date: '2026-08-30',
+            label: 'Family Dinner',
+            type: 'teal',
+            sub: '7:00 PM'
+        }, ];
+
+        // ============================================================
+        //  STATE
+        // ============================================================
+
+        let currentYear = 2026;
+        let currentMonth = 7; // 0-based: August = 7
+
+        // DOM refs
+        const monthYearDisplay = document.getElementById('monthYearDisplay');
+        const daysGrid = document.getElementById('daysGrid');
+        const eventList = document.getElementById('eventList');
+        const prevBtn = document.getElementById('prevMonthBtn');
+        const nextBtn = document.getElementById('nextMonthBtn');
+
+        // ============================================================
+        //  HELPERS
+        // ============================================================
+
+        function pad(n) { return String(n).padStart(2, '0'); }
+
+        function dateKey(year, month, day) {
+            return `${year}-${pad(month + 1)}-${pad(day)}`;
+        }
+
+        function getEventsForDate(year, month, day) {
+            const key = dateKey(year, month, day);
+            return eventsData.filter(e => e.date === key);
+        }
+
+        function getMonthEvents(year, month) {
+            return eventsData.filter(e => {
+                const [y, m] = e.date.split('-').map(Number);
+                return y === year && m === month + 1;
+            });
+        }
+
+        // ============================================================
+        //  RENDER CALENDAR
+        // ============================================================
+
+        function renderCalendar(year, month) {
+            // Update header
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+            monthYearDisplay.innerHTML = `${monthNames[month]} <span>${year}</span>`;
+
+            // First day of month (0 = Sunday)
+            const firstDay = new Date(year, month, 1).getDay();
+            // Number of days in month
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            // Days in previous month
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+            // Build grid
+            let html = '';
+
+            // Previous month's trailing days
+            const startOffset = firstDay; // 0=Sun … 6=Sat
+            const prevMonthYear = month === 0 ? year - 1 : year;
+            const prevMonth = month === 0 ? 11 : month - 1;
+
+            for (let i = startOffset - 1; i >= 0; i--) {
+                const day = daysInPrevMonth - i;
+                const key = dateKey(prevMonthYear, prevMonth, day);
+                const events = getEventsForDate(prevMonthYear, prevMonth, day);
+                html += buildDayCell(day, 'other-month', events);
+            }
+
+            // Current month's days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const key = dateKey(year, month, day);
+                const events = getEventsForDate(year, month, day);
+                const isToday = (year === 2026 && month === 7 && day === 8); // Aug 8, 2026 as "today"
+                const cls = isToday ? 'today' : '';
+                html += buildDayCell(day, cls, events);
+            }
+
+            // Next month's leading days
+            const totalCells = startOffset + daysInMonth;
+            const remaining = (7 - (totalCells % 7)) % 7;
+            const nextMonthYear = month === 11 ? year + 1 : year;
+            const nextMonth = month === 11 ? 0 : month + 1;
+
+            for (let day = 1; day <= remaining; day++) {
+                const key = dateKey(nextMonthYear, nextMonth, day);
+                const events = getEventsForDate(nextMonthYear, nextMonth, day);
+                html += buildDayCell(day, 'other-month', events);
+            }
+
+            daysGrid.innerHTML = html;
+
+            // Render sidebar events (upcoming)
+            renderSidebar(year, month);
+        }
+
+        // Build a single day cell
+        function buildDayCell(day, className, events) {
+            // Build indicator dots
+            let indicatorsHtml = '';
+            if (events.length > 0) {
+                // Show up to 3 dots, then "+N"
+                const maxDots = 3;
+                const shown = events.slice(0, maxDots);
+                const extra = events.length - maxDots;
+
+                shown.forEach(ev => {
+                    indicatorsHtml += `<span class="indicator-dot ${ev.type}"></span>`;
+                });
+                if (extra > 0) {
+                    indicatorsHtml += `<span style="font-size:9px;color:#7a7f8a;font-weight:500;">+${extra}</span>`;
+                }
+            }
+
+            return `
+                <div class="day-cell ${className}">
+                    <span>${day}</span>
+                    ${indicatorsHtml ? `<div class="indicators">${indicatorsHtml}</div>` : ''}
+                </div>
+            `;
+        }
+
+        // ============================================================
+        //  RENDER SIDEBAR (upcoming events)
+        // ============================================================
+
+        function renderSidebar(year, month) {
+            // Get all events for this month, sort by date
+            const monthEvents = getMonthEvents(year, month);
+            // Sort by day
+            monthEvents.sort((a, b) => {
+                const da = parseInt(a.date.split('-')[2]);
+                const db = parseInt(b.date.split('-')[2]);
+                return da - db;
+            });
+
+            if (monthEvents.length === 0) {
+                eventList.innerHTML = `
+                    <div style="color:#8b90a0; font-size:14px; padding:8px 0;">
+                        No events this month
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            monthEvents.forEach(ev => {
+                const day = ev.date.split('-')[2];
+                // Format day with suffix
+                const dayNum = parseInt(day);
+                const suffix = ['th', 'st', 'nd', 'rd'][(dayNum % 10 > 3) ? 0 : dayNum % 10] || 'th';
+                const dayStr = `${dayNum}${suffix}`;
+
+                html += `
+                    <div class="event-item">
+                        <span class="event-dot ${ev.type}"></span>
+                        <div class="event-info">
+                            <div class="event-name">${ev.label}</div>
+                            <div class="event-sub">${ev.sub || ''}</div>
+                        </div>
+                        <span class="event-date-badge">${dayStr}</span>
+                    </div>
+                `;
+            });
+
+            eventList.innerHTML = html;
+        }
+
+        // ============================================================
+        //  NAVIGATION
+        // ============================================================
+
+        function goToPrevMonth() {
+            if (currentMonth === 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else {
+                currentMonth--;
+            }
+            renderCalendar(currentYear, currentMonth);
+        }
+
+        function goToNextMonth() {
+            if (currentMonth === 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else {
+                currentMonth++;
+            }
+            renderCalendar(currentYear, currentMonth);
+        }
+
+        // ============================================================
+        //  INIT
+        // ============================================================
+
+        // Set to August 2026 to match the design
+        currentYear = 2026;
+        currentMonth = 7; // August
+
+        renderCalendar(currentYear, currentMonth);
+
+        // Event listeners
+        prevBtn.addEventListener('click', goToPrevMonth);
+        nextBtn.addEventListener('click', goToNextMonth);
+
+        // Keyboard shortcuts (optional)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') goToPrevMonth();
+            if (e.key === 'ArrowRight') goToNextMonth();
+        });
+
+        console.log('📅 Calendar ready!');
+    </script>
 
 </body>
 </html>

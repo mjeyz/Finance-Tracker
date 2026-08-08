@@ -1,4 +1,203 @@
 <%- include ("partials/base.ejs") %>
 <%- include ("partials/sidebar.ejs") %>
 <%- include ("partials/top-navbar.ejs") %>
+<style>
+    .event-main {
+        margin-left: 250px;
+        margin-top: 64px;
+        padding: 28px;
+        min-height: calc(100vh - 64px);
+    }
 
+    .event-page {
+        width: 100%;
+        margin: 0  auto;
+    }
+
+    .event-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+        margin-bottom: 18px;
+    }
+
+    .event-heading {
+        display: grid;
+        gap: 0.35rem;
+    }
+
+    .event-title {
+        margin: 0;
+        font-size: 1.75rem;
+        line-height: 1.2;
+        font-weight: 800;
+        color: #24324a;
+    }
+
+    .event-subtitle {
+        margin: 0;
+        color: #718096;
+        font-size: 0.95rem;
+    }
+
+    .event-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .event-action {
+        border: 1px solid #dbe3ee;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+        height: 42px;
+    padding: 0 16px;
+    border-radius: 10px;
+    color: #24324a;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    cursor: pointer;
+    }
+
+    .event-action-primary {
+        background: linear-gradient(135deg, #2fb67c, #26a56f);
+    color: #fff;
+    border-color: transparent;
+    }
+
+    .event-action-ghost {
+        background: #fff;
+    }
+
+    .event-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 20px;
+    }
+
+    .event-summary-card {
+        border-radius: 14px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid #e3e9f2;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    padding: 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    min-height: 118px;
+    }
+
+    .event-summary__icon {
+        width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex: 0 0 auto;
+    }
+
+    .event-summary-content {
+        display: grid;
+        gap: 0.35rem;
+        min-width: 0;
+    }
+
+    .event-card-mete {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        color: #718096;
+        font-size: 0.88rem;
+        margin-top: 0.15rem;
+    }
+
+    .event-card-delta {
+        font-weight: 700;
+    }
+
+
+/*aman nullah arisen*/
+</style>
+<main class="event-main">
+    <section class="event-page">
+        <header class="event-header">
+            <div class="event-heading">
+                <h1 class="event-title">Events</h1>
+                <p class="event-subtitle">Stay organize and never miss important date</p>
+            </div>
+
+            <div class="event-actions">
+                <button class="event-action event-action-primary"><i class="bx bx-plus"></i> Add Event</button>
+                <button class="event-action event-action-ghost event-filter-btn"><i class="bx bx-filter-alt"></i>Filter</button>
+            </div>
+        </header>
+
+        <section class="event-summary-grid" aria-label="Events summaries">
+<!--            Upcoming Event-->
+            <article class="upcoming-event-summray-card event-summary-card">
+                <div class="event-summary__icon">
+                    <i class="bx bx-calender"></i>
+                </div>
+                <div class="event-summary-content">
+                    <span class="event-card-label">Upcoming Events</span>
+                    <strong class="event-card-value">5</strong>
+                    <div class="event-card-mete">
+                        <span>This Month</span>
+                        <span class="event-card-delta">+12</span>
+                    </div>
+                </div>
+            </article>
+<!--            Birthdays-->
+            <article class="birthday-event-summray-card event-summary-card">
+                <div class="event-summary__icon">
+                    <i class="bx bx-gift"></i>
+                </div>
+                <div class="event-summary-content">
+                    <span class="event-card-label">Birthdays</span>
+                    <strong class="event-card-value">2</strong>
+                    <div class="event-card-mete">
+                        <span>This Month</span>
+                        <span class="event-card-delta">+12</span>
+                    </div>
+                </div>
+            </article>
+<!--            Bill Reminder-->
+            <article class="bill-reminder-event-summray-card event-summary-card">
+                <div class="event-summary__icon">
+                    <i class="bx bx-bill"></i>
+                </div>
+                <div class="event-summary-content">
+                    <span class="event-card-label">Bill Reminders</span>
+                    <strong class="event-card-value">3</strong>
+                    <div class="event-card-mete">
+                        <span>This Month</span>
+                        <span class="event-card-delta">+10</span>
+                    </div>
+                </div>
+            </article>
+<!--            Total Event-->
+            <article class="total-event-summray-card event-summary-card">
+                <div class="event-summary__icon">
+                    <i class="bx bx-flag"></i>
+                </div>
+                <div class="event-summary-content">
+                    <span class="event-card-label">Total</span>
+                    <strong class="event-card-value">2</strong>
+                    <div class="event-card-mete">
+                        <span>This Month</span>
+                        <span class="event-card-delta">__</span>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </section>
+</main>
