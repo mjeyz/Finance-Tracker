@@ -11,7 +11,7 @@
 
     .event-page {
         width: 100%;
-        margin: 0  auto;
+        margin: 0 auto;
     }
 
     .event-header {
@@ -51,23 +51,23 @@
 
     .event-action {
         border: 1px solid #dbe3ee;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
         height: 42px;
-    padding: 0 16px;
-    border-radius: 10px;
-    color: #24324a;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    cursor: pointer;
+        padding: 0 16px;
+        border-radius: 10px;
+        color: #24324a;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        cursor: pointer;
     }
 
     .event-action-primary {
         background: linear-gradient(135deg, #2fb67c, #26a56f);
-    color: #fff;
-    border-color: transparent;
+        color: #fff;
+        border-color: transparent;
     }
 
     .event-action-ghost {
@@ -83,25 +83,25 @@
 
     .event-summary-card {
         border-radius: 14px;
-    background: rgba(255, 255, 255, 0.96);
-    border: 1px solid #e3e9f2;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
-    padding: 18px;
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    min-height: 118px;
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid #e3e9f2;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+        padding: 18px;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        min-height: 118px;
     }
 
     .event-summary__icon {
         width: 40px;
-    height: 40px;
-    border-radius: 999px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    flex: 0 0 auto;
+        height: 40px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        flex: 0 0 auto;
     }
 
     .event-summary-content {
@@ -125,7 +125,7 @@
     }
 
 
-/*aman nullah arisen*/
+    /*aman nullah arisen*/
 </style>
 <main class="event-main">
     <section class="event-page">
@@ -137,12 +137,13 @@
 
             <div class="event-actions">
                 <button class="event-action event-action-primary"><i class="bx bx-plus"></i> Add Event</button>
-                <button class="event-action event-action-ghost event-filter-btn"><i class="bx bx-filter-alt"></i>Filter</button>
+                <button class="event-action event-action-ghost event-filter-btn"><i class="bx bx-filter-alt"></i>Filter
+                </button>
             </div>
         </header>
 
         <section class="event-summary-grid" aria-label="Events summaries">
-<!--            Upcoming Event-->
+            <!--            Upcoming Event-->
             <article class="upcoming-event-summray-card event-summary-card">
                 <div class="event-summary__icon">
                     <i class="bx bx-calender"></i>
@@ -156,7 +157,7 @@
                     </div>
                 </div>
             </article>
-<!--            Birthdays-->
+            <!--            Birthdays-->
             <article class="birthday-event-summray-card event-summary-card">
                 <div class="event-summary__icon">
                     <i class="bx bx-gift"></i>
@@ -170,7 +171,7 @@
                     </div>
                 </div>
             </article>
-<!--            Bill Reminder-->
+            <!--            Bill Reminder-->
             <article class="bill-reminder-event-summray-card event-summary-card">
                 <div class="event-summary__icon">
                     <i class="bx bx-bill"></i>
@@ -184,7 +185,7 @@
                     </div>
                 </div>
             </article>
-<!--            Total Event-->
+            <!--            Total Event-->
             <article class="total-event-summray-card event-summary-card">
                 <div class="event-summary__icon">
                     <i class="bx bx-flag"></i>
@@ -199,5 +200,60 @@
                 </div>
             </article>
         </section>
+
+        <section class="event-content">
+            <div class="event-calender">
+                <div class="calender-header">
+                    <div class="calender-title">
+                        <span class="c-title">Calender</span>
+                    </div>
+                    <div class="calender-main">
+                        <button class="nav-btn" id="prevMonthBtn" aria-label="Previous month">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+
+                        <div class="month-year" id="monthYearDisplay">
+                            August <span class="year">2026</span>
+                        </div>
+
+                        <button class="nav-btn" id="nextMonthBtn" aria-label="Next month">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+
+                        <div class="today">Today</div>
+                    </div>
+                </div>
+
+                <div class="main-calender">
+                    <div class="weakdays">
+                        <span>Sun</span>
+                        <span>Mon</span>
+                        <span>Tue</span>
+                        <span>Wed</span>
+                        <span>Thu</span>
+                        <span>Fri</span>
+                        <span>Sat</span>
+                    </div>
+                    <div class="days-grid" id="daysGrid">
+
+                    </div>
+                    <div class="legend">
+                        <span class="legend-item"><span class="legend-dot orange"></span> Bill</span>
+                        <span class="legend-item"><span class="legend-dot green"></span> Payment</span>
+                        <span class="legend-item"><span class="legend-dot blue"></span> Birthday</span>
+                        <span class="legend-item"><span class="legend-dot purple"></span> Reminder</span>
+                        <span class="legend-item"><span class="legend-dot pink"></span> Other</span>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+          <div class="tip">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Tip</strong>: Add your bills, payment and important dates to stay on track with your finances.</span>
+            </div>
     </section>
 </main>
