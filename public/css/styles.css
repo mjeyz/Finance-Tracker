@@ -1583,6 +1583,7 @@ body {
 .event-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 1rem;
 }
 
 /*Event Calender*/
@@ -1619,7 +1620,7 @@ body {
 }
 
 .nav-btn:hover{
-    background-color: ;
+
 }
 
 .today {
@@ -1701,3 +1702,89 @@ body {
     margin-top: 1rem;
     background-color: #D0F0C0;
 }
+
+.upcoming-event-list {
+    background-color: #ffffff;
+    border: 1px solid #dbe3ee;
+    border-radius: 5px;
+    padding: 1rem;
+}
+
+.event-cantainer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.event-cantainer-header a {
+    text-decoration: none;
+    color: #2fb67c;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.upcoming-event-title {
+    font-weight: 600;
+}
+.event {
+    border: 1px solid #dbe3ee;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.event-icon {
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+    background-color: #2fb67c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    color: #214837;
+}
+
+.event-labels {
+    display: grid;
+    gap: 2px;
+}
+
+.event-labels .title {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.event-labels .subtitle {
+    font-size: 0.7rem;
+    color: dimgrey;
+    font-weight: bold;
+}
+
+.event-date {
+    display: grid;
+    gap: 2px;
+}
+
+.event-date .event-date {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.event-date .event-day {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: dimgrey;
+}
+
+.event-time {
+    background-color: rgb(47 182 124 / 0.79);
+    color: #214837;
+    border-radius: 5px;
+    padding: 3px 10px;
+}
+
+
