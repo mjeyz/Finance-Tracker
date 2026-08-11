@@ -1580,6 +1580,7 @@ body {
         gap: 10px;
     }
 }
+
 .event-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1619,7 +1620,7 @@ body {
     font-size: 0.8rem;
 }
 
-.nav-btn:hover{
+.nav-btn:hover {
 
 }
 
@@ -1726,6 +1727,7 @@ body {
 .upcoming-event-title {
     font-weight: 600;
 }
+
 .event {
     border: 1px solid #dbe3ee;
     border-radius: 5px;
@@ -1787,4 +1789,36 @@ body {
     padding: 3px 10px;
 }
 
+.event-div-1, .event-div-2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
 
+/* days grid */
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-top: none;
+}
+
+.day-cell {
+    aspect-ratio: 1 / 1;
+    /*border: 1px solid #dbe3ee;*/
+    border-top: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1e1f28;
+    background: #ffffff;
+    transition: 0.1s;
+    position: relative;
+    cursor: default;
+    padding: 4px 0;
+    min-height: 52px;
+
+}

@@ -504,3 +504,135 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Error loading chart data: ", error);
     }
 })
+
+
+// Calendar logic
+document.addEventListener("DOMContentLoaded", function () {
+// Start with today's date as the current visible month
+const today = new Date();
+let currentYear = today.getFullYear();
+let currentMonth = today.getMonth();
+
+
+//DOM refs
+const daysGrid = document.getElementById("daysGrid");
+const prevMonthBtn = document.getElementById("prevMonthBtn");
+const nextMonthBtn = document.getElementById("nextMonthBtn");
+const monthYearDisplay = document.getElementById("monthYearDisplay");
+
+// Month names constant
+const MONTH_NAMES = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+const pad = n => String(n).padStart(2, "0");
+const dateKey = (year, month, day) => `${year}-${pad(month + 1)}-${pad(day)}`;
+
+// Placeholder for event storage. Replace with real data-fetch when available.
+const EVENTS_BY_DATE = {}; // e.g. { '2026-08-08': [{type: 'green', title: 'Pay bill'}] }
+
+function getEventForDate(year, month, day) {
+    const key = dateKey(year, month, day);
+    const list = EVENTS_BY_DATE[key];
+    return Array.isArray(list) ? list : [];
+}
+
+function renderCalendar(year, month) {
+    if (!monthYearDisplay) return;
+    monthYearDisplay.innerHTML = `${MONTH_NAMES[month]} <span>${year}</span>`;
+
+    const firstDayOfWeek = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+    let html = '';
+
+    const prevYear = month === 0 ? year - 1 : year;
+    const prevMonth = month === 0 ? 11 : month - 1;
+
+    // Previous month's tail
+    for (let i = firstDayOfWeek - 1; i >= 0; i--) {
+        const day = daysInPrevMonth - i;
+        html += buildDayCell(day, "other-month", getEventForDate(prevYear, prevMonth, day));
+    }
+
+    // Current month
+    for (let day = 1; day <= daysInMonth; day++) {
+        const isToday = (year === today.getFullYear() && month === today.getMonth() && day === today.getDate());
+        const cls = isToday ? "today" : "";
+        html += buildDayCell(day, cls, getEventForDate(year, month, day));
+    }
+
+    // Next month's head to fill remaining cells
+    const totalCells = firstDayOfWeek + daysInMonth;
+    const remaining = (7 - (totalCells % 7)) % 7;
+    const nextYear = month === 11 ? year + 1 : year;
+    const nextMonth = month === 11 ? 0 : month + 1;
+    for (let day = 1; day <= remaining; day++) {
+        html += buildDayCell(day, 'other-month', getEventForDate(nextYear, nextMonth, day));
+    }
+
+    if (daysGrid) daysGrid.innerHTML = html;
+}
+
+
+function buildDayCell(day, className, events = []) {
+    let indicatorsHtml = '';
+
+    if (Array.isArray(events) && events.length > 0) {
+        const maxDots = 3;
+        const shown = events.slice(0, maxDots);
+        const extra = events.length - maxDots;
+
+        shown.forEach(ev => {
+            indicatorsHtml += `<span class="indicator-dot ${ev.type}"></span>`;
+        });
+
+        if (extra > 0) {
+            indicatorsHtml += `<span style="font-size: 9px; color: #7a7f8a;font-weight: 500;">+${extra}</span>`;
+        }
+    }
+
+    return `
+        <div class="day-cell ${className}">
+            <span>${day}</span>
+            ${indicatorsHtml ? `<div class="indicaters">${indicatorsHtml}</div>` : ''}
+        </div>
+    `;
+}
+
+
+// Navigation helpers
+function goToPrevMonth() {
+    currentMonth -= 1;
+    if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear -= 1;
+    }
+    renderCalendar(currentYear, currentMonth);
+}
+
+function goToNextMonth() {
+    currentMonth += 1;
+    if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear += 1;
+    }
+    renderCalendar(currentYear, currentMonth);
+}
+
+// Initial render and listeners
+renderCalendar(currentYear, currentMonth);
+
+if (prevMonthBtn) prevMonthBtn.addEventListener('click', goToPrevMonth);
+if (nextMonthBtn) nextMonthBtn.addEventListener('click', goToNextMonth);
+
+// Keyboard shortcuts (optional)
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') goToPrevMonth();
+    if (e.key === 'ArrowRight') goToNextMonth();
+});
+
+console.log('📅 Calendar ready!');
+})
