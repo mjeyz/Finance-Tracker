@@ -2,35 +2,153 @@
 <%- include ("partials/sidebar.ejs") %>
 <%- include ("partials/top-navbar.ejs") %>
 
-<!--  Saving List-->
-<div class="list-section saving-goals" id="savingList">
-    <% if ( saving.length > 0 ) { %>
-        <% for (let i=0; i < Math.min(saving.length, 2); i++) {%>
-            <% const sv = saving[i] %>
-            <%
-                const percent = (sv.savedamount / sv.targetamount) * 100;
-                const percentRounded = Math.min(100, Math.floor(percent));
-            %>
+<main class="saving-main event-main">
+    <section class="saving-page event-page">
+        <header class="event-header">
+            <div class="event-heading saving-heading">
+                <h1 class="event-title saving-title">Saving</h1>
+                <p class="event-subtitle saving-subtitle">Track your savings and achieve your financial goals</p>
+            </div>
 
-            <div class="goal-card" data-id="<%= sv.id %>">
-                <div class="goal-header">
-                    <span class="goal-name"><%= sv.goal %></span>
-                    <span class="goal-pct"><%= percentRounded %>%</span>
-                </div>
-                <div class="progress-track">
-                    <div class="progress-fill" style="width: <%= percentRounded %>%"></div>
-                </div>
-                <div class="goal-footer">
-                    <span>Rs <%= sv.savedamount %> saved</span>
-                    <span>Goal: Rs <%= sv.targetamount %></span>
-                    <div class="delete" id="deleteBtn">
-                        <i class="fa-regular fa-trash-can trash-icon"></i>
-                    </div>
+            <div class="event-actions saving-action">
+                <button class="event-action event-action-primary"><i class="bx bx-plus"></i> Create Goal</button>
+                <button class="event-action event-action-ghost event-filter-btn"><i class="bx bx-filter-alt"></i>Transfer
+                    to saving
+                </button>
+            </div>
+        </header>
+    </section>
+
+    <section class="event-summary-grid" aria-label="Events summaries">
+        <!--         Total saving-->
+        <article class="upcoming-event-summray-card event-summary-card total-saving">
+            <div class="event-summary__icon">
+                <i class="bx bx-calender"></i>
+            </div>
+            <div class="event-summary-content">
+                <span class="event-card-label saving-card-label">Total Saving</span>
+                <strong class="event-card-value saving-card-value"><strong>PKR</strong> 2,45000</strong>
+                <div class="event-card-mete">
+                    <span>This Month</span>
+                    <span class="event-card-delta">+12</span>
                 </div>
             </div>
-        <% } %>
-    <% } else { %>
-        <div class="empty-message">No Saving Found</div>
-    <% } %>
-</div>
-</div>
+        </article>
+        <!--            Birthdays-->
+        <article class="birthday-event-summray-card event-summary-card">
+            <div class="event-summary__icon">
+                <i class="bx bx-gift"></i>
+            </div>
+            <div class="event-summary-content">
+                <span class="event-card-label">This Month Saved</span>
+                <strong class="event-card-value">PKR 18,750</strong>
+                <div class="event-card-mete">
+                    <span>This Month</span>
+                    <span class="event-card-delta">+12</span>
+                </div>
+            </div>
+        </article>
+        <!--            Bill Reminder-->
+        <article class="bill-reminder-event-summray-card event-summary-card">
+            <div class="event-summary__icon">
+                <i class="bx bx-bill"></i>
+            </div>
+            <div class="event-summary-content">
+                <span class="event-card-label">Saving goals</span>
+                <strong class="event-card-value">3</strong>
+                <div class="event-card-mete">
+                    <span>This Month</span>
+                    <span class="event-card-delta">+10</span>
+                </div>
+            </div>
+        </article>
+        <!--            Total Event-->
+        <article class="total-event-summray-card event-summary-card">
+            <div class="event-summary__icon">
+                <i class="bx bx-flag"></i>
+            </div>
+            <div class="event-summary-content">
+                <span class="event-card-label">Average Progress</span>
+                <strong class="event-card-value">2</strong>
+                <div class="event-card-mete">
+                    <span>This Month</span>
+                    <span class="event-card-delta">All goals</span>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section class="saving-content">
+        <div class="saving-can-one">
+        <div class="saving-header">
+            <span class="sv-can-title">Saving Goal</span>
+            <a href="#" class="sv-can-view-all-link">View All</a>
+        </div>
+        <div class="active-saving">
+
+            <% if ( saving ) { %>
+                <% saving.forEach(sv => { %>
+
+                    <%
+                        const percent = (sv.savedamount / sv.targetamount) * 100;
+                        const percentRounded = Math.min(100, Math.floor(percent));
+                    %>
+                    <div class="saving-card" data-id="<%= sv.id %>">
+                        <div class="sv-card-cont">
+                            <div class="goal-header">
+                                <div class="title-labels">
+                                    <span class="goal-name"><%= sv.goal %></span>
+                                    <span class="goal-subtitle">For my studies</span>
+                                </div>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width: <%= percentRounded %>%"></div>
+                            </div>
+                            <div class="goal-footer">
+                                <span style="color: dimgrey"><strong>PKR </strong> <%= sv.savedamount %> saved</span>
+                                <span style="color: dimgrey"><strong>PKR </strong><%= sv.targetamount %></span>
+                            </div>
+                        </div>
+
+                        <div class="saving-pers">
+                            <span class="sv-percentage"><%= percentRounded %>%</span>
+                            <span class="sv-per-sub">of goal</span>
+                        </div>
+                        <div class="sv-action">
+                            <span class="action">||</span>
+                        </div>
+                    </div>
+
+
+                <% }) %>
+            <% } %>
+        </div>
+            </div>
+
+            <div class="completed-goals">
+        <div class="com-can-header">
+            <span class="com-title">Recent saving activity</span>
+            <a href="#" class="com-view-all">View all</a>
+        </div>
+        <div class="completed-goal">
+            <div class="com-goal-icon"><i class="fas fa-arrow-down"></i></div>
+            <div class="com-goal-content">
+                <div class="goal-detail">
+                    <span class="goal-name">Added to Umrah Trip</span>
+                    <span class="goal-list-sub">Saving Added</span>
+                </div>
+                <span class="com-goal-price">+ PKR 5000</span>
+            </div>
+            <div class="com-date">
+                <span class="date">May 25, 2026</span>
+            </div>
+        </div>
+    </div>
+    </section>
+    <div class="tip">
+            <i class="fas fa-sheld"></i>
+            <span><strong>Tip</strong>: Automate your saving by setting up monthly transfers to reach goals faster</span>
+        </div>
+
+
+</main>

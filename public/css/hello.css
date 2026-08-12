@@ -1,0 +1,146 @@
+.saving-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+}
+
+.saving-can-one {
+   padding: 1rem;
+    border: 1px solid #dbe3ee;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
+.saving-card {
+    border: 1px solid #dbe3ee;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.sv-card-cont {
+    width: 93%;
+}
+
+.title-labels {
+    display: grid;
+    gap: 5px;
+}
+
+.goal-subtitle {
+    font-size: 0.8rem;
+    color: dimgrey;
+}
+
+
+.saving-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.4rem;
+}
+
+.sv-can-title {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.saving-header a {
+    text-decoration: none;
+    color: #2fb67c;
+}
+
+.saving-pers {
+    display: grid;
+    gap: 5px;
+}
+
+.sv-percentage {
+    color: #2fb67c;
+    font-size: 1.2rem;
+}
+
+.sv-per-sub {
+    color: #8a9bb0;
+    font-size: 0.75rem;
+}
+
+.completed-goals {
+    background-color: #ffffff;
+    border: 1px solid #dbe3ee;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.com-can-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.com-title {
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.com-can-header a {
+    text-decoration: none;
+    color: #2fb67c;
+}
+
+.completed-goal {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #dbe3ee;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.com-goal-icon {
+    background-color: #4f7a5d;
+    border-radius: 50%;
+    color: #2fb67c;
+    height: 50px;
+    width: 50px;
+}
+
+.com-goal-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 92%;
+
+}
+.goal-detail {
+    display: grid;
+    gap: 5px;
+}
+
+.goal-name {
+    font-weight: bold;
+}
+
+.goal-list-sub {
+    font-size: 0.8rem;
+    color: dimgrey;
+}
+
+.com-goal-price {
+    font-weight: bold;
+    color: #2fb67c;
+}
+
+.com-date {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: dimgrey;
+    margin-left: 10px;
+}
