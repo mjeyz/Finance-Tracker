@@ -144,3 +144,20 @@
     color: dimgrey;
     margin-left: 10px;
 }
+
+@media (max-width: 750px) {
+    .event-main {
+        margin-left: 0;
+        margin-top: 7rem;
+    }
+}
+
+@media (max-width: 450px) {
+    .event-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .saving-content {
+        grid-template-columns: 1fr;
+    }
+}
