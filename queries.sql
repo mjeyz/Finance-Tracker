@@ -88,3 +88,5 @@ ALTER TABLE transaction
     ADD column category VARCHAR(100);
 ALTER TABLE transaction
     ADD column method VARCHAR(100);
+
+SELECT date FROM event

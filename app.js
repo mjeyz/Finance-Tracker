@@ -728,7 +728,10 @@ app.get("/events", async (req, res) => {
 });
 
 app.get("/saving",async (req, res) => {
+
     const result = await db.query("SELECT * FROM saving WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
+    const year = await db.query("SELECT EXTRACT(year FROM date ) FROM events WHERE user_id = $1", [req.user.id])
+    console.log(`Year : ${year.rows[0][0]}`)
     res.render("saving.ejs", { user: req.user, saving: result.rows })
 })
 
