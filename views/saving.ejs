@@ -27,9 +27,9 @@
             </div>
             <div class="event-summary-content">
                 <span class="event-card-label saving-card-label">Total Saving</span>
-                <strong class="event-card-value saving-card-value"><strong>PKR</strong> 2,45000</strong>
+                <strong class="event-card-value saving-card-value" style="color: #2fb67c"><strong>PKR</strong> 2,45000</strong>
                 <div class="event-card-mete">
-                    <span>This Month</span>
+                    <span>All Times</span>
                     <span class="event-card-delta">+12</span>
                 </div>
             </div>
@@ -41,9 +41,9 @@
             </div>
             <div class="event-summary-content">
                 <span class="event-card-label">This Month Saved</span>
-                <strong class="event-card-value">PKR 18,750</strong>
+                <strong class="event-card-value"><strong>PKR</strong> 18,750</strong>
                 <div class="event-card-mete">
-                    <span>This Month</span>
+                    <span>August 2026</span>
                     <span class="event-card-delta">+12</span>
                 </div>
             </div>
@@ -57,14 +57,13 @@
                 <span class="event-card-label">Saving goals</span>
                 <strong class="event-card-value">3</strong>
                 <div class="event-card-mete">
-                    <span>This Month</span>
+                    <span>Active Goals</span>
                     <span class="event-card-delta">+10</span>
                 </div>
             </div>
         </article>
-        <!--            Total Event-->
         <article class="total-event-summray-card event-summary-card">
-            <div class="event-summary__icon">
+            <div class="event-summary__icon summary-card__icon">
                 <i class="bx bx-flag"></i>
             </div>
             <div class="event-summary-content">
@@ -79,76 +78,76 @@
     </section>
 
     <section class="saving-content">
-        <div class="saving-can-one">
-        <div class="saving-header">
-            <span class="sv-can-title">Saving Goal</span>
-            <a href="#" class="sv-can-view-all-link">View All</a>
-        </div>
-        <div class="active-saving">
+        <div class="saving-can-one active">
+            <div class="saving-header">
+                <span class="sv-can-title">Saving Goal</span>
+                <a href="#" class="sv-can-view-all-link">View All</a>
+            </div>
+            <div class="active-saving">
 
-            <% if ( saving ) { %>
-                <% saving.forEach(sv => { %>
+                <% if ( saving ) { %>
+                    <% saving.forEach(sv => { %>
 
-                    <%
-                        const percent = (sv.savedamount / sv.targetamount) * 100;
-                        const percentRounded = Math.min(100, Math.floor(percent));
-                    %>
-                    <div class="saving-card" data-id="<%= sv.id %>">
-                        <div class="sv-card-cont">
-                            <div class="goal-header">
-                                <div class="title-labels">
-                                    <span class="goal-name"><%= sv.goal %></span>
-                                    <span class="goal-subtitle">For my studies</span>
+                        <%
+                            const percent = (sv.savedamount / sv.targetamount) * 100;
+                            const percentRounded = Math.min(100, Math.floor(percent));
+                        %>
+                        <div class="saving-card" data-id="<%= sv.id %>">
+                            <div class="sv-card-cont">
+                                <div class="goal-header">
+                                    <div class="title-labels">
+                                        <span class="goal-name"><%= sv.goal %></span>
+                                        <span class="goal-subtitle">For my studies</span>
+                                    </div>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill" style="width: <%= percentRounded %>%"></div>
+                                </div>
+                                <div class="goal-footer">
+                                    <span style="color: dimgrey"><strong>PKR </strong> <%= sv.savedamount %> saved</span>
+                                    <span style="color: dimgrey"><strong>PKR </strong><%= sv.targetamount %></span>
                                 </div>
                             </div>
-                            <div class="progress-track">
-                                <div class="progress-fill" style="width: <%= percentRounded %>%"></div>
+
+                            <div class="saving-pers">
+                                <span class="sv-percentage"><%= percentRounded %>%</span>
+                                <span class="sv-per-sub">of goal</span>
                             </div>
-                            <div class="goal-footer">
-                                <span style="color: dimgrey"><strong>PKR </strong> <%= sv.savedamount %> saved</span>
-                                <span style="color: dimgrey"><strong>PKR </strong><%= sv.targetamount %></span>
+                            <div class="sv-action">
+                                <span class="action">||</span>
                             </div>
                         </div>
 
-                        <div class="saving-pers">
-                            <span class="sv-percentage"><%= percentRounded %>%</span>
-                            <span class="sv-per-sub">of goal</span>
-                        </div>
-                        <div class="sv-action">
-                            <span class="action">||</span>
-                        </div>
+
+                    <% }) %>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="completed-goals">
+            <div class="com-can-header">
+                <span class="com-title">Recent saving activity</span>
+                <a href="#" class="com-view-all">View all</a>
+            </div>
+            <div class="completed-goal">
+                <div class="com-goal-icon"><i class="fas fa-arrow-down"></i></div>
+                <div class="com-goal-content">
+                    <div class="goal-detail">
+                        <span class="goal-name">Added to Umrah Trip</span>
+                        <span class="goal-list-sub">Saving Added</span>
                     </div>
-
-
-                <% }) %>
-            <% } %>
-        </div>
-            </div>
-
-            <div class="completed-goals">
-        <div class="com-can-header">
-            <span class="com-title">Recent saving activity</span>
-            <a href="#" class="com-view-all">View all</a>
-        </div>
-        <div class="completed-goal">
-            <div class="com-goal-icon"><i class="fas fa-arrow-down"></i></div>
-            <div class="com-goal-content">
-                <div class="goal-detail">
-                    <span class="goal-name">Added to Umrah Trip</span>
-                    <span class="goal-list-sub">Saving Added</span>
+                    <span class="com-goal-price">+ PKR 5000</span>
                 </div>
-                <span class="com-goal-price">+ PKR 5000</span>
-            </div>
-            <div class="com-date">
-                <span class="date">May 25, 2026</span>
+                <div class="com-date">
+                    <span class="date">May 25, 2026</span>
+                </div>
             </div>
         </div>
-    </div>
     </section>
     <div class="tip">
-            <i class="fas fa-sheld"></i>
-            <span><strong>Tip</strong>: Automate your saving by setting up monthly transfers to reach goals faster</span>
-        </div>
+        <i class="fas fa-sheld"></i>
+        <span><strong>Tip</strong>: Automate your saving by setting up monthly transfers to reach goals faster</span>
+    </div>
 
 
 </main>
