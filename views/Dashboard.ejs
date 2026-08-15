@@ -127,5 +127,15 @@
 </main>
 
 <script src="/js/index.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var sidebarLink = document.querySelector('.sidebar .nav-link[href="/"]');
+
+        if (sidebarLink) {
+            sidebarLink.classList.add("active");
+        }
+    });
+</script>
 </body>
 </html>

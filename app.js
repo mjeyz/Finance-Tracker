@@ -718,21 +718,33 @@ app.get("/api/transaction/charts", async (req, res) => {
 })
 
 app.get("/transaction", async (req, res) => {
-    const result = await db.query("SELECT * FROM transaction WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
+    if (req.isAuthenticated()) {
+        const result = await db.query("SELECT * FROM transaction WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
     res.render("transactions.ejs", {user: req.user, transaction: result.rows})
+    } else {
+        res.redirect("login")
+    }
+
 });
 
 app.get("/events", async (req, res) => {
-    const result = await db.query("SELECT * FROM events WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
-    res.render("event.ejs", { user: req.user, events: result.rows })
+    if (req.isAuthenticated()) {
+        const result = await db.query("SELECT * FROM events WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
+        res.render("event.ejs", {user: req.user, events: result.rows})
+    } else {
+        res.redirect("login");
+    }
 });
 
 app.get("/saving",async (req, res) => {
-
-    const result = await db.query("SELECT * FROM saving WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
-    const year = await db.query("SELECT EXTRACT(year FROM date ) FROM events WHERE user_id = $1", [req.user.id])
-    console.log(`Year : ${year.rows[0][0]}`)
-    res.render("saving.ejs", { user: req.user, saving: result.rows })
+    if (req.isAuthenticated()) {
+        const result = await db.query("SELECT * FROM saving WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
+        const year = await db.query("SELECT EXTRACT(year FROM date ) FROM events WHERE user_id = $1", [req.user.id])
+        console.log(`Year : ${year.rows[0][0]}`)
+        res.render("saving.ejs", {user: req.user, saving: result.rows})
+    } else {
+        res.redirect("/login");
+    }
 })
 
 

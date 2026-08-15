@@ -151,3 +151,12 @@
 
 
 </main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var sidebarLink = document.querySelector('.sidebar .nav-link[href="/saving"]');
+        if (sidebarLink) {
+            sidebarLink.classList.add("active");
+        }
+    });
+</script>

@@ -168,3 +168,13 @@
 
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var sidebarLink = document.querySelector('.sidebar .nav-link[href="/events"]');
+
+        if (sidebarLink) {
+            sidebarLink.classList.add("active");
+        }
+    });
+</script>
+

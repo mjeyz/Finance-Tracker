@@ -149,6 +149,12 @@
     margin-left: 10px;
 }
 
+@media (max-width: 1000px) {
+    .event-summary-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
 @media (max-width: 750px) {
     .event-main {
         margin-left: 0;
