@@ -6,6 +6,7 @@ const dynamicTitle = document.getElementById("dynamicTitle");
 const addBtn = document.getElementById("addTransaction");
 const tabButton = document.querySelectorAll(".tab-btn");
 const modalTitle = document.getElementById("modalTitle");
+const viewMore = document.getElementById("viewMoreLink");
 
 const listSection = {
     transactionList: document.getElementById("transactionList"),
@@ -27,17 +28,20 @@ const formConfig = {
     transaction: {
         formId: "transactionForm",
         title: "Add Transaction",
-        buttonText: "+ Add Transaction"
+        buttonText: "+ Add Transaction",
+        pageLink: "/transaction"
     },
     event: {
         formId: "eventForm",
         title: "Add Event",
-        buttonText: "+ Add Event"
+        buttonText: "+ Add Event",
+        pageLink: "/event",
     },
     saving: {
         formId: "savingForm",
         title: "Add Saving Goal",
-        buttonText: "+ Add Goal"
+        buttonText: "+ Add Goal",
+        pageLink: "/saving"
     }
 };
 
@@ -50,11 +54,19 @@ const titles = {
     savingList: "Savings Goals"
 };
 
+
+
 const buttonTexts = {
     transactionList: "+ Add Transaction",
     eventList: "+ Add Event",
     savingList: "+ Add Goal"
 };
+
+const links = {
+    transactionPage: "/transaction",
+    eventPage: "/events",
+    savingPage: "/saving"
+}
 
 function setActiveBtn(activeElementId) {
     const allBtn = [transactionBtn, eventBtn, savingBtn].filter(Boolean);
@@ -68,7 +80,8 @@ function showCategory(categoryType) {
     const targetId = categoryType + "List";
     const title = titles[targetId] || "Dashboard";
     const btnText = buttonTexts[targetId] || "+ Add";
-
+    const linkId = categoryType + "Page";
+    const pageLink = links[linkId];
 
     if (dynamicTitle) {
         dynamicTitle.textContent = title;
@@ -83,6 +96,10 @@ function showCategory(categoryType) {
 
     if (addBtn) {
         addBtn.textContent = btnText;
+    }
+
+    if (pageLink) {
+        viewMore.href = pageLink;
     }
 
     applySearchFilter();
