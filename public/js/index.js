@@ -98,7 +98,7 @@ function showCategory(categoryType) {
         addBtn.textContent = btnText;
     }
 
-    if (pageLink) {
+    if (pageLink && viewMore) {
         viewMore.href = pageLink;
     }
 
@@ -488,6 +488,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const ctx = canvas.getContext("2d");
         new Chart(ctx, {
             type: "pie",
+            title: "Expense Breakdown by Category",
             data: {
                 labels: labels,
                 datasets: [{
@@ -512,9 +513,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
             options: {
                 responsive: true,
+                title: {
+                    display: true,
+                    text: "Expense Breakdown by Category",
+                    fontSize: 18,
+                    fontStyle: "bold",
+                    fontColor: "#333",
+                    padding: 10
+                },
                 legend: {
                     position: "top",
-                }
+                },
             }
         });
     } catch (error) {

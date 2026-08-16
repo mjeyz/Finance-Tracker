@@ -149,6 +149,17 @@
     margin-left: 10px;
 }
 
+.chart-cantainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.chart-cantainer .graph {
+    border: 1px solid #dbe3ee;
+    
+}
+
 @media (max-width: 1000px) {
     .event-summary-grid {
         grid-template-columns: 1fr 1fr;
