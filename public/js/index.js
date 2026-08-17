@@ -77,7 +77,7 @@ function formatEventDateParts(input) {
 
     return {
         fullDateText: d.toDateString(),
-        dayShort: d.toLocaleDateString("en-US", {weekday: "short"}),
+        dayShort: d.toLocaleDateString("en-US", {weekday: "long"}),
         monthShort: d.toLocaleDateString("en-US", {month: "short"}),
         dateNum: d.getDate(),
         year: d.getFullYear(),
@@ -495,6 +495,8 @@ document.querySelectorAll(".eye-icon").forEach((eyeIcon) => {
 
 document.addEventListener("DOMContentLoaded", function () {
     const eventCards = document.querySelectorAll(".upcoming-event-list .event");
+    const transactionCards = document.querySelectorAll(".transaction-list .transaction-item");
+    const eventListCards = document.querySelectorAll(".events-list .event-item");
 
     eventCards.forEach((card) => {
         const rawDate = card.dataset.eventDate || card.querySelector(".js-event-date")?.textContent;
@@ -520,7 +522,32 @@ document.addEventListener("DOMContentLoaded", function () {
             timeEl.textContent = parts.timeText;
         }
     });
+
+    transactionCards.forEach(list => {
+        const transactionDate = document.querySelector(".transaction-date").textContent;
+        const transactionPart = formatEventDateParts(transactionDate);
+
+        const date = list.querySelector(".transaction-date");
+
+        if (date) {
+            date.textContent = transactionPart.fullDateText;
+        }
+    });
+
+    eventListCards.forEach(card=> {
+        const eventDate = document.querySelector(".js-event-card-date").textContent;
+        const eventPart = formatEventDateParts(eventDate)
+
+        const dateEv = card.querySelector(".js-event-card-date")
+
+        if (dateEv) {
+            dateEv.textContent = eventPart.fullDateText;
+        }
+
+    });
 });
+
+
 
 
 // Graphs logic
