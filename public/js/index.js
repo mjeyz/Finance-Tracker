@@ -68,6 +68,27 @@ const links = {
     savingPage: "/saving"
 }
 
+function formatEventDateParts(input) {
+    const d = new Date(input);
+
+    if (Number.isNaN(d.getTime())) {
+        return null;
+    }
+
+    return {
+        fullDateText: d.toDateString(),
+        dayShort: d.toLocaleDateString("en-US", {weekday: "short"}),
+        monthShort: d.toLocaleDateString("en-US", {month: "short"}),
+        dateNum: d.getDate(),
+        year: d.getFullYear(),
+        timeText: d.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+        })
+    };
+}
+
 function setActiveBtn(activeElementId) {
     const allBtn = [transactionBtn, eventBtn, savingBtn].filter(Boolean);
 
@@ -468,6 +489,35 @@ document.querySelectorAll(".eye-icon").forEach((eyeIcon) => {
             passwordField.type = "password";
             eyeIcon.classList.remove("fa-eye-slash");
             eyeIcon.classList.add("fa-eye");
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const eventCards = document.querySelectorAll(".upcoming-event-list .event");
+
+    eventCards.forEach((card) => {
+        const rawDate = card.dataset.eventDate || card.querySelector(".js-event-date")?.textContent;
+        const parts = formatEventDateParts(rawDate);
+
+        if (!parts) {
+            return;
+        }
+
+        const dateEl = card.querySelector(".js-event-date");
+        const dayEl = card.querySelector(".js-event-day");
+        const timeEl = card.querySelector(".js-event-time");
+
+        if (dateEl) {
+            dateEl.textContent = parts.fullDateText;
+        }
+
+        if (dayEl) {
+            dayEl.textContent = parts.dayShort;
+        }
+
+        if (timeEl) {
+            timeEl.textContent = parts.timeText;
         }
     });
 });
