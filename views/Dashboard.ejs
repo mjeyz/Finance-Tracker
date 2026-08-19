@@ -109,11 +109,11 @@
         <div id="listContainer" class="listContainer active">
             <%- include ("transaction-list") %>
 
-            <% if (transaction.length > 4 || events.length > 4 || saving.length > 2) {%>
-            <div class="view-more" id="viewMore">
-                <a href="/transaction" id="viewMoreLink">View more....</a>
-            </div>
-            <% }%>
+            <% if (transaction.length > 4 || events.length > 4 || saving.length > 2) { %>
+                <div class="view-more" id="viewMore">
+                    <a href="/transaction" id="viewMoreLink">View more....</a>
+                </div>
+            <% } %>
             <button class="add-transaction" id="addTransaction"><i class="fa-solid fa-plus"></i> Add Transaction
             </button>
 
@@ -122,14 +122,15 @@
         </div>
 
         <div class="chart-cantainer">
-        <div class="pie-chart graph">
-            <canvas id="pieChart" style="width:100%;max-width:700px;height: 400px"></canvas>
-        </div>
 
-            <div class="bar-chart graph">
-            <canvas id="barChart" style="width:100%;max-width:700px;height: 400px"></canvas>
-        </div>
+            <div class="pie-chart graph">
+                <canvas id="pieChart" style="width:100%;max-width:700px;height: 400px"></canvas>
             </div>
+
+            <div class="line-chart graph">
+                <canvas id="lineChart" style="width:100%;max-width:700px;height: 400px"></canvas>
+            </div>
+        </div>
 </main>
 
 <script src="/js/index.js"></script>

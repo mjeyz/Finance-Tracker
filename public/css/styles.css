@@ -1022,7 +1022,7 @@ body {
 
 }
 
-.pie-chart {
+.pie-chart, .line-chart {
     margin-top: 2rem;
     display: flex;
     align-items: center;

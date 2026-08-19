@@ -167,8 +167,11 @@ app.get("/", async (req, res) => {
             const eventResult = await db.query("SELECT * FROM events WHERE user_id = $1", [user_id]);
             const savingResult = await db.query("SELECT * FROM saving WHERE user_id = $1", [user_id]);
 
+
             const transaction = transactionResult.rows;
             const events = eventResult.rows;
+
+
             const saving = savingResult.rows
 
             res.render("Dashboard.ejs", {user: req.user, transaction: transaction, events: events, saving: saving});
@@ -705,16 +708,22 @@ app.delete("/api/delete/goal", async (req, res) => {
 
 app.get("/api/transaction/charts", async (req, res) => {
     try {
-        const result = await db.query("SELECT category, SUM(amount) AS total_amount FROM transaction WHERE user_id = $1 GROUP BY category ORDER BY total_amount DESC", [req.user.id])
+        const result = await db.query("SELECT  category, SUM(amount) AS total_amount FROM transaction WHERE user_id = $1 GROUP BY category ORDER BY total_amount DESC", [req.user.id])
 
         if (result.rowCount === 0) {
             return res.status(404).json({error: 'Transaction not found or unauthorized'});
         }
+        console.log(result)
         res.json(result.rows)
     } catch (err) {
         console.error("Database error : ", err.message);
         res.status(500).send("Server Error.");
     }
+});
+
+app.get("/api/graph", async (req, res) => {
+    const result = await db.query("SELECT date FROM transaction WHERE user_id = $1", [req.user.id]);
+    res.json(result.rows);
 })
 
 app.get("/transaction", async (req, res) => {
