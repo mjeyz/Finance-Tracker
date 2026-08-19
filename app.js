@@ -722,7 +722,7 @@ app.get("/api/transaction/charts", async (req, res) => {
 });
 
 app.get("/api/graph", async (req, res) => {
-    const result = await db.query("SELECT date FROM transaction WHERE user_id = $1", [req.user.id]);
+    const result = await db.query("SELECT TO_CHAR(date, 'Mon') AS month_label, SUM(amount) AS total FROM transaction WHERE user_id = $1  AND type = 'expense' GROUP BY EXTRACT(MONTH FROM date ) ORDER BY EXTRACT(MONTH FROM date);", [req.user.id]);
     res.json(result.rows);
 })
 

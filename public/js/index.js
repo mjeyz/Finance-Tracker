@@ -555,18 +555,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const graphResponse = await fetch("api/graph");
         const graphDate = await graphResponse.json();
+        console.log(graphDate)
 
-        const xLabel = graphDate.map(item => item.date)
-        const formatedMonth = xLabel.map(data => formatEventDateParts(data).monthShort)
+        const month = graphDate.map(item => item.month_label)
+        const totalAmount = graphDate.map(item => item.total)
+        // const formatedMonth = xLabel.map(data => formatEventDateParts(data).monthShort)
+        const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        console.log(month)
+        console.log(totalAmount)
 
-        console.log(xLabel)
-        console.log(formatedMonth)
-
-        xLabel.forEach(date => {
-            const formatedDate = formatEventDateParts(date)
-            const month = formatedDate.monthShort
-            console.log(`Month for Graph ${month}`)
-        })
+        // xLabel.forEach(date => {
+        //     const formatedDate = formatEventDateParts(date)
+        //     const month = formatedDate.monthShort
+        //     console.log(`Month for Graph ${month}`)
+        // })
 
 
         const labels = data.map(item => item.category);
@@ -622,7 +624,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             type: "line",
 
             data: {
-                labels: formatedMonth,
+                labels: monthLabels,
 
                 datasets: [{
                     label: "Monthly Expenses",
