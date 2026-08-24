@@ -722,9 +722,25 @@ app.get("/api/transaction/charts", async (req, res) => {
 });
 
 app.get("/api/graph", async (req, res) => {
-    const result = await db.query("SELECT TO_CHAR(date, 'Mon') AS month_label, SUM(amount) AS total FROM transaction WHERE user_id = $1  AND type = 'expense' GROUP BY EXTRACT(MONTH FROM date ) ORDER BY EXTRACT(MONTH FROM date);", [req.user.id]);
+  try {
+    const result = await db.query(
+      `SELECT 
+         TO_CHAR(date, 'Mon') AS month_label,
+         SUM(amount)::FLOAT AS total
+       FROM transaction
+       WHERE user_id = $1 
+         AND type = 'expense'
+         AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)
+       GROUP BY TO_CHAR(date, 'Mon')
+       ORDER BY MIN(EXTRACT(MONTH FROM date));`,
+      [req.user.id]
+    );
     res.json(result.rows);
-})
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 
 app.get("/transaction", async (req, res) => {
     if (req.isAuthenticated()) {

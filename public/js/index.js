@@ -546,48 +546,42 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-
-// Graphs logic
 document.addEventListener("DOMContentLoaded", async () => {
-    try {
-        const response = await fetch("/api/transaction/charts");
-        const data = await response.json();
+  try {
+    // 1. Fetch pie chart data
+    const pieRes = await fetch("/api/transaction/charts");
+    const pieData = await pieRes.json();
+    const labels = pieData.map(item => item.category);
+    const pieAmounts = pieData.map(item => parseFloat(item.total_amount));
 
-        const graphResponse = await fetch("api/graph");
-        const graphDate = await graphResponse.json();
-        console.log(graphDate)
+    // 2. Fetch line chart data
+    const graphRes = await fetch("/api/graph");
+    const graphData = await graphRes.json();
+    console.log("Graph data:", graphData);
 
-        const month = graphDate.map(item => item.month_label)
-        const totalAmount = graphDate.map(item => item.total)
-        // const formatedMonth = xLabel.map(data => formatEventDateParts(data).monthShort)
-        const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-        console.log(month)
-        console.log(totalAmount)
+    // Build a map: month_label -> total
+    const monthMap = {};
+    graphData.forEach(item => {
+      monthMap[item.month_label] = parseFloat(item.total);
+    });
 
-        // xLabel.forEach(date => {
-        //     const formatedDate = formatEventDateParts(date)
-        //     const month = formatedDate.monthShort
-        //     console.log(`Month for Graph ${month}`)
-        // })
+    // Full list of months
+    const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    // Fill with 0 if missing
+    const monthlyTotals = monthLabels.map(month => monthMap[month] || 0);
 
-
-        const labels = data.map(item => item.category);
-        const amounts = data.map(item => parseFloat(item.total_amount));
-
-        const pieCanvas = document.getElementById("pieChart");
-        const lineCanvas = document.getElementById("lineChart");
-        if (!pieCanvas || !lineCanvas) return;
-
-        const ctx = pieCanvas.getContext("2d");
-        new Chart(ctx, {
-            type: "pie",
-            title: "Expense Breakdown by Category",
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: "Total Amount ($)",
-                    data: amounts,
-                    backgroundColor: [
+    // 3. Render pie chart
+    const pieCanvas = document.getElementById("pieChart");
+    if (pieCanvas) {
+      new Chart(pieCanvas.getContext("2d"), {
+        type: "pie",
+        data: {
+          labels: labels,
+          datasets: [{
+            label: "Total Amount ($)",
+            data: pieAmounts,
+              backgroundColor: [
                         'rgba(255, 99, 132, 0.7)',
                         'rgba(54, 162, 235, 0.7)',
                         'rgba(255, 206, 86, 0.7)',
@@ -601,60 +595,51 @@ document.addEventListener("DOMContentLoaded", async () => {
                         'rgba(75, 192, 192, 1)',
                         'rgba(153, 102, 255, 1)'
                     ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                title: {
-                    display: true,
-                    text: "Expense Breakdown by Category",
-                    fontSize: 18,
-                    fontStyle: "bold",
-                    fontColor: "#333",
-                    padding: 10
-                },
-                legend: {
-                    position: "top",
-                },
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: "top" },
+            title: {
+              display: true,
+              text: "Expense Breakdown by Category"
             }
-        });
-
-        new Chart(lineCanvas.getContext("2d"), {
-            type: "line",
-
-            data: {
-                labels: monthLabels,
-
-                datasets: [{
-                    label: "Monthly Expenses",
-
-                    backgroundColor: "rgba(0, 0, 255, 0.2)",
-                    borderColor: "rgba(0, 0, 255, 1)",
-
-                    borderWidth: 2,
-                    tension: 0.4,
-
-                    data: amounts
-                }]
-            },
-
-            options: {
-                responsive: true,
-
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-    } catch (error) {
-        console.error("Error loading chart data: ", error);
+          }
+        }
+      });
     }
-})
 
+    // 4. Render line chart
+    const lineCanvas = document.getElementById("lineChart");
+    if (lineCanvas) {
+      new Chart(lineCanvas.getContext("2d"), {
+        type: "line",
+        data: {
+          labels: monthLabels,
+          datasets: [{
+            label: "Monthly Expenses",
+            data: monthlyTotals,
+            backgroundColor: "rgba(0, 0, 255, 0.2)",
+            borderColor: "rgba(0, 0, 255, 1)",
+            borderWidth: 2,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    }
+
+  } catch (error) {
+    console.error("Error loading chart data:", error);
+  }
+});
 
 // Calendar logic
 document.addEventListener("DOMContentLoaded", function () {
