@@ -167,6 +167,10 @@
     .event-summary-grid {
         grid-template-columns: 1fr 1fr;
     }
+
+    .chart-cantainer {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 750px) {
@@ -177,6 +181,9 @@
 
     .event-summary-grid  {
         grid-template-columns: 1fr 1fr;
+    }
+    .chart-cantainer {
+        grid-template-columns: 1fr;
     }
 
     .event-content {
@@ -190,6 +197,10 @@
     }
 
     .saving-content {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-cantainer {
         grid-template-columns: 1fr;
     }
 }
