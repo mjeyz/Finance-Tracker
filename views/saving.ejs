@@ -27,7 +27,8 @@
             </div>
             <div class="event-summary-content">
                 <span class="event-card-label saving-card-label">Total Saving</span>
-                <strong class="event-card-value saving-card-value" style="color: #2fb67c"><strong>PKR</strong> 2,45000</strong>
+                <strong class="event-card-value saving-card-value" style="color: #2fb67c"><strong>PKR</strong>
+                    2,45000</strong>
                 <div class="event-card-mete">
                     <span>All Times</span>
                     <span class="event-card-delta">+12</span>
@@ -55,7 +56,7 @@
             </div>
             <div class="event-summary-content">
                 <span class="event-card-label">Saving goals</span>
-                <strong class="event-card-value"  style="color: #4f46e5">3</strong>
+                <strong class="event-card-value" style="color: #4f46e5">3</strong>
                 <div class="event-card-mete">
                     <span>Active Goals</span>
                     <span class="event-card-delta">+10</span>
@@ -68,7 +69,7 @@
             </div>
             <div class="event-summary-content">
                 <span class="event-card-label">Average Progress</span>
-                <strong class="event-card-value"  style="color: #f59e0b">60%</strong>
+                <strong class="event-card-value" style="color: #f59e0b">60%</strong>
                 <div class="event-card-mete">
                     <span>This Month</span>
                     <span class="event-card-delta">All goals</span>
@@ -124,24 +125,40 @@
             </div>
         </div>
 
+
         <div class="completed-goals">
             <div class="com-can-header">
                 <span class="com-title">Recent saving activity</span>
                 <a href="#" class="com-view-all">View all</a>
             </div>
-            <div class="completed-goal">
-                <div class="com-goal-icon"><i class="fas fa-arrow-down"></i></div>
-                <div class="com-goal-content">
-                    <div class="goal-detail">
-                        <span class="goal-name">Added to Umrah Trip</span>
-                        <span class="goal-list-sub">Saving Added</span>
-                    </div>
-                    <span class="com-goal-price">+ PKR 5000</span>
-                </div>
-                <div class="com-date">
-                    <span class="date">May 25, 2026</span>
-                </div>
-            </div>
+            <% if ( saving ) { %>
+                <% saving.forEach(sv => { %>
+
+                    <%
+                        const percent = (sv.savedamount / sv.targetamount) * 100;
+                        const percentRounded = Math.min(100, Math.floor(percent));
+                    %>
+                    <% if (percentRounded === 100) { %>
+                        <div class="completed-goal">
+                            <div class="com-goal-icon"><i class="fas fa-arrow-down"></i></div>
+                            <div class="com-goal-content">
+                                <div class="goal-detail">
+                                    <span class="goal-name">
+                                        <%= sv.goal %>
+                                    </span>
+                                    <span class="goal-list-sub">Saving Added</span>
+                                </div>
+                                <span class="com-goal-price"><i class="fas fa-plus"></i>
+                                    <%= sv.targetamount %>
+                                </span>
+                            </div>
+                            <div class="com-date">
+                                <span class="date"><%= sv.date %></span>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% }) %>
+            <% } %>
         </div>
     </section>
     <div class="tip">

@@ -620,7 +620,7 @@ app.post("/add-saving", async (req, res) => {
             return res.status(401).json({success: false, error: "Please log in again."});
         }
 
-        const {purpose, targetAmount, savedAmount} = req.body;
+        const {purpose, targetAmount, savedAmount, targetDate, description} = req.body;
 
         if (!purpose || !targetAmount) {
             req.flash("error", "Purpose and target amount are required.");
@@ -628,8 +628,8 @@ app.post("/add-saving", async (req, res) => {
         }
 
         await db.query(
-            "INSERT INTO saving.ejs (user_id, goal, targetAmount, savedAmount) VALUES ($1, $2, $3, $4)",
-            [req.user.id, purpose, Number(targetAmount), savedAmount ? Number(savedAmount) : 0]
+            "INSERT INTO saving (user_id, goal, targetAmount, savedAmount, date, description) VALUES ($1, $2, $3, $4, $5, $6)",
+            [req.user.id, purpose, Number(targetAmount), savedAmount ? Number(savedAmount) : 0, targetDate, description]
         );
 
         req.flash("success", "Saving goal added successfully.");

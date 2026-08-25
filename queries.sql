@@ -89,4 +89,6 @@ ALTER TABLE transaction
 ALTER TABLE transaction
     ADD column method VARCHAR(100);
 
-SELECT date FROM event
+
+ALTER TABLE saving ADD COLUMN date DATE;
+ALTER TABLE saving ADD COLUMN description VARCHAR(250);

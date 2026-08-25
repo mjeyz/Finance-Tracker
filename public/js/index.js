@@ -496,6 +496,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const eventCards = document.querySelectorAll(".upcoming-event-list .event");
     const transactionCards = document.querySelectorAll(".transaction-list .transaction-item");
     const eventListCards = document.querySelectorAll(".events-list .event-item");
+    const recentGoalCards = document.querySelectorAll(".completed-goals .completed-goal")
 
     eventCards.forEach((card) => {
         const rawDate = card.dataset.eventDate || card.querySelector(".js-event-date")?.textContent;
@@ -544,6 +545,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     });
+
+    recentGoalCards.forEach(card => {
+        const targetDate = document.querySelector(".com-date .date").textContent;
+        const goalPart = formatEventDateParts(targetDate);
+
+        const date = card.querySelector(".com-date .date");
+
+        if(date) {
+            date.textContent = goalPart.fullDateText;
+        }
+    })
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
