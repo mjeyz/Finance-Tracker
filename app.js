@@ -555,6 +555,18 @@ app.post("/varify-email", verifyOtpLimiter, async (req, res) => {
     }
 });
 
+app.get("/add-transaction", (req, res) => {
+    res.render("create-transaction.ejs");
+});
+
+app.get("/add-saving", (req, res) => {
+    res.render("create-saving.ejs");
+});
+
+app.get("/add-event", (req, res) => {
+    res.render("/create-event.ejs");
+});
+
 
 app.post("/add-transaction", async (req, res) => {
     try {
@@ -617,14 +629,22 @@ app.post("/add-saving", async (req, res) => {
     try {
         if (!req.user?.id) {
             req.flash("error", "Please log in again.");
-            return res.status(401).json({success: false, error: "Please log in again."});
+            if (req.is("application/json")) {
+                return res.status(401).json({success: false, error: "Please log in again."});
+            }
+
+            return res.redirect("/login");
         }
 
         const {purpose, targetAmount, savedAmount, targetDate, description} = req.body;
 
         if (!purpose || !targetAmount) {
             req.flash("error", "Purpose and target amount are required.");
-            return res.status(400).json({success: false, error: "Purpose and target amount are required."});
+            if (req.is("application/json")) {
+                return res.status(400).json({success: false, error: "Purpose and target amount are required."});
+            }
+
+            return res.redirect("/add-saving");
         }
 
         await db.query(
@@ -633,11 +653,19 @@ app.post("/add-saving", async (req, res) => {
         );
 
         req.flash("success", "Saving goal added successfully.");
-        return res.status(201).json({success: true});
+        if (req.is("application/json")) {
+            return res.status(201).json({success: true});
+        }
+
+        return res.redirect("/saving");
     } catch (err) {
         console.log("Add saving.ejs error:", err);
         req.flash("error", "Unable to save goal right now.");
-        return res.status(500).json({success: false, error: "Unable to save goal right now."});
+        if (req.is("application/json")) {
+            return res.status(500).json({success: false, error: "Unable to save goal right now."});
+        }
+
+        return res.redirect("/add-saving");
     }
 });
 

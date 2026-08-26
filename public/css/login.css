@@ -135,7 +135,8 @@ body {
 }
 
 
-.form-card input[type="email"], .form-card input[type="password"], .form-card input[type="text"] {
+.form-card input[type="email"], .form-card input[type="password"], .form-card input[type="text"],
+.form-card input[type="number"], .form-card input[type="date"], .form-card textarea {
     width: 100%;
     padding: 14px 16px 14px 46px;
     background: var(--bg-input);
@@ -148,7 +149,19 @@ body {
     transition: var(--transition);
 }
 
+.form-card textarea {
+    min-height: 120px;
+    padding-top: 14px;
+    resize: vertical;
+}
+
 .form-card input:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+    background: #fff;
+}
+
+.form-card textarea:focus {
     border-color: var(--border-focus);
     box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
     background: #fff;
@@ -315,6 +328,14 @@ body {
 .change-password-container input[type="text"] {
     padding-left: 2.5rem;
 }
+
+
+
+.add-form .form-title {
+    text-align: center;
+    font-size: 2rem;
+}
+
 
 @keyframes liftCard {
     0% {
