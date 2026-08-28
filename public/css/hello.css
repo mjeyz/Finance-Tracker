@@ -163,6 +163,43 @@
     
 }
 
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.more-action {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: white;
+    min-width: 150px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: black;
+}
+
+.dropdown-content a:hover {
+    background: #f5f5f5;
+}
+
+.dropdown-content.show {
+    display: block;
+}
+
 @media (max-width: 1000px) {
     .event-summary-grid {
         grid-template-columns: 1fr 1fr;

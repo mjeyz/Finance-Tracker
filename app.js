@@ -700,6 +700,18 @@ app.post("/add-saving", async (req, res) => {
     }
 });
 
+app.patch("/edit/transaction/:id", async (req, res) => {
+
+});
+
+app.patch("/edit/event/:id", async (req, res) => {
+
+});
+
+app.patch("/edit/goal/:id", async (req, res) => {
+
+});
+
 app.post("/api/update/income", async (req, res) => {
     const {income, expense} = req.body;
 

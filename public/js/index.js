@@ -801,4 +801,34 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     console.log('📅 Calendar ready!');
-})
+});
+
+//DropDown Function
+function activeGoalDropdown(button) {
+
+    // Find the dropdown belonging to this button
+    const dropdown = button.nextElementSibling;
+
+    // Close other dropdowns
+    document.querySelectorAll(".dropdown-content").forEach(item => {
+        if (item !== dropdown) {
+            item.classList.remove("show");
+        }
+    });
+
+    // Open/close this dropdown
+    dropdown.classList.toggle("show");
+}
+
+
+window.onclick = function(event) {
+
+    // If click wasn't on the more-action button
+    if (!event.target.closest(".more-action")) {
+
+        document.querySelectorAll(".dropdown-content").forEach(dropdown => {
+            dropdown.classList.remove("show");
+        });
+
+    }
+};

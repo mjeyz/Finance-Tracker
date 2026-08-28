@@ -11,7 +11,8 @@
             </div>
 
             <div class="event-actions saving-action">
-                <a class="event-action event-action-primary" href="/add-saving" style="text-decoration: none"><i class="bx bx-plus"></i> Create Goal</a>
+                <a class="event-action event-action-primary" href="/add-saving" style="text-decoration: none"><i
+                            class="bx bx-plus"></i> Create Goal</a>
                 <button class="event-action event-action-ghost event-filter-btn"><i class="bx bx-filter-alt"></i>Transfer
                     to saving
                 </button>
@@ -115,7 +116,20 @@
                                 <span class="sv-per-sub">of goal</span>
                             </div>
                             <div class="sv-action">
-                                <span class="action">||</span>
+                                <div class="sv-action">
+                                    <div class="dropdown">
+
+                                        <div class="more-action" onclick="activeGoalDropdown(this)">
+                                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                                        </div>
+
+                                        <div class="dropdown-content">
+                                            <a href="/edit/goal/<%sv.id%>">Edit Goal</a>
+                                            <a href="#">Delete Goal</a>
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -157,7 +171,7 @@
                             </div>
                         </div>
                     <% } %>
-                    <% }) %>
+                <% }) %>
             <% } %>
         </div>
     </section>
@@ -171,9 +185,11 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        var sidebarLink = document.querySelector('.sidebar .nav-link[href="/saving"]');
+        const sidebarLink = document.querySelector('.sidebar .nav-link[href="/saving"]');
         if (sidebarLink) {
             sidebarLink.classList.add("active");
         }
     });
 </script>
+
+<script src="js/index.js"></script>
