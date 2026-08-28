@@ -92,3 +92,6 @@ ALTER TABLE transaction
 
 ALTER TABLE saving ADD COLUMN date DATE;
 ALTER TABLE saving ADD COLUMN description VARCHAR(250);
+
+ALTER TABLE events ADD COLUMN time TIME;
+ALTER TABLE events ADD COLUMN priority VARCHAR(50)

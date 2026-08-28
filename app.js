@@ -564,7 +564,7 @@ app.get("/add-saving", (req, res) => {
 });
 
 app.get("/add-event", (req, res) => {
-    res.render("/create-event.ejs");
+    res.render("create-event.ejs");
 });
 
 
@@ -612,7 +612,7 @@ app.post("/add-event", async (req, res) => {
         }
 
         await db.query(
-            "INSERT INTO events (user_id, name, date, location) VALUES ($1, $2, $3, $4)",
+            "INSERT INTO events (user_id, name, date, location, time, priority, description) VALUES ($1, $2, $3, $4)",
             [req.user.id, eventName, eventDate || null, location || null]
         );
 

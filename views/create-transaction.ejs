@@ -1,1 +1,125 @@
-<%- include ("partials/base.ejs") %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>FinTrack || Create Transaction</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="form-card">
+    <div class="model">
+        <% if (error && error.length > 0) { %>
+            <div class="flash-stack">
+                <% error.forEach(function (msg) { %>
+                    <div class="flash-message flash-error"><%= msg %></div>
+                <% }) %>
+            </div>
+        <% } %>
+        <% if (success && success.length > 0) { %>
+            <div class="flash-stack">
+                <% success.forEach(function (msg) { %>
+                    <div class="flash-message flash-success"><%= msg %></div>
+                <% }) %>
+            </div>
+        <% } %>
+        <% if (info && info.length > 0) { %>
+            <div class="flash-stack">
+                <% info.forEach(function (msg) { %>
+                    <div class="flash-message flash-info"><%= msg %></div>
+                <% }) %>
+            </div>
+        <% } %>
+        <form class="login-form add-form" action="/add-transaction" method="POST">
+            <div class="form-header" style="margin-bottom: 1rem;">
+                <h1 class="form-heading">Create Transaction</h1>
+                <p class="form-subheading">Set a target and track your progress</p>
+            </div>
+
+            <div class="form-group">
+                <label for="amount">Amount</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-rupee-sign icon"></i>
+                    <input type="number" id="amount" name="amount" required placeholder="eg. 4666">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-layer-group icon"></i>
+                        <select id="category" name="transactionCategory" required>
+                            <option value="" disabled selected>Select category</option>
+                            <option value="Food">Food and dining</option>
+                            <option value="Transportation">Transportation</option>
+                            <option value="Rent">House Rent</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Personal Care">Personal care</option>
+                            <option value="Saving">Saving and investment</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="type">Type</label>
+
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-money-bill-trend-up icon"></i>
+                        <select id="type" name="type" required>
+                            <option value="" disabled selected>Select Type</option>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
+
+              <div class="form-row">
+                    <div class="form-group">
+                        <label for="date">Transaction Date</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-calendar-days icon"></i>
+                        <input id="date" type="date" placeholder="Date" name="date"/>
+                            </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="paymentMethod">Payment method</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-wallet icon"></i>
+                        <select id="paymentMethod" name="method">
+                             <option value="" disabled selected>Select Payment Method</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="EasyPaisa">EasyPaisa</option>
+                            <option value="JazzCash">Jazz Cash</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                            <option value="PayPal">Paypal</option>
+                            <option value="Cryptocurrency">Cryptocurrency</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="form-group">
+                <label for="savingDescription">Description</label>
+                <textarea id="savingDescription" name="description" placeholder="Write a short note...." maxlength="250"></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Save Transaction</button>
+        </form>
+    </div>
+</div>
+<script src="/js/index.js"></script>
+</body>
+</html>

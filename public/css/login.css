@@ -135,7 +135,7 @@ body {
 }
 
 
-.form-card input[type="email"], .form-card input[type="password"], .form-card input[type="text"],
+.form-card input[type="email"], .form-card input[type="password"], .form-card input[type="text"], .form-card input[type="time"], .form-card select,
 .form-card input[type="number"], .form-card input[type="date"], .form-card textarea {
     width: 100%;
     padding: 14px 16px 14px 46px;
