@@ -556,15 +556,27 @@ app.post("/varify-email", verifyOtpLimiter, async (req, res) => {
 });
 
 app.get("/add-transaction", (req, res) => {
-    res.render("create-transaction.ejs");
+    if(req.isAuthenticated()) {
+        res.render("create-transaction.ejs");
+    } else {
+        res.redirect("/login");
+    }
 });
 
 app.get("/add-saving", (req, res) => {
-    res.render("create-saving.ejs");
+    if(req.isAuthenticated()) {
+        res.render("create-saving.ejs");
+    } else {
+        res.redirect("/login");
+    }
 });
 
 app.get("/add-event", (req, res) => {
-    res.render("create-event.ejs");
+    if(req.isAuthenticated()) {
+        res.render("create-event.ejs");
+    } else {
+        res.redirect("/login");
+    }
 });
 
 
@@ -589,12 +601,21 @@ app.post("/add-transaction", async (req, res) => {
         );
 
         req.flash("success", "Transaction added successfully.");
-        return res.status(201).json({success: true});
+        if (req.is("application/json")) {
+            return res.status(201).json({success: true});
+        }
+        res.redirect("/transaction")
     } catch (err) {
         console.log("Add transaction error:", err);
         req.flash("error", "Unable to save transaction right now.");
-        return res.status(500).json({success: false, error: "Unable to save transaction right now."});
+
+
+        if (req.is("application/json")) {
+             return res.status(500).json({success: false, error: "Unable to save transaction right now."});
+        }
+        return res.redirect("/add-transaction");
     }
+
 });
 
 app.post("/add-event", async (req, res) => {
@@ -604,7 +625,7 @@ app.post("/add-event", async (req, res) => {
             return res.status(401).json({success: false, error: "Please log in again."});
         }
 
-        const {eventName, location, eventDate} = req.body;
+        const {eventName, location, eventDate, eventTime, priority, description} = req.body;
 
         if (!eventName) {
             req.flash("error", "Event name is required.");
@@ -612,16 +633,26 @@ app.post("/add-event", async (req, res) => {
         }
 
         await db.query(
-            "INSERT INTO events (user_id, name, date, location, time, priority, description) VALUES ($1, $2, $3, $4)",
-            [req.user.id, eventName, eventDate || null, location || null]
+            "INSERT INTO events (user_id, name, location, date, time, priority, description) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+            [req.user.id, eventName, location || null, eventDate || null, eventTime, priority, description]
         );
 
         req.flash("success", "Event added successfully.");
-        return res.status(201).json({success: true});
+
+        if (req.is("application/json")) {
+            return res.status(201).json({success: true});
+        }
+        res.redirect("/events");
     } catch (err) {
         console.log("Add event error:", err);
         req.flash("error", "Unable to save event right now.");
-        return res.status(500).json({success: false, error: "Unable to save event right now."});
+
+
+        if (req.is("application/json")) {
+            return res.status(500).json({success: false, error: "Unable to save event right now."});
+        }
+        return res.redirect("/add-event");
+
     }
 });
 
