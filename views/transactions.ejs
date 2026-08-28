@@ -171,7 +171,6 @@ const summaryCards = rows.length
                 <button class="transaction-action transaction-action--ghost" type="button">
                     <i class="bx bx-calendar"></i>
                     May 2026
-                    <i class="bx bx-chevron-down transaction-chevron"></i>
                 </button>
                 <button class="transaction-icon-btn" type="button" aria-label="Notifications">
                     <i class="bx bx-bell"></i>
@@ -205,16 +204,22 @@ const summaryCards = rows.length
                 </label>
 
                 <select class="transaction-select" aria-label="Transaction type filter">
-                    <option>All Types</option>
+                    <option disabled selected>All Types</option>
                     <option>Income</option>
                     <option>Expense</option>
                 </select>
 
                 <select class="transaction-select" aria-label="Category filter">
-                    <option>All Categories</option>
-                    <option>Salary</option>
-                    <option>Food & Groceries</option>
-                    <option>Transportation</option>
+                    <option value="" disabled selected>All Categories</option>
+                     <option value="Food">Food and dining</option>
+                            <option value="Transportation">Transportation</option>
+                            <option value="Rent">House Rent</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Personal Care">Personal care</option>
+                            <option value="Saving">Saving and investment</option>
+                            <option value="Other">Other</option>
                 </select>
 
                 <button class="transaction-action transaction-action--ghost transaction-filter-btn" type="button">

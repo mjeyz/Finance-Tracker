@@ -90,10 +90,28 @@
                         <label for="location">Location</label>
                         <input id="location" name="location" type="text" placeholder="e.g. Lahore">
                     </div>
+
+                    <div class="form-group">
+                        <label for="priority">Event Date</label>
+                        <select id="priority" name="priority" required>
+                            <option value="" disabled selected>Select Priority</option>
+                            <option value="Low Priority">Low Priority</option>
+                            <option value="Mid Priority">Mid Priority</option>
+                            <option value="High Priority">High Priority</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
                     <div class="form-group">
                         <label for="eventDate">Event Date</label>
 
                         <input id="eventDate" name="eventDate" type="date">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventTime">Time</label>
+                        <input type="time" id="eventTime" name="eventTime" required>
                     </div>
                 </div>
 
