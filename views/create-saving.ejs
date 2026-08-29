@@ -8,7 +8,7 @@
     <% } else { %>
         <title>FinTrack || Create Goal</title>
     <% } %>
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="/css/login.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -51,7 +51,7 @@
                 <label for="purpose">Enter Name</label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-bullseye icon"></i>
-                    <input type="text" id="purpose" name="purpose" required placeholder="Dream Vacation">
+                    <input type="text" id="purpose" name="purpose" required placeholder="Dream Vacation" value="<%= goal ? goal.goal : ""%>">
                 </div>
             </div>
 
@@ -59,7 +59,7 @@
                 <label for="targetAmount">Target Amount</label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-piggy-bank icon"></i>
-                    <input type="number" id="targetAmount" name="targetAmount" required placeholder="9000">
+                    <input type="number" id="targetAmount" name="targetAmount" required placeholder="9000" value="<%= goal ? goal.targetamount : ""%>">
                 </div>
             </div>
 
@@ -67,21 +67,22 @@
                 <label for="savedAmount">Saved Amount</label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-sack-dollar icon"></i>
-                    <input type="number" id="savedAmount" name="savedAmount" required placeholder="800">
+                    <input type="number" id="savedAmount" name="savedAmount" required placeholder="800" value="<%= goal ? goal.savedamount : ""%>">
                 </div>
             </div>
 
             <div class="form-group">
+                <% // In your Express route %>
                 <label for="targetDate">Target Date</label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-calendar-days icon"></i>
-                    <input type="date" id="targetDate" name="targetDate" required>
+                    <input type="date" id="targetDate" name="targetDate" required value="<%= goal ? formattedDate : ""%>">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="savingDescription">Description</label>
-                <textarea id="savingDescription" name="description" placeholder="Write a short note...."></textarea>
+                <textarea id="savingDescription" name="description" placeholder="Write a short note...." rows="4"><%= goal ? goal.description : "" %> </textarea>
             </div>
 
             <button type="submit" class="submit-btn">Create goal</button>

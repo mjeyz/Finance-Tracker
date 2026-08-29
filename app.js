@@ -556,7 +556,7 @@ app.post("/varify-email", verifyOtpLimiter, async (req, res) => {
 });
 
 app.get("/add-transaction", (req, res) => {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
         res.render("create-transaction.ejs");
     } else {
         res.redirect("/login");
@@ -564,15 +564,15 @@ app.get("/add-transaction", (req, res) => {
 });
 
 app.get("/add-saving", (req, res) => {
-    if(req.isAuthenticated()) {
-        res.render("create-saving.ejs", {is_edit: false});
+    if (req.isAuthenticated()) {
+        res.render("create-saving.ejs", {is_edit: false, goal: ""});
     } else {
         res.redirect("/login");
     }
 });
 
 app.get("/add-event", (req, res) => {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
         res.render("create-event.ejs");
     } else {
         res.redirect("/login");
@@ -611,7 +611,7 @@ app.post("/add-transaction", async (req, res) => {
 
 
         if (req.is("application/json")) {
-             return res.status(500).json({success: false, error: "Unable to save transaction right now."});
+            return res.status(500).json({success: false, error: "Unable to save transaction right now."});
         }
         return res.redirect("/add-transaction");
     }
@@ -709,16 +709,32 @@ app.patch("/edit/event/:id", async (req, res) => {
 });
 
 app.get("/edit/goal/:id", async (req, res) => {
+    if (req.isAuthenticated()) {
+        const id = req.params.id;
 
-    res.render("create-saving.ejs", {is_edit: true});
+
+        const result = await db.query("SELECT * FROM saving WHERE id = $1", [id]);
+        console.log(result.rows)
+
+        const goal = result.rows[0]
+        // Convert to YYYY-MM-DD (respects local timezone)
+        const year = goal.date.getFullYear();
+        const month = String(goal.date.getMonth() + 1).padStart(2, '0');
+        const day = String(goal.date.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+
+        console.log(formattedDate)
+
+        res.render("create-saving.ejs", {is_edit: true, goal: goal, formattedDate: formattedDate});
+    } else {
+        res.redirect("/login");
+    }
 });
 
 app.patch("/edit/goal/:id", async (req, res) => {
     const id = req.params.id;
 
     try {
-        const result = await db.query("SELECT * FROM saving WHERE id = $1", [id]);
-        console.log(result.rows)
 
     } catch (err) {
         console.log(`Error : ${err}`)
@@ -789,7 +805,6 @@ app.delete("/api/delete/goal", async (req, res) => {
 })
 
 
-
 app.get("/api/transaction/charts", async (req, res) => {
     try {
         const result = await db.query("SELECT  category, SUM(amount) AS total_amount FROM transaction WHERE user_id = $1 GROUP BY category ORDER BY total_amount DESC", [req.user.id])
@@ -805,30 +820,29 @@ app.get("/api/transaction/charts", async (req, res) => {
 });
 
 app.get("/api/graph", async (req, res) => {
-  try {
-    const result = await db.query(
-      `SELECT 
-         TO_CHAR(date, 'Mon') AS month_label,
-         SUM(amount)::FLOAT AS total
-       FROM transaction
-       WHERE user_id = $1 
-         AND type = 'expense'
-         AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)
-       GROUP BY TO_CHAR(date, 'Mon')
-       ORDER BY MIN(EXTRACT(MONTH FROM date));`,
-      [req.user.id]
-    );
-    res.json(result.rows);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error" });
-  }
+    try {
+        const result = await db.query(
+            `SELECT TO_CHAR(date, 'Mon') AS month_label,
+                    SUM(amount) ::FLOAT AS total
+             FROM transaction
+             WHERE user_id = $1
+               AND type = 'expense'
+               AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)
+             GROUP BY TO_CHAR(date, 'Mon')
+             ORDER BY MIN(EXTRACT(MONTH FROM date));`,
+            [req.user.id]
+        );
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: "Server error"});
+    }
 });
 
 app.get("/transaction", async (req, res) => {
     if (req.isAuthenticated()) {
         const result = await db.query("SELECT * FROM transaction WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
-    res.render("transactions.ejs", {user: req.user, transaction: result.rows})
+        res.render("transactions.ejs", {user: req.user, transaction: result.rows})
     } else {
         res.redirect("login")
     }
@@ -844,7 +858,7 @@ app.get("/events", async (req, res) => {
     }
 });
 
-app.get("/saving",async (req, res) => {
+app.get("/saving", async (req, res) => {
     if (req.isAuthenticated()) {
         const result = await db.query("SELECT * FROM saving WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
         res.render("saving.ejs", {user: req.user, saving: result.rows})
