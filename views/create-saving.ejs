@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>FinTrack || Create Goal</title>
+    <% if (is_edit) { %>
+        <title>FinTrack || Edit Goal</title>
+    <% } else { %>
+        <title>FinTrack || Create Goal</title>
+    <% } %>
     <link rel="stylesheet" href="css/login.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet">
@@ -35,7 +39,11 @@
         <% } %>
         <form class="login-form add-form" action="/add-saving" method="POST">
             <div class="form-header" style="margin-bottom: 1rem;">
-                <h1 class="form-heading">Create Goal</h1>
+                <% if (is_edit) {%>
+                <h1 class="form-heading">Edit Goal</h1>
+                <% } else {%>
+                    <h1 class="form-heading">Create Goal</h1>
+                    <% } %>
                 <p class="form-subheading">Set a target and track your progress</p>
             </div>
 

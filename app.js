@@ -565,7 +565,7 @@ app.get("/add-transaction", (req, res) => {
 
 app.get("/add-saving", (req, res) => {
     if(req.isAuthenticated()) {
-        res.render("create-saving.ejs");
+        res.render("create-saving.ejs", {is_edit: false});
     } else {
         res.redirect("/login");
     }
@@ -708,8 +708,21 @@ app.patch("/edit/event/:id", async (req, res) => {
 
 });
 
-app.patch("/edit/goal/:id", async (req, res) => {
+app.get("/edit/goal/:id", async (req, res) => {
 
+    res.render("create-saving.ejs", {is_edit: true});
+});
+
+app.patch("/edit/goal/:id", async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const result = await db.query("SELECT * FROM saving WHERE id = $1", [id]);
+        console.log(result.rows)
+
+    } catch (err) {
+        console.log(`Error : ${err}`)
+    }
 });
 
 app.post("/api/update/income", async (req, res) => {
@@ -784,7 +797,6 @@ app.get("/api/transaction/charts", async (req, res) => {
         if (result.rowCount === 0) {
             return res.status(404).json({error: 'Transaction not found or unauthorized'});
         }
-        console.log(result)
         res.json(result.rows)
     } catch (err) {
         console.error("Database error : ", err.message);
@@ -835,8 +847,6 @@ app.get("/events", async (req, res) => {
 app.get("/saving",async (req, res) => {
     if (req.isAuthenticated()) {
         const result = await db.query("SELECT * FROM saving WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
-        const year = await db.query("SELECT EXTRACT(year FROM date ) FROM events WHERE user_id = $1", [req.user.id])
-        console.log(`Year : ${year.rows[0]}`)
         res.render("saving.ejs", {user: req.user, saving: result.rows})
     } else {
         res.redirect("/login");
