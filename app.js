@@ -557,7 +557,7 @@ app.post("/varify-email", verifyOtpLimiter, async (req, res) => {
 
 app.get("/add-transaction", (req, res) => {
     if (req.isAuthenticated()) {
-        res.render("create-transaction.ejs");
+        res.render("create-transaction.ejs", {is_edit: false, transaction: ""});
     } else {
         res.redirect("/login");
     }
@@ -700,11 +700,24 @@ app.post("/add-saving", async (req, res) => {
     }
 });
 
-app.patch("/edit/transaction/:id", async (req, res) => {
 
+
+app.get("/edit/transaction/:id", async (req, res) => {
+    if (req.isAuthenticated()) {
+        const id = req.params.id;
+        const result = await db.query("SELECT * FROM transaction WHERE id = $1", [id]);
+        const transaction = result.rows[0];
+
+        const year = transaction.date.getFullYear();
+        const month = String(transaction.date.getMonth() + 1).padStart(2, '0');
+        const day = String(transaction.date.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+
+        res.render("create-transaction.ejs", {is_edit: true, transaction: transaction, formattedDate: formattedDate});
+    } else {
+        res.redirect("/login");
+    }
 });
-
-
 
 app.get("/edit/event/:id", async (req, res) => {
     if(req.isAuthenticated()) {
@@ -728,7 +741,6 @@ app.get("/edit/goal/:id", async (req, res) => {
     if (req.isAuthenticated()) {
         const id = req.params.id;
 
-
         const result = await db.query("SELECT * FROM saving WHERE id = $1", [id]);
         console.log(result.rows)
 
@@ -747,6 +759,14 @@ app.get("/edit/goal/:id", async (req, res) => {
     }
 });
 
+app.patch("/edit/transaction/:id", async (req, res) => {
+
+});
+
+app.patch("/edit/event/:id", async (req, res) => {
+
+});
+
 app.patch("/edit/goal/:id", async (req, res) => {
     const id = req.params.id;
 
@@ -755,10 +775,6 @@ app.patch("/edit/goal/:id", async (req, res) => {
     } catch (err) {
         console.log(`Error : ${err}`)
     }
-});
-
-app.patch("/edit/event/:id", async (req, res) => {
-
 });
 
 app.post("/api/update/income", async (req, res) => {

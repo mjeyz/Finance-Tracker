@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <% if(is_edit) { %>
+    <title>FinTrack || Edit Transaction</title>
+        <% } else { %>
     <title>FinTrack || Create Transaction</title>
-    <link rel="stylesheet" href="css/login.css">
+    <% } %>
+    <link rel="stylesheet" href="/css/login.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -35,7 +39,12 @@
         <% } %>
         <form class="login-form add-form" action="/add-transaction" method="POST">
             <div class="form-header" style="margin-bottom: 1rem;">
+                <% if(is_edit) { %>
+                <h1 class="form-heading">Edit Transaction</h1>
+                <% } else { %>
                 <h1 class="form-heading">Create Transaction</h1>
+
+                    <% } %>
                 <p class="form-subheading">Set a target and track your progress</p>
             </div>
 
@@ -43,7 +52,7 @@
                 <label for="amount">Amount</label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-rupee-sign icon"></i>
-                    <input type="number" id="amount" name="amount" required placeholder="eg. 4666">
+                    <input type="number" id="amount" name="amount" required placeholder="eg. 4666" value="<%= transaction.amount %>">
                 </div>
             </div>
 
@@ -88,7 +97,7 @@
                         <label for="date">Transaction Date</label>
                         <div class="input-wrapper">
                             <i class="fa-solid fa-calendar-days icon"></i>
-                        <input id="date" type="date" placeholder="Date" name="date"/>
+                        <input id="date" type="date" placeholder="Date" name="date" value="<%= transaction ? formattedDate : "" %>" />
                             </div>
                     </div>
 
@@ -113,7 +122,12 @@
 
             <div class="form-group">
                 <label for="savingDescription">Description</label>
-                <textarea id="savingDescription" name="description" placeholder="Write a short note...." maxlength="250"></textarea>
+                <textarea id="savingDescription"
+                          name="description"
+                          placeholder="Write a short note...."
+                          maxlength="250"
+                          rows="4"
+                ><%= transaction.description %></textarea>
             </div>
 
             <button type="submit" class="submit-btn">Save Transaction</button>

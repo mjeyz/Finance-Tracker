@@ -15,7 +15,7 @@ const formatAmount = (value) => {
 const formatDate = (value) => {
     const dateValue = value ? new Date(value) : null;
     if (!dateValue || Number.isNaN(dateValue.getTime())) {
-        return { date: "May 25, 2026", time: "10:30 AM" };
+        return {date: "May 25, 2026", time: "10:30 AM"};
     }
 
     return {
@@ -109,50 +109,74 @@ const sampleTransactions = [
 ];
 
 const transactionRows = rows.length
-    ? rows.slice(0, 6).map((row, index) => {
-        const formattedDate = formatDate(row.date);
-        const type = String(row.type || "Expense").toLowerCase();
-        const amountValue = Number(row.amount) || 0;
-        const category = toTitleCase(row.category || "Uncategorized");
+        ? rows.slice(0, 6).map((row, index) => {
+            const formattedDate = formatDate(row.date);
+            const type = String(row.type || "Expense").toLowerCase();
+            const amountValue = Number(row.amount) || 0;
+            const category = toTitleCase(row.category || "Uncategorized");
 
-        return {
-            date: formattedDate.date,
-            time: formattedDate.time,
-            description: row.description || "Transaction",
-            note: row.category || "Personal",
-            category,
-            type: type === "income" ? "Income" : "Expense",
-            amount: `${amountValue < 0 ? "-" : "+"} PKR ${formatAmount(amountValue)}`,
-            method: row.method || "Cash",
-            methodNote: row.method || "Primary wallet",
-            tone: ["mint", "blue", "orange", "indigo", "green", "yellow"][index % 6],
-            icon: type === "income" ? "bx bx-wallet" : "bx bx-cart"
-        };
-    })
-    : sampleTransactions;
+            return {
+                date: formattedDate.date,
+                time: formattedDate.time,
+                description: row.description || "Transaction",
+                note: row.category || "Personal",
+                category,
+                type: type === "income" ? "Income" : "Expense",
+                amount: `${amountValue < 0 ? "-" : "+"} PKR ${formatAmount(amountValue)}`,
+                method: row.method || "Cash",
+                methodNote: row.method || "Primary wallet",
+                tone: ["mint", "blue", "orange", "indigo", "green", "yellow"][index % 6],
+                icon: type === "income" ? "bx bx-wallet" : "bx bx-cart"
+            };
+        })
+        : sampleTransactions;
 
 const totalIncome = rows
-    .filter((row) => String(row.type || "").toLowerCase() === "income")
-    .reduce((sum, row) => sum + (Number(row.amount) || 0), 0);
+        .filter((row) => String(row.type || "").toLowerCase() === "income")
+        .reduce((sum, row) => sum + (Number(row.amount) || 0), 0);
 const totalExpenses = rows
-    .filter((row) => String(row.type || "").toLowerCase() === "expense")
-    .reduce((sum, row) => sum + Math.abs(Number(row.amount) || 0), 0);
+        .filter((row) => String(row.type || "").toLowerCase() === "expense")
+        .reduce((sum, row) => sum + Math.abs(Number(row.amount) || 0), 0);
 const totalTransactions = rows.length || sampleTransactions.length;
 const netBalance = totalIncome - totalExpenses;
 
 const summaryCards = rows.length
-    ? [
-        { label: "Total Income", value: `PKR ${formatAmount(totalIncome)}`, tone: "mint", icon: "bx bx-arrow-up", delta: "+ 12%" },
-        { label: "Total Expenses", value: `PKR ${formatAmount(totalExpenses)}`, tone: "rose", icon: "bx bx-arrow-down", delta: "+ 8%" },
-        { label: "Net Balance", value: `PKR ${formatAmount(netBalance)}`, tone: "blue", icon: "bx bx-wallet", delta: "+ 15%" },
-        { label: "Total Transactions", value: String(totalTransactions), tone: "violet", icon: "bx bx-list-ul", delta: "—" }
-    ]
-    : [
-        { label: "Total Income", value: "PKR 120,000", tone: "mint", icon: "bx bx-arrow-up", delta: "+ 12%" },
-        { label: "Total Expenses", value: "PKR 68,540", tone: "rose", icon: "bx bx-arrow-down", delta: "+ 8%" },
-        { label: "Net Balance", value: "PKR 51,460", tone: "blue", icon: "bx bx-wallet", delta: "+ 15%" },
-        { label: "Total Transactions", value: "24", tone: "violet", icon: "bx bx-list-ul", delta: "—" }
-    ];
+        ? [
+            {
+                label: "Total Income",
+                value: `PKR ${formatAmount(totalIncome)}`,
+                tone: "mint",
+                icon: "bx bx-arrow-up",
+                delta: "+ 12%"
+            },
+            {
+                label: "Total Expenses",
+                value: `PKR ${formatAmount(totalExpenses)}`,
+                tone: "rose",
+                icon: "bx bx-arrow-down",
+                delta: "+ 8%"
+            },
+            {
+                label: "Net Balance",
+                value: `PKR ${formatAmount(netBalance)}`,
+                tone: "blue",
+                icon: "bx bx-wallet",
+                delta: "+ 15%"
+            },
+            {
+                label: "Total Transactions",
+                value: String(totalTransactions),
+                tone: "violet",
+                icon: "bx bx-list-ul",
+                delta: "—"
+            }
+        ]
+        : [
+            {label: "Total Income", value: "PKR 120,000", tone: "mint", icon: "bx bx-arrow-up", delta: "+ 12%"},
+            {label: "Total Expenses", value: "PKR 68,540", tone: "rose", icon: "bx bx-arrow-down", delta: "+ 8%"},
+            {label: "Net Balance", value: "PKR 51,460", tone: "blue", icon: "bx bx-wallet", delta: "+ 15%"},
+            {label: "Total Transactions", value: "24", tone: "violet", icon: "bx bx-list-ul", delta: "—"}
+        ];
 %>
 
 <main class="transaction-main">
@@ -164,7 +188,8 @@ const summaryCards = rows.length
             </div>
 
             <div class="transaction-actions">
-                <a class="transaction-action transaction-action--primary" type="button" href="/add-transaction" style="text-decoration: none">
+                <a class="transaction-action transaction-action--primary" type="button" href="/add-transaction"
+                   style="text-decoration: none">
                     <i class="bx bx-plus"></i>
                     New Transaction
                 </a>
@@ -200,7 +225,7 @@ const summaryCards = rows.length
             <div class="transaction-toolbar">
                 <label class="transaction-search" for="transactionSearch">
                     <i class="bx bx-search"></i>
-                    <input id="transactionSearch" type="search" placeholder="Search transactions..." />
+                    <input id="transactionSearch" type="search" placeholder="Search transactions..."/>
                 </label>
 
                 <select class="transaction-select" aria-label="Transaction type filter">
@@ -211,15 +236,15 @@ const summaryCards = rows.length
 
                 <select class="transaction-select" aria-label="Category filter">
                     <option value="" disabled selected>All Categories</option>
-                     <option value="Food">Food and dining</option>
-                            <option value="Transportation">Transportation</option>
-                            <option value="Rent">House Rent</option>
-                            <option value="entertainment">Entertainment</option>
-                            <option value="Shopping">Shopping</option>
-                            <option value="Healthcare">Healthcare</option>
-                            <option value="Personal Care">Personal care</option>
-                            <option value="Saving">Saving and investment</option>
-                            <option value="Other">Other</option>
+                    <option value="Food">Food and dining</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Rent">House Rent</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Personal Care">Personal care</option>
+                    <option value="Saving">Saving and investment</option>
+                    <option value="Other">Other</option>
                 </select>
 
                 <button class="transaction-action transaction-action--ghost transaction-filter-btn" type="button">
@@ -236,63 +261,69 @@ const summaryCards = rows.length
             <div class="transaction-table-wrap">
                 <table class="transactions-table">
                     <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Type</th>
-                            <th>Amount</th>
-                            <th>Payment Method</th>
-                            <th>Actions</th>
-                        </tr>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Payment Method</th>
+                        <th>Actions</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <% transactionRows.forEach((row) => { %>
-                            <tr>
-                                <td>
-                                    <div class="date-cell">
-                                        <strong><%= row.date %></strong>
-                                        <span><%= row.time %></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="description-cell">
+                    <% transactionRows.forEach((row) => { %>
+                        <tr>
+                            <td>
+                                <div class="date-cell">
+                                    <strong><%= row.date %></strong>
+                                    <span><%= row.time %></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="description-cell">
                                         <span class="description-cell__icon description-cell__icon--<%= row.tone %>">
                                             <i class="<%= row.icon %>"></i>
                                         </span>
-                                        <div>
-                                            <strong><%= row.description %></strong>
-                                            <span><%= row.note %></span>
-                                        </div>
+                                    <div>
+                                        <strong><%= row.description %></strong>
+                                        <span><%= row.note %></span>
                                     </div>
-                                </td>
-                                <td>
-                                    <span class="pill pill--<%= row.tone %>"><%= row.category %></span>
-                                </td>
-                                <td>
-                                    <span class="pill pill--<%= row.type.toLowerCase() %>"><%= row.type %></span>
-                                </td>
-                                <td>
-                                    <strong class="amount-cell amount-cell--<%= row.type.toLowerCase() %>"><%= row.amount %></strong>
-                                </td>
-                                <td>
-                                    <div class="payment-cell">
+                                </div>
+                            </td>
+                            <td>
+                                <span class="pill pill--<%= row.tone %>"><%= row.category %></span>
+                            </td>
+                            <td>
+                                <span class="pill pill--<%= row.type.toLowerCase() %>"><%= row.type %></span>
+                            </td>
+                            <td>
+                                <strong class="amount-cell amount-cell--<%= row.type.toLowerCase() %>"><%= row.amount %></strong>
+                            </td>
+                            <td>
+                                <div class="payment-cell">
                                         <span class="payment-cell__icon payment-cell__icon--<%= row.tone %>">
                                             <i class="bx bx-credit-card"></i>
                                         </span>
-                                        <div>
-                                            <strong><%= row.method %></strong>
-                                            <span><%= row.methodNote %></span>
-                                        </div>
+                                    <div>
+                                        <strong><%= row.method %></strong>
+                                        <span><%= row.methodNote %></span>
                                     </div>
-                                </td>
-                                <td>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dropdown">
                                     <button class="action-dots" type="button" aria-label="Transaction actions">
                                         <i class="bx bx-dots-vertical-rounded"></i>
                                     </button>
-                                </td>
-                            </tr>
-                        <% }); %>
+                                    <div class="dropdown-content" onclick="activeGoalDropdown(this)">
+                                        <a href="/edit/transaction/<%= row.id %>">Edit Transaction</a>
+                                        <a>Delete Transaction</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }); %>
                     </tbody>
                 </table>
             </div>
