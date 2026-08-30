@@ -11,7 +11,8 @@
             </div>
 
             <div class="event-actions">
-                <a class="event-action event-action-primary" href="/add-event" style="text-decoration: none"><i class="bx bx-plus"></i> Add Event</a>
+                <a class="event-action event-action-primary" href="/add-event" style="text-decoration: none"><i
+                            class="bx bx-plus"></i> Add Event</a>
                 <button class="event-action event-action-ghost event-filter-btn"><i class="bx bx-filter-alt"></i>Filter
                 </button>
             </div>
@@ -128,31 +129,37 @@
                     <a href="/">View All</a>
                 </div>
                 <% if (events.length > 0) { %>
-                 
-                
-                <% events.forEach(ev => { %>
-                 
-               
-                <div class="event" data-event-date="<%= ev.date %>">
-                    <div class="event-div-1">
-                        <div class="event-icon"><i class="fas fa-bank"></i></div>
 
-                        <div class="event-labels">
-                            <span class="title"><%= ev.name %></span>
-                            <span class="subtitle"><%= ev.location %></span>
-                        </div>
-                    </div>
-                    <div class="event-div-2">
-                        <div class="event-date">
-                            <span class="event-date js-event-date"><%= ev.date %></span>
-                            <span class="event-day js-event-day">--</span>
-                        </div>
 
-                        <div class="event-time js-event-time">--:--</div>
-                    </div>
-                    <div class="more-action"><i class="fa-solid fa-ellipsis-vertical"></i></div>
-                </div>
-                 <% }) %>
+                    <% events.forEach(ev => { %>
+
+
+                        <div class="event" data-event-date="<%= ev.date %>">
+                            <div class="event-div-1">
+                                <div class="event-icon"><i class="fas fa-bank"></i></div>
+
+                                <div class="event-labels">
+                                    <span class="title"><%= ev.name %></span>
+                                    <span class="subtitle"><%= ev.location %></span>
+                                </div>
+                            </div>
+                            <div class="event-div-2">
+                                <div class="event-date">
+                                    <span class="event-date js-event-date"><%= ev.date %></span>
+                                    <span class="event-day js-event-day">--</span>
+                                </div>
+
+                                <div class="event-time js-event-time">--:--</div>
+                            </div>
+                            <div class="dropdown">
+                                <div class="more-action" onclick="activeGoalDropdown(this)"><i class="fa-solid fa-ellipsis-vertical"></i></div>
+                                <div class="dropdown-content">
+                                    <a href="/edit/event/<%= ev.id %>">Edit Event</a>
+                                    <a href="#">Delete Event</a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
                 <% } %>
 
             </div>
@@ -164,9 +171,7 @@
     </section>
 </main>
 
-<script src="js/index.js">
-
-</script>
+<script src="js/index.js"></script>
 
 <script>
 

@@ -573,7 +573,7 @@ app.get("/add-saving", (req, res) => {
 
 app.get("/add-event", (req, res) => {
     if (req.isAuthenticated()) {
-        res.render("create-event.ejs");
+        res.render("create-event.ejs", {is_edit: false, event: ""});
     } else {
         res.redirect("/login");
     }
@@ -704,8 +704,24 @@ app.patch("/edit/transaction/:id", async (req, res) => {
 
 });
 
-app.patch("/edit/event/:id", async (req, res) => {
 
+
+app.get("/edit/event/:id", async (req, res) => {
+    if(req.isAuthenticated()) {
+        const id = req.params.id;
+
+        const result = await db.query("SELECT * FROM events WHERE id = $1", [id]);
+        const event = result.rows[0];
+        console.log(event)
+
+        const year = event.date.getFullYear();
+        const month = String(event.date.getMonth() + 1).padStart(2, '0');
+        const day = String(event.date.getDate()).padStart(2, "0");
+        const formatedDate = `${year}-${month}-${day}`;
+        res.render("create-event.ejs", {event: event, is_edit: true, formatedDate: formatedDate});
+    } else {
+        res.redirect("/login");
+    }
 });
 
 app.get("/edit/goal/:id", async (req, res) => {
@@ -739,6 +755,10 @@ app.patch("/edit/goal/:id", async (req, res) => {
     } catch (err) {
         console.log(`Error : ${err}`)
     }
+});
+
+app.patch("/edit/event/:id", async (req, res) => {
+
 });
 
 app.post("/api/update/income", async (req, res) => {
