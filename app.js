@@ -701,7 +701,6 @@ app.post("/add-saving", async (req, res) => {
 });
 
 
-
 app.get("/edit/transaction/:id", async (req, res) => {
     if (req.isAuthenticated()) {
         const id = req.params.id;
@@ -720,7 +719,7 @@ app.get("/edit/transaction/:id", async (req, res) => {
 });
 
 app.get("/edit/event/:id", async (req, res) => {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
         const id = req.params.id;
 
         const result = await db.query("SELECT * FROM events WHERE id = $1", [id]);
@@ -731,6 +730,8 @@ app.get("/edit/event/:id", async (req, res) => {
         const month = String(event.date.getMonth() + 1).padStart(2, '0');
         const day = String(event.date.getDate()).padStart(2, "0");
         const formatedDate = `${year}-${month}-${day}`;
+        const formatedTime = new Date(event.time)
+        console.log(event.time)
         res.render("create-event.ejs", {event: event, is_edit: true, formatedDate: formatedDate});
     } else {
         res.redirect("/login");
@@ -764,7 +765,84 @@ app.patch("/edit/transaction/:id", async (req, res) => {
 });
 
 app.patch("/edit/event/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
 
+        const {
+            eventName,
+            location,
+            eventDate,
+            eventTime,
+            priority,
+            description
+        } = req.body;
+
+        const result = await db.query(
+            "SELECT * FROM events WHERE id = $1",
+            [id]
+        );
+
+        const row = result.rows[0];
+
+        if (!row) {
+            return res.status(404).json({
+                message: "Event not found."
+            });
+        }
+
+        if (eventName !== undefined && eventName !== row.name) {
+            await db.query(
+                "UPDATE events SET name = $1 WHERE id = $2",
+                [eventName, id]
+            );
+        }
+
+        if (location !== undefined && location !== row.location) {
+            await db.query(
+                "UPDATE events SET location = $1 WHERE id = $2",
+                [location, id]
+            );
+        }
+
+        if (eventDate !== undefined && eventDate !== row.date) {
+            await db.query(
+                "UPDATE events SET date = $1 WHERE id = $2",
+                [eventDate, id]
+            );
+        }
+
+        if (eventTime !== undefined && eventTime !== row.time) {
+            await db.query(
+                "UPDATE events SET time = $1 WHERE id = $2",
+                [eventTime, id]
+            );
+        }
+
+        if (priority !== undefined && priority !== row.priority) {
+            await db.query(
+                "UPDATE events SET priority = $1 WHERE id = $2",
+                [priority, id]
+            );
+        }
+
+        if (description !== undefined && description !== row.description) {
+            await db.query(
+                "UPDATE events SET description = $1 WHERE id = $2",
+                [description, id]
+            );
+        }
+
+        return res.status(200).json({
+            message: "Event updated successfully."
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Error updating event."
+        });
+    }
 });
 
 app.patch("/edit/goal/:id", async (req, res) => {

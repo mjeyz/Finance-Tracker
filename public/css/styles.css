@@ -1691,7 +1691,11 @@ body {
         justify-content: center;
         font-size: 1.1rem;
         flex: 0 0 auto;
-        background-color: #2fb67c;
+    }
+
+    .upcoming-event-summary-icon {
+        background-color: #e9f9ef;
+        color: #2fb67c;
     }
 
     .event-summary-content {
