@@ -37,7 +37,7 @@
                 <% }) %>
             </div>
         <% } %>
-        <form class="login-form add-form" action="/add-transaction" method="POST">
+        <form class="login-form add-form" action="<% is_edit ? `/edit/transaction/${transaction.id}` : '/add-transaction'%>" method="POST">
             <div class="form-header" style="margin-bottom: 1rem;">
                 <% if(is_edit) { %>
                 <h1 class="form-heading">Edit Transaction</h1>
@@ -63,15 +63,15 @@
                         <i class="fa-solid fa-layer-group icon"></i>
                         <select id="category" name="transactionCategory" required>
                             <option value="" disabled selected>Select category</option>
-                            <option value="Food">Food and dining</option>
-                            <option value="Transportation">Transportation</option>
-                            <option value="Rent">House Rent</option>
-                            <option value="entertainment">Entertainment</option>
-                            <option value="Shopping">Shopping</option>
-                            <option value="Healthcare">Healthcare</option>
-                            <option value="Personal Care">Personal care</option>
-                            <option value="Saving">Saving and investment</option>
-                            <option value="Other">Other</option>
+                            <option value="Food" <%= transaction.category == "Food"? "selected": "" %> >Food and dining</option>
+                            <option value="Transportation <%= transaction.category == "Transportation"? "selected": "" %> ">Transportation</option>
+                            <option value="Rent" <%= transaction.category == "Rent"? "selected": "" %> >House Rent</option>
+                            <option value="entertainment" <%= transaction.category == "entertainment"? "selected": "" %> >Entertainment</option>
+                            <option value="Shopping" <%= transaction.category == "Shopping"? "selected": "" %> >Shopping</option>
+                            <option value="Healthcare" <%= transaction.category == "Healthcare"? "selected": "" %> >Healthcare</option>
+                            <option value="Personal Care" <%= transaction.category == "Personal Care"? "selected": "" %> >Personal care</option>
+                            <option value="Saving" <%= transaction.category == "Saving"? "selected": "" %> >Saving and investment</option>
+                            <option value="Other" <%= transaction.category == "Other"? "selected": "" %> >Other</option>
                         </select>
                     </div>
                 </div>
@@ -82,9 +82,9 @@
                         <i class="fa-solid fa-money-bill-trend-up icon"></i>
                         <select id="type" name="type" required>
                             <option value="" disabled selected>Select Type</option>
-                            <option value="income">Income</option>
-                            <option value="expense">Expense</option>
-                            <option value="other">Other</option>
+                            <option value="income" <%= transaction.type == "income" ? "selected": "" %> >Income</option>
+                            <option value="expense" <%= transaction.type == "expense" ? "selected": "" %> >Expense</option>
+                            <option value="other" <%= transaction.type == "other" ? "selected": "" %> >Other</option>
                         </select>
                     </div>
                 </div>
@@ -107,14 +107,14 @@
                             <i class="fa-solid fa-wallet icon"></i>
                         <select id="paymentMethod" name="method">
                              <option value="" disabled selected>Select Payment Method</option>
-                            <option value="Cash">Cash</option>
-                            <option value="Credit Card">Credit Card</option>
-                            <option value="EasyPaisa">EasyPaisa</option>
-                            <option value="JazzCash">Jazz Cash</option>
-                            <option value="Bank Transfer">Bank Transfer</option>
-                            <option value="PayPal">Paypal</option>
-                            <option value="Cryptocurrency">Cryptocurrency</option>
-                            <option value="Other">Other</option>
+                            <option value="Cash" <%= transaction.method == "cash" ? "selected": "" %>>Cash</option>
+                            <option value="Credit Card" <%= transaction.method == "Credit Card" ? "selected": "" %>>Credit Card</option>
+                            <option value="EasyPaisa" <%= transaction.method == "EasyPaisa" ? "selected": "" %>>EasyPaisa</option>
+                            <option value="JazzCash" <%= transaction.method == "JazzCash" ? "selected": "" %>>Jazz Cash</option>
+                            <option value="Bank Transfer" <%= transaction.method == "Bank Transfer" ? "selected": "" %>>Bank Transfer</option>
+                            <option value="PayPal" <%= transaction.method == "PayPal" ? "selected": "" %>>Paypal</option>
+                            <option value="Cryptocurrency" <%= transaction.method == "Cryptocurrency" ? "selected": "" %>>Cryptocurrency</option>
+                            <option value="Other" <%= transaction.method == "Other" ? "selected": "" %>>Other</option>
                         </select>
                         </div>
                     </div>

@@ -30,20 +30,3 @@ app.get("/api/events", basicAuth, async (req, res) => {
 
     res.json(result.rows);
 });
-
-
-<label for="priority">Priority</label>
-
-<select name="priority" id="priority">
-    <option value="Low" <%= event.priority === "Low" ? "selected" : "" %>>
-        Low
-    </option>
-
-    <option value="Medium" <%= event.priority === "Medium" ? "selected" : "" %>>
-        Medium
-    </option>
-
-    <option value="High" <%= event.priority === "High" ? "selected" : "" %>>
-        High
-    </option>
-</select>

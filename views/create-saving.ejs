@@ -37,7 +37,7 @@
                 <% }) %>
             </div>
         <% } %>
-        <form class="login-form add-form" action="/add-saving" method="POST">
+        <form class="login-form add-form" action="<% is_edit ? `/edit/goal/${ goal.id}` : '/add-saving'%>" method="POST">
             <div class="form-header" style="margin-bottom: 1rem;">
                 <% if (is_edit) { %>
                     <h1 class="form-heading">Edit Goal</h1>

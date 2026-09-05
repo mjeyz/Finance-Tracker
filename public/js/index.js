@@ -507,7 +507,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const dateEl = card.querySelector(".js-event-date");
         const dayEl = card.querySelector(".js-event-day");
-        const timeEl = card.querySelector(".js-event-time");
+        // const timeEl = card.querySelector(".js-event-time");
         const transactionAction = document.querySelector(".transaction-actions .transaction-action--ghost")
 
         if (dateEl) {
@@ -518,9 +518,9 @@ document.addEventListener("DOMContentLoaded", function () {
             dayEl.textContent = parts.dayShort;
         }
 
-        if (timeEl) {
-            timeEl.textContent = parts.timeText;
-        }
+        // if (timeEl) {
+        //     timeEl.textContent = parts.timeText;
+        // }
 
         if(transactionAction) {
             transactionAction.textContent = `${parts.monthShort} ${parts.timeText}`;

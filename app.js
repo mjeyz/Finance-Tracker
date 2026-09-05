@@ -726,13 +726,21 @@ app.get("/edit/event/:id", async (req, res) => {
         const event = result.rows[0];
         console.log(event)
 
+        const timeValue = await db.query("SELECT TO_CHAR(time, 'HH24:MI:SS') AS html_time FROM events WHERE id = $1", [id])
+        console.log(`Foemated Time :  ${timeValue.rows[0].html_time}`)
+
         const year = event.date.getFullYear();
         const month = String(event.date.getMonth() + 1).padStart(2, '0');
         const day = String(event.date.getDate()).padStart(2, "0");
         const formatedDate = `${year}-${month}-${day}`;
         const formatedTime = new Date(event.time)
         console.log(event.time)
-        res.render("create-event.ejs", {event: event, is_edit: true, formatedDate: formatedDate});
+        res.render("create-event.ejs", {
+            event: event,
+            is_edit: true,
+            formatedDate: formatedDate,
+            timeValue: timeValue.rows[0].html_time
+        });
     } else {
         res.redirect("/login");
     }
@@ -760,22 +768,24 @@ app.get("/edit/goal/:id", async (req, res) => {
     }
 });
 
-app.patch("/edit/transaction/:id", async (req, res) => {
-
-});
-
-app.patch("/edit/event/:id", async (req, res) => {
+app.post("/edit/transaction/:id", async (req, res) => {
     try {
         const id = req.params.id;
+        const {amount, transactionCategory, type, date, method, description} = req.body;
 
-        const {
-            eventName,
-            location,
-            eventDate,
-            eventTime,
-            priority,
-            description
-        } = req.body;
+        await db.query("UPDATE transaction SET (amount, category, type, date, method, description) = ($1, $2, $3, $4, $5, $6) WHERE id = $7", [amount, transactionCategory, type, date, method, description, id])
+
+        req.flash("success", "Transaction Updated successfully.")
+        res.redirect("/events");
+    } catch (err) {
+        console.log(`Error : ${err}`);
+    }
+});
+
+app.post("/edit/event/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const {eventName, location, eventDate, eventTime, priority, description} = req.body;
 
         const result = await db.query(
             "SELECT * FROM events WHERE id = $1",
@@ -831,10 +841,10 @@ app.patch("/edit/event/:id", async (req, res) => {
                 [description, id]
             );
         }
+        res.status(200).json({message: "Event updated successfully."});
+        req.flash("success", "Event updated successfully.")
 
-        return res.status(200).json({
-            message: "Event updated successfully."
-        });
+        return res.redirect("/events");
 
     } catch (error) {
         console.error(error);
@@ -845,11 +855,15 @@ app.patch("/edit/event/:id", async (req, res) => {
     }
 });
 
-app.patch("/edit/goal/:id", async (req, res) => {
-    const id = req.params.id;
-
+app.post("/edit/goal/:id", async (req, res) => {
     try {
+        const id = req.params.id;
+        const {purpose, targetAmount, savedAmount, targetDate, description} = req.body;
 
+        await db.query("UPDATE saving SET (goal, targetamount, savedamount, date, description) = ($1, $2, $3, $4, $5) WHERE id = $6", [purpose, targetAmount, savedAmount, targetDate, description, id]);
+
+        req.flash("success", "Goal Updated Successfully.");
+        res.redirect("/saving");
     } catch (err) {
         console.log(`Error : ${err}`)
     }

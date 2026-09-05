@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <% if(is_edit) {%>
-    <title>FinTrack || Edit Event</title>
-        <%} else {%>
-    <title>FinTrack || Create Event</title>
+    <% if(is_edit) { %>
+        <title>FinTrack || Edit Event</title>
+    <% } else { %>
+        <title>FinTrack || Create Event</title>
 
     <% } %>
     <link rel="stylesheet" href="/css/login.css">
@@ -38,13 +38,14 @@
                 <% }) %>
             </div>
         <% } %>
-        <form class="login-form add-form" action="/add-event" method="PATCH">
+        <form class="login-form add-form" action="<%= is_edit ? `/edit/event/${event.id}` : '/add-event' %>" method="POST">
+
             <div class="form-header" style="margin-bottom: 1rem;">
                 <% if (is_edit) { %>
-                <h1 class="form-heading">Edit Event</h1>
+                    <h1 class="form-heading">Edit Event</h1>
                 <% } else { %>
-                <h1 class="form-heading">Create Event</h1>
-                    <% } %>
+                    <h1 class="form-heading">Create Event</h1>
+                <% } %>
                 <p class="form-subheading">Set a target and track your progress</p>
             </div>
 
@@ -52,7 +53,8 @@
                 <label for="eventName">Event Name </label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-bullseye icon"></i>
-                    <input type="text" id="eventName" name="eventName" required placeholder="e.g. Design Workshop" value="<%= event.name%>">
+                    <input type="text" id="eventName" name="eventName" required placeholder="e.g. Design Workshop"
+                           value="<%= event.name %>">
                 </div>
             </div>
 
@@ -60,7 +62,8 @@
                 <label for="location">Location</label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-map icon"></i>
-                    <input type="text" id="location" name="location" required placeholder="Ali Town Lahore" value="<%= event.location%>">
+                    <input type="text" id="location" name="location" required placeholder="Ali Town Lahore"
+                           value="<%= event.location %>">
                 </div>
             </div>
 
@@ -68,7 +71,8 @@
                 <label for="eventDate">Event Date</label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-calendar-days icon"></i>
-                    <input type="date" id="eventDate" name="eventDate" required value="<%= event ? formatedDate : ""%>">
+                    <input type="date" id="eventDate" name="eventDate" required
+                           value="<%= event ? formatedDate : "" %>">
                 </div>
             </div>
 
@@ -76,7 +80,7 @@
                 <label for="eventTime">Time</label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-clock icon"></i>
-                    <input type="time" id="eventTime" name="eventTime" required value="<%= %>">
+                    <input type="time" id="eventTime" name="eventTime" required value="<%=  timeValue  %>">
                 </div>
             </div>
 
@@ -84,11 +88,17 @@
                 <label for="priority">Event Priority</label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-font-awesome icon"></i>
-                    <select id="priority" name="priority" required >
+                    <select id="priority" name="priority" required>
                         <option value="" disabled selected>Select Priority</option>
-                        <option value="Low Priority">Low Priority</option>
-                        <option value="Mid Priority">Mid Priority</option>
-                        <option value="High Priority">High Priority</option>
+                        <option value="Low Priority" <%= event.priority === "Low Priority" ? "selected" : "" %>>Low
+                            Priority
+                        </option>
+                        <option value="Mid Priority" <%= event.priority === "Mid Priority" ? "selected" : "" %>>Mid
+                            Priority
+                        </option>
+                        <option value="High Priority" <%= event.priority === "High Priority" ? "selected" : "" %>>High
+                            Priority
+                        </option>
                     </select>
                 </div>
             </div>
@@ -104,7 +114,11 @@
                 ><%= event.description %></textarea>
             </div>
 
-            <button type="submit" class="submit-btn">Create Event</button>
+            <% if (is_edit) { %>
+                <button type="submit" class="submit-btn">Edit Event</button>
+            <% } else { %>
+                <button type="submit" class="submit-btn">Create Event</button>
+            <% } %>
         </form>
     </div>
 </div>
