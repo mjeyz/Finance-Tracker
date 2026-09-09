@@ -80,7 +80,7 @@
                 <label for="eventTime">Time</label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-clock icon"></i>
-                    <input type="time" id="eventTime" name="eventTime" required value="<%=  timeValue  %>">
+                    <input type="time" id="eventTime" name="eventTime" required value="<%= is_edit ? timeValue : '' %>">
                 </div>
             </div>
 

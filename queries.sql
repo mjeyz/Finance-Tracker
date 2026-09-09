@@ -1,4 +1,5 @@
 CREATE Table users
+
 (
     id       SERIAL PRIMARY KEY,
     name     VARCHAR(200),

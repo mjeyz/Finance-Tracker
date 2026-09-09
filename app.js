@@ -844,12 +844,12 @@ app.post("/edit/event/:id", async (req, res) => {
         res.status(200).json({message: "Event updated successfully."});
         req.flash("success", "Event updated successfully.")
 
-        return res.redirect("/events");
+        res.redirect("/events");
 
     } catch (error) {
         console.error(error);
 
-        return res.status(500).json({
+        res.status(500).json({
             message: "Error updating event."
         });
     }
