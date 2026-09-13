@@ -899,7 +899,7 @@ app.delete('/api/transactions', async (req, res) => {
             return res.status(404).json({error: 'Transaction not found or unauthorized'});
         }
 
-        req.query("success", "Deleted successfully");
+        req.flash("success", "Deleted successfully");
         res.status(200).json({message: 'Deleted successfully', deleted: result.rows[0]});
     } catch (error) {
         console.error(error);

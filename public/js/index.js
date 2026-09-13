@@ -836,6 +836,7 @@ window.onclick = function(event) {
 
 // Delete item Functionality
 
+// Delete Saving
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".dropdown-delete").forEach(button => {
         button.addEventListener("click", async function() {
@@ -848,6 +849,59 @@ document.addEventListener("DOMContentLoaded", function () {
 
             try {
                 const response = await fetch(`api/delete/goal?id=${goalId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                });
+                goalItem.remove();
+            } catch (err) {
+                console.log(err);
+            }
+        });
+    });
+});
+
+// Delete Transaction
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".dropdown-delete").forEach(button => {
+        button.addEventListener("click", async function() {
+            const goalItem = this.closest(".transaction-row");
+            const goalId = goalItem.dataset.id;
+
+            if (!confirm(`Are you sure you want to delete this transaction?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/transactions?id=${goalId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                });
+                goalItem.remove();
+            } catch (err) {
+                console.log(err);
+            }
+        });
+    });
+});
+
+
+// Delete Event
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".dropdown-delete").forEach(button => {
+        button.addEventListener("click", async function() {
+            const goalItem = this.closest(".event");
+            const goalId = goalItem.dataset.id;
+
+            if (!confirm(`Are you sure you want to delete this transaction?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`api/delete/event?id=${goalId}`, {
                     method: "DELETE",
                     headers: {
                         "content-type": "application/json"

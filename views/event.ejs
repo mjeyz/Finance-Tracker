@@ -134,7 +134,7 @@
                     <% events.forEach(ev => { %>
 
 
-                        <div class="event" data-event-date="<%= ev.date %>">
+                        <div class="event" data-id="<%= ev.id %>" data-event-date="<%= ev.date %>">
                             <div class="event-div-1">
                                 <div class="event-icon"><i class="fas fa-bank"></i></div>
 
@@ -155,7 +155,7 @@
                                 <div class="more-action" onclick="activeGoalDropdown(this)"><i class="fa-solid fa-ellipsis-vertical"></i></div>
                                 <div class="dropdown-content">
                                     <a href="/edit/event/<%= ev.id %>">Edit Event</a>
-                                    <a href="#">Delete Event</a>
+                                    <a class="dropdown-delete">Delete Event</a>
                                 </div>
                             </div>
                         </div>

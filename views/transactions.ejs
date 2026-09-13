@@ -273,7 +273,7 @@ const summaryCards = rows.length
                     </thead>
                     <tbody>
                     <% transactionRows.forEach((row) => { %>
-                        <tr>
+                        <tr class="transaction-row" data-id="<%= row.id %>">
                             <td>
                                 <div class="date-cell">
                                     <strong><%= row.date %></strong>
@@ -313,12 +313,13 @@ const summaryCards = rows.length
                             </td>
                             <td>
                                 <div class="dropdown">
-                                    <button class="action-dots" type="button" aria-label="Transaction actions">
+                                    <button class="action-dots" type="button" aria-label="Transaction actions"
+                                            onclick="activeGoalDropdown(this)">
                                         <i class="bx bx-dots-vertical-rounded"></i>
                                     </button>
-                                    <div class="dropdown-content" onclick="activeGoalDropdown(this)">
+                                    <div class="dropdown-content">
                                         <a href="/edit/transaction/<%= row.id %>">Edit Transaction</a>
-                                        <a>Delete Transaction</a>
+                                        <a class="dropdown-delete">Delete Transaction</a>
                                     </div>
                                 </div>
                             </td>
