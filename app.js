@@ -841,7 +841,6 @@ app.post("/edit/event/:id", async (req, res) => {
                 [description, id]
             );
         }
-        res.status(200).json({message: "Event updated successfully."});
         req.flash("success", "Event updated successfully.")
 
         res.redirect("/events");
@@ -849,7 +848,7 @@ app.post("/edit/event/:id", async (req, res) => {
     } catch (error) {
         console.error(error);
 
-        res.status(500).json({
+        return res.status(500).json({
             message: "Error updating event."
         });
     }
