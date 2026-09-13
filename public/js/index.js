@@ -832,3 +832,31 @@ window.onclick = function(event) {
 
     }
 };
+
+
+// Delete item Functionality
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".dropdown-delete").forEach(button => {
+        button.addEventListener("click", async function() {
+            const goalItem = this.closest(".saving-card");
+            const goalId = goalItem.dataset.id;
+
+            if (!confirm(`Are you sure you want to delete this transaction?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`api/delete/goal?id=${goalId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                });
+                goalItem.remove();
+            } catch (err) {
+                console.log(err);
+            }
+        });
+    });
+});

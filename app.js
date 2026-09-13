@@ -923,7 +923,7 @@ app.delete("/api/delete/goal", async (req, res) => {
     const goalId = req.query.id;
 
     try {
-        const result = await db.query("DELETE FROM saving.ejs WHERE id = $1 AND user_id = $2 RETURNING *", [goalId, req.user.id]);
+        const result = await db.query("DELETE FROM saving WHERE id = $1 AND user_id = $2 RETURNING *", [goalId, req.user.id]);
         req.flash("success", "Goal deleted successfully");
         res.status(200).json({message: "Deleted successfully", deleted: result.rows[0]});
     } catch (err) {
