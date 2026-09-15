@@ -13,6 +13,7 @@ import nodemailer from "nodemailer";
 import flash from "connect-flash";
 import crypto from "crypto";
 import rateLimit from "express-rate-limit";
+import XLSX from 'xlsx';
 
 
 const app = express();
@@ -992,7 +993,21 @@ app.get("/saving", async (req, res) => {
     } else {
         res.redirect("/login");
     }
-})
+});
+
+
+app.get("/transaction/export/to/csv", async (req, res) => {
+    const {rows} = await db.query("SELECT * FROM transaction WHERE user_id = $1", [req.user.id]);
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Transaction");
+    const buf = XLSX.write(wb, {type: "buffer", bookType: "xlsx"});
+    res.attachment('FinTrack_Export.xlsx');
+    res.status(200).end(buf);
+});
+
+
 
 
 async function startServer() {

@@ -523,7 +523,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // }
 
         if(transactionAction) {
-            transactionAction.textContent = `${parts.monthShort} ${parts.timeText}`;
+            transactionAction.textContent = `${parts.monthShort} ${parts.year}`;
+            console.log("Transaction action is working")
+        } else {
+            console.log("Transaction action is empty")
         }
     });
 

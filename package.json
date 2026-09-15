@@ -16,7 +16,8 @@
     "passport-github": "^1.1.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
-    "pg": "^8.22.0"
+    "pg": "^8.22.0",
+    "xlsx": "^0.18.5"
   },
   "type": "module",
   "scripts": {
