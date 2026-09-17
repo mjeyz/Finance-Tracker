@@ -970,6 +970,11 @@ app.get("/api/graph", async (req, res) => {
 app.get("/transaction", async (req, res) => {
     if (req.isAuthenticated()) {
         const result = await db.query("SELECT * FROM transaction WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
+
+        if (result.rows > 0) {
+            return res.status(200).json(result)
+        }
+
         res.render("transactions.ejs", {user: req.user, transaction: result.rows})
     } else {
         res.redirect("login")
@@ -1007,6 +1012,133 @@ app.get("/transaction/export/to/csv", async (req, res) => {
     res.status(200).end(buf);
 });
 
+
+app.get("/quiz", async (req, res) => {
+    res.render("quiz.ejs");
+});
+
+// --------------POSTMAN API Implementation---------------------------
+
+// get Specific transaction
+app.get("/api/v1/transaction/:id", async (req, res) => {
+    const id = req.params.id;
+
+    const result = await db.query("SELECT * FROM transaction WHERE id = $1", [id]);
+
+    if (result.rows === 0) {
+        return res.status(404).json({message: "Transaction Not Found."});
+    }
+
+    res.json(result)
+});
+
+// basic Authentication Required because user_id is required in order to insert Transaction
+
+app.post("/api/v1/transaction", async (req, res) => {
+    const amount = req.query.amount || req.body.amount;
+    const type = req.query.type || req.body.type;
+    const description = req.query.description || req.body.description;
+    const date = req.query.date || req.body.date;
+    const category = req.query.category || req.body.category;
+    const method = req.query.method || req.body.method;
+
+    if (amount && type && description && date && category && method) {
+        const result = await db.query(
+            `INSERT INTO transaction (user_id, amount, type, description, date, category, method)
+             VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+            [1, amount, type, description, date, category, method]
+        );
+        if (!result) {
+            return res.status(404).json({message: "Error saving transaction."});
+        }
+        res.status(200).json({message: "Successfully saved your transaction"});
+    }
+});
+
+app.put("/api/v1/transaction/:id", async (req, res) => {
+    const id = req.params.id;
+    const amount = req.query.amount || req.body.amount;
+    const type = req.query.type || req.body.type;
+    const description = req.query.description || req.body.description;
+    const date = req.query.date || req.body.date;
+    const category = req.query.category || req.body.category;
+    const method = req.query.method || req.body.method;
+
+    if (amount && type && description && date && category && method) {
+        const result = await db.query(
+            `UPDATE transaction
+             SET amount = $1, type = $2, description = $3,date = $4, category = $5, method = $6 WHERE id = $7 RETURNING *`,
+            [amount, type, description, date, category, method, id]
+        );
+        if (result.rowCount === 0) {
+            return res.status(404).json({message: "Error updated transaction."});
+        }
+        res.status(200).json({message: "Successfully updated your transaction."});
+    }
+});
+
+app.patch("/api/v1/transaction/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const {amount, type, description, date, category, method} = req.query || req.body;
+
+        const result = await db.query("SELECT * FROM transaction WHERE id = $1", [id]);
+
+        const row = result.rows[0];
+
+        if (!row) {return res.status(404).json({message: "Event not found."});}
+
+        if (amount !== undefined && amount !== row.amount) {
+            await db.query("UPDATE transaction SET amount = $1 WHERE id = $2", [amount, id]);
+        }
+
+        if (type !== undefined && type !== row.type) {
+            await db.query("UPDATE transaction SET type = $1 WHERE id = $2", [type, id]);
+        }
+
+        if (description !== undefined && description !== row.description) {
+            await db.query("UPDATE transaction SET description = $1 WHERE id = $2", [description, id]);
+        }
+
+        if (date !== undefined && date !== row.date) {
+            await db.query("UPDATE transaction SET date = $1 WHERE id = $2", [date, id]);
+        }
+
+        if (category !== undefined && category !== row.category) {
+            await db.query("UPDATE transaction SET category = $1 WHERE id = $2", [category, id]);
+        }
+
+        if (method !== undefined && method !== row.method) {
+            await db.query("UPDATE transaction SET method = $1 WHERE id = $2", [method, id]);
+        }
+        req.flash("success", "Transaction updated successfully.")
+
+        res.status(200).json({success: true, message: "Successfully Updated your transaction"})
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({success: false, message: "Error updating event."});
+    }
+});
+
+app.delete("/api/v1/transaction/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const result = await db.query("DELETE FROM transaction WHERE id = $1", [id]);
+
+        if(result.rowCount === 0) {
+            res.status(404).json({success: false, message: "Transaction doesn't exist."});
+        }
+
+        res.status(200).json({success: true, message: "Successfully Deleted this transaction"});
+
+    } catch (err) {
+        console.log({err});
+        res.status(500).json({success: false, message: "Error Deleting your Transaction."});
+    }
+})
 
 
 
