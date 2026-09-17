@@ -1029,7 +1029,7 @@ app.get("/api/v1/transaction/:id", async (req, res) => {
         return res.status(404).json({message: "Transaction Not Found."});
     }
 
-    res.json(result)
+    res.json({success: true, data: result.rows})
 });
 
 // basic Authentication Required because user_id is required in order to insert Transaction
