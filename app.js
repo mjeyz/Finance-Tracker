@@ -1025,12 +1025,36 @@ app.get("/api/v1/transaction/:id", async (req, res) => {
 
     const result = await db.query("SELECT * FROM transaction WHERE id = $1", [id]);
 
-    if (result.rows === 0) {
+    if (result.rows.length === 0) {
         return res.status(404).json({message: "Transaction Not Found."});
     }
 
     res.json({success: true, data: result.rows})
 });
+
+app.get("/api/v1/event/:id", async (req, res) => {
+    const id = req.params.id;
+
+    const result = await db.query("SELECT * FROM events WHERE id = $1", [id]);
+    if(result.rows === 0) {
+        res.status(404).json({success: false, message: "Event Not Found."});
+    }
+
+    res.status(200).json({success: true, data: result.rows});
+});
+
+app.get("/api/v1/goal/:id", async (req, res) => {
+    const id = req.params.id;
+
+    const result = await db.query("SELECT * FROM saving WHERE id = $1", [id]);
+
+    if(result.rows === 0) {
+        res.status(404).json({success: false, message: "Event not found."});
+    }
+
+    res.status(200).json({success: true, data: result.rows})
+});
+
 
 // basic Authentication Required because user_id is required in order to insert Transaction
 
@@ -1054,6 +1078,16 @@ app.post("/api/v1/transaction", async (req, res) => {
         res.status(200).json({message: "Successfully saved your transaction"});
     }
 });
+
+app.post("/api/v1/events", async (req, res) => {
+    try {
+        const {name, date, location, time, priority, description} = req.query || req.body;
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({success: false, message: "Error saving your Goal."})
+    }
+
+})
 
 app.put("/api/v1/transaction/:id", async (req, res) => {
     const id = req.params.id;
