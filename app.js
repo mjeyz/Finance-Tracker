@@ -1036,7 +1036,7 @@ app.get("/api/v1/event/:id", async (req, res) => {
     const id = req.params.id;
 
     const result = await db.query("SELECT * FROM events WHERE id = $1", [id]);
-    if(result.rows === 0) {
+    if (result.rows === 0) {
         res.status(404).json({success: false, message: "Event Not Found."});
     }
 
@@ -1048,7 +1048,7 @@ app.get("/api/v1/goal/:id", async (req, res) => {
 
     const result = await db.query("SELECT * FROM saving WHERE id = $1", [id]);
 
-    if(result.rows === 0) {
+    if (result.rows === 0) {
         res.status(404).json({success: false, message: "Event not found."});
     }
 
@@ -1079,15 +1079,34 @@ app.post("/api/v1/transaction", async (req, res) => {
     }
 });
 
-app.post("/api/v1/events", async (req, res) => {
+app.post("/api/v1/event", async (req, res) => {
     try {
         const {name, date, location, time, priority, description} = req.query || req.body;
+
+        const result = await db.query("INSERT INTO events (user_id, name, date, location, time, priority, description) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+            [1, name, date, location, time, priority, description])
+
+        res.status(200).json({success: true, message: "Event Added successfully."});
     } catch (err) {
         console.log(err);
-        res.status(500).json({success: false, message: "Error saving your Goal."})
+        res.status(500).json({success: false, message: "Error adding your events."})
     }
+});
 
-})
+app.post("/api/v1/goal", async (req, res) => {
+    try {
+        const {name, targetAmount, savedAmount, date, description} = req.query || req.body;
+
+        const result = await db.query(`INSERT INTO saving (goal, targetamount, savedamount, date, description, user_id)
+                                       VALUES ($1, $2, $3, $4, $5, $6)`,
+            [name, targetAmount, savedAmount, date, description, 1]);
+
+        res.status(200).json({success: true, message: "Goal Added successfully."});
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({success: false, message: "Error adding Gaol.", error: err});
+    }
+});
 
 app.put("/api/v1/transaction/:id", async (req, res) => {
     const id = req.params.id;
@@ -1101,13 +1120,60 @@ app.put("/api/v1/transaction/:id", async (req, res) => {
     if (amount && type && description && date && category && method) {
         const result = await db.query(
             `UPDATE transaction
-             SET amount = $1, type = $2, description = $3,date = $4, category = $5, method = $6 WHERE id = $7 RETURNING *`,
+             SET amount      = $1,
+                 type        = $2,
+                 description = $3,
+                 date        = $4,
+                 category    = $5,
+                 method      = $6
+             WHERE id = $7 RETURNING *`,
             [amount, type, description, date, category, method, id]
         );
         if (result.rowCount === 0) {
             return res.status(404).json({message: "Error updated transaction."});
         }
         res.status(200).json({message: "Successfully updated your transaction."});
+    }
+});
+
+app.put("/api/v1/event/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const {name, date, location, time, priority, description} = req.query || req.body;
+        const result = await db.query(`
+                    UPDATE events
+                    SET name        = $1,
+                        date        = $2,
+                        location    = $3,
+                        time        = $4,
+                        priority    = $5,
+                        description = $6
+                    WHERE id = $7`,
+            [name, date, location, time, priority, description, id]);
+        res.status(200).json({success: true, message: "Successfully updated your events."});
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({success: false, message: "Error updating events."});
+    }
+});
+
+app.put("/api/v1/goal/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const {name, targetAmount, savedAmount, date, description} = req.query || req.body;
+        const result = await db.query(`
+                    UPDATE saving
+                    SET goal        = $1,
+                        targetAmount        = $2,
+                        savedAmount    = $3,
+                        date        = $4,
+                        description    = $5
+                    WHERE id = $6`,
+            [name, targetAmount, savedAmount, date, description, id]);
+        res.status(200).json({success: true, message: "Successfully updated your Goal."});
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({success: false, message: "Error updating Goal."});
     }
 });
 
@@ -1120,7 +1186,9 @@ app.patch("/api/v1/transaction/:id", async (req, res) => {
 
         const row = result.rows[0];
 
-        if (!row) {return res.status(404).json({message: "Event not found."});}
+        if (!row) {
+            return res.status(404).json({message: "Event not found."});
+        }
 
         if (amount !== undefined && amount !== row.amount) {
             await db.query("UPDATE transaction SET amount = $1 WHERE id = $2", [amount, id]);
@@ -1156,13 +1224,101 @@ app.patch("/api/v1/transaction/:id", async (req, res) => {
     }
 });
 
+app.patch("/api/v1/event/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const {name, date, location, time, priority, description}= req.query || req.body;
+
+        const result = await db.query("SELECT * FROM events WHERE id = $1", [id]);
+
+        const row = result.rows[0];
+
+        if (!row) {
+            return res.status(404).json({message: "Event not found."});
+        }
+
+        if (name !== undefined && name !== row.name) {
+            await db.query("UPDATE events SET name = $1 WHERE id = $2", [name, id]);
+        }
+
+        if (date !== undefined && date !== row.date) {
+            await db.query("UPDATE events SET date = $1 WHERE id = $2", [date, id]);
+        }
+
+        if (location !== undefined && location !== row.location) {
+            await db.query("UPDATE events SET location = $1 WHERE id = $2", [location, id]);
+        }
+
+        if (time !== undefined && time !== row.time) {
+            await db.query("UPDATE events SET time = $1 WHERE id = $2", [time, id]);
+        }
+
+        if (priority !== undefined && priority !== row.priority) {
+            await db.query("UPDATE events SET priority = $1 WHERE id = $2", [priority, id]);
+        }
+
+        if (description !== undefined && description !== row.method) {
+            await db.query("UPDATE events SET description = $1 WHERE id = $2", [description, id]);
+        }
+        req.flash("success", "Events updated successfully.")
+
+        res.status(200).json({success: true, message: "Successfully Updated your transaction"})
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({success: false, message: "Error updating event."});
+    }
+});
+
+app.patch("/api/v1/goal/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const {name, targetAmount, savedAmount, date, description} = req.query || req.body;
+
+        const result = await db.query("SELECT * FROM saving WHERE id = $1", [id]);
+
+        const row = result.rows[0];
+
+        if (!row) {
+            return res.status(404).json({message: "Event not found."});
+        }
+
+        if (name !== undefined && name !== row.name) {
+            await db.query("UPDATE saving SET name = $1 WHERE id = $2", [name, id]);
+        }
+
+        if (targetAmount !== undefined && targetAmount !== row.targetAmount) {
+            await db.query("UPDATE saving SET targetamount = $1 WHERE id = $2", [targetAmount, id]);
+        }
+
+        if (savedAmount !== undefined && savedAmount !== row.savedAmount) {
+            await db.query("UPDATE saving SET savedAmount = $1 WHERE id = $2", [savedAmount, id]);
+        }
+
+        if (date !== undefined && date !== row.date) {
+            await db.query("UPDATE saving SET date = $1 WHERE id = $2", [date, id]);
+        }
+
+        if (description !== undefined && description !== row.method) {
+            await db.query("UPDATE saving SET description = $1 WHERE id = $2", [description, id]);
+        }
+        req.flash("success", "Goal updated successfully.")
+
+        res.status(200).json({success: true, message: "Successfully Updated your transaction"});
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({success: false, message: "Error updating event."});
+    }
+});
+
 app.delete("/api/v1/transaction/:id", async (req, res) => {
     try {
         const id = req.params.id;
 
         const result = await db.query("DELETE FROM transaction WHERE id = $1", [id]);
 
-        if(result.rowCount === 0) {
+        if (result.rowCount === 0) {
             res.status(404).json({success: false, message: "Transaction doesn't exist."});
         }
 
@@ -1172,8 +1328,43 @@ app.delete("/api/v1/transaction/:id", async (req, res) => {
         console.log({err});
         res.status(500).json({success: false, message: "Error Deleting your Transaction."});
     }
-})
+});
 
+app.delete("/api/v1/event/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const result = await db.query("DELETE FROM events WHERE id = $1", [id]);
+
+        if (result.rowCount === 0) {
+            res.status(404).json({success: false, message: "Event doesn't exist."});
+        }
+
+        res.status(200).json({success: true, message: "Successfully Deleted this Event"});
+
+    } catch (err) {
+        console.log({err});
+        res.status(500).json({success: false, message: "Error Deleting your Event."});
+    }
+});
+
+app.delete("/api/v1/goal/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const result = await db.query("DELETE FROM saving WHERE id = $1", [id]);
+
+        if (result.rowCount === 0) {
+            res.status(404).json({success: false, message: "Saving doesn't exist."});
+        }
+
+        res.status(200).json({success: true, message: "Successfully Deleted this Saving"});
+
+    } catch (err) {
+        console.log({err});
+        res.status(500).json({success: false, message: "Error Deleting your saving."});
+    }
+});
 
 
 async function startServer() {
