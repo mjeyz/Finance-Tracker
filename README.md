@@ -1,6 +1,5 @@
-# Finance-Tracker
+# Finance Tracker
 
-## Personal Finance Tracker Full Stack Application
 
 <p>This application is designed to track finance. it solves some command problems.</p>
 <ul>
