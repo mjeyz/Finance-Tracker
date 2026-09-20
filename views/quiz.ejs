@@ -2,3 +2,44 @@
 <%- include('partials/sidebar.ejs') %>
 
 <link rel="stylesheet" href="css/quiz.css">
+
+<body>
+<main class="quiz-main">
+    <div class="quiz-container">
+        <div class="quiz-section quiz-start active">
+            <h1 class="q-s-heading">Quiz Time!</h1>
+
+            <p class="q-s-subheading">Test your Knowledge with these fun question</p>
+            <button class="start-q-btn">Start Quiz</button>
+        </div>
+
+        <div class="q-question-con quiz-section ">
+            <h3 class="q-question" id="question">What is the capital of France?</h3>
+            <div class="q-status-con">
+                <p class="ques-numbering">Question <span class="question-num" id="QuestionNum">1</span> of <span
+                            class="total-question" id="totalQuestion">5</span></p>
+                 <p class="score">Score <span class="score-num" id="scoreNum">0</span></p>
+            </div>
+
+            <div class="quiz-options">
+                <div class="question-op-1 option" id="questionOptionOne">Islamabad</div>
+                <div class="question-op-2 option" id="questionOptionTwo">Lahore</div>
+                <div class="question-op-3 option" id="questionOptionThree">Lahore</div>
+                <div class="question-op-4 option" id="questionOptionFour">Layyah</div>
+            </div>
+
+            <div class="quiz-per"></div>
+        </div>
+
+        <div class="q-result-con quiz-section ">
+            <h1 id="resultHeading" class="result-heading">Quiz Results</h1>
+            <div class="quiz-status-con">
+                <p class="result-score" id="resultScore">You scored <span class="gained-score" id="gainedScore">3</span> out of <span class="r-total-score" id="totalScore">5</span></p>
+                <h2 class="result-qut" id="resultQut">Good effort Keep learning!</h2>
+            </div>
+
+            <button class="restart-quiz" id="restartQuizBtn">Restart Quiz</button>
+        </div>
+    </div>
+</main>
+</body>
