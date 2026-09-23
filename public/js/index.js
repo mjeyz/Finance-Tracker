@@ -522,7 +522,7 @@ document.addEventListener("DOMContentLoaded", function () {
         //     timeEl.textContent = parts.timeText;
         // }
 
-        if(transactionAction) {
+        if (transactionAction) {
             transactionAction.textContent = `${parts.monthShort} ${parts.year}`;
             console.log("Transaction action is working")
         } else {
@@ -557,14 +557,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
     const recentGoalCards = document.querySelectorAll(".completed-goal");
-    
+
     recentGoalCards.forEach(card => {
         const targetDate = document.querySelector(".target-date").textContent;
         const goalPart = formatEventDateParts(targetDate);
 
         const date = card.querySelector(".target-date");
 
-        if(date) {
+        if (date) {
             date.textContent = `${goalPart.monthShort} ${goalPart.dateNum}, ${goalPart.year}`;
         }
     })
@@ -824,7 +824,7 @@ function activeGoalDropdown(button) {
 }
 
 
-window.onclick = function(event) {
+window.onclick = function (event) {
 
     // If click wasn't on the more-action button
     if (!event.target.closest(".more-action")) {
@@ -842,7 +842,7 @@ window.onclick = function(event) {
 // Delete Saving
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".dropdown-delete").forEach(button => {
-        button.addEventListener("click", async function() {
+        button.addEventListener("click", async function () {
             const goalItem = this.closest(".saving-card");
             const goalId = goalItem.dataset.id;
 
@@ -868,7 +868,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Delete Transaction
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".dropdown-delete").forEach(button => {
-        button.addEventListener("click", async function() {
+        button.addEventListener("click", async function () {
             const goalItem = this.closest(".transaction-row");
             const goalId = goalItem.dataset.id;
 
@@ -895,7 +895,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Delete Event
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".dropdown-delete").forEach(button => {
-        button.addEventListener("click", async function() {
+        button.addEventListener("click", async function () {
             const goalItem = this.closest(".event");
             const goalId = goalItem.dataset.id;
 
@@ -918,16 +918,86 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+
+const questions = [
+    {
+        question: "What is the domain name for the country Tuvalu?",
+        options: [".tv", ".tu", ".tt", ".tl"],
+        answer: ".tv"
+    },
+    {
+        question: "What does GHz stand for?",
+        options: ["Gigahertz", "Gigahotz", "Gigahetz", "Gigahatz"],
+        answer: "Gigahertz"
+    },
+    {
+        question: "What is the name of Layer 7 of the OSI model?",
+        options: ["Application", "Session", "Network", "Present"],
+        answer: "Application"
+    },
+    {
+        question: "How long is an IPv6 address?",
+        options: ["128 bits", "32 bits", "64 bits", "128 bytes"],
+        answer: "128 bits"
+    },
+    {
+        question: "What amount of bits commonly equals one byte?",
+        options: ["8", "1", "2", "64"],
+        answer: "8"
+    },
+    {
+        question: "Which programming language shares its name with an island in Indonesia?",
+        options: ["Java", "Python", "C", "Jakarta"],
+        answer: "Java"
+    },
+    {
+        question: "What language does Node.js use?",
+        options: ["JavaScript", "Java", "Java Source", "Joomla Source Code"],
+        answer: "JavaScript"
+    },
+    {
+        question: "What does the computer software acronym JVM stand for?",
+        options: ["Java Virtual Machine", "Java Vendor Machine", "Java Visual Machine", "Just Virtual Machine"],
+        answer: "Java Virtual Machine"
+    },
+    {
+        question: "In web design, what does CSS stand for?",
+        options: ["Cascading Style Sheet", "Counter Strike: Source", "Corrective Style Sheet", "Computer Style Sheet"],
+        answer: "Cascading Style Sheet"
+    },
+    {
+        question: "What does CPU stand for?",
+        options: ["Central Processing Unit", "Central Process Unit", "Computer Personal Unit", "Central Processor Unit"],
+        answer: "Central Processing Unit"
+    }
+];
+
 // Quiz
 const quizStartBtn = document.getElementById("quizStartBtn");
 const quizQuestionCon = document.getElementById("quizQuestionCon");
 const quizStartCon = document.getElementById("quizStartCon");
+const question = document.getElementById("question");
+const optionBox = document.querySelectorAll(".option");
 
 function activeQuizQuestionCon() {
     quizQuestionCon.classList.add("active");
     quizStartCon.classList.remove("active");
 }
 
-quizStartBtn.addEventListener("click", function (event)  {
+
+function startQuiz() {
+}
+
+quizStartBtn.addEventListener("click", function (event) {
     activeQuizQuestionCon()
 });
+
+if (quizStartCon.classList.contains("active")) {
+    for(let i=0; i<=questions.length; i++) {
+
+        question.innerText = questions[i].question;
+        optionBox.forEach(box => {
+            box.innerHTML = questions[i].options[0];
+        })
+    }
+}
