@@ -14,6 +14,7 @@ import flash from "connect-flash";
 import crypto from "crypto";
 import rateLimit from "express-rate-limit";
 import XLSX from 'xlsx';
+import axios from "axios"
 
 
 const app = express();
@@ -1013,10 +1014,6 @@ app.get("/transaction/export/to/csv", async (req, res) => {
 });
 
 
-app.get("/quiz", async (req, res) => {
-    res.render("quiz.ejs");
-});
-
 // --------------POSTMAN API Implementation---------------------------
 
 // get Specific transaction
@@ -1365,6 +1362,47 @@ app.delete("/api/v1/goal/:id", async (req, res) => {
         res.status(500).json({success: false, message: "Error Deleting your saving."});
     }
 });
+
+
+app.get("/quiz", async (req, res) => {
+    res.render("quiz.ejs");
+});
+
+app.get("/api/quiz", async (req, res) => {
+    const URL = "https://opentdb.com/api.php";
+    const amount = 10;
+    const type = "multiple";
+    const category = 18;
+    const difficulty = "easy";
+
+    const response = await axios(`${URL}?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`);
+    res.json(response.data)
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 async function startServer() {

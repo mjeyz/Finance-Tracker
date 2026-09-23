@@ -923,7 +923,11 @@ const quizStartBtn = document.getElementById("quizStartBtn");
 const quizQuestionCon = document.getElementById("quizQuestionCon");
 const quizStartCon = document.getElementById("quizStartCon");
 
-quizStartBtn.addEventListener("click", function (event)  {
+function activeQuizQuestionCon() {
     quizQuestionCon.classList.add("active");
     quizStartCon.classList.remove("active");
-})
+}
+
+quizStartBtn.addEventListener("click", function (event)  {
+    activeQuizQuestionCon()
+});
