@@ -917,3 +917,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+// Quiz
+const quizStartBtn = document.getElementById("quizStartBtn");
+const quizQuestionCon = document.getElementById("quizQuestionCon");
+const quizStartCon = document.getElementById("quizStartCon");
+
+quizStartBtn.addEventListener("click", function (event)  {
+    quizQuestionCon.classList.add("active");
+    quizStartCon.classList.remove("active");
+})

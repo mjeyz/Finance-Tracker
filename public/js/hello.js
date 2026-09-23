@@ -55,3 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+
+// Quiz section

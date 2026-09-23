@@ -6,14 +6,14 @@
 <body>
 <main class="quiz-main">
     <div class="quiz-container">
-        <div class="quiz-section quiz-start active">
+        <div class="quiz-section quiz-start active" id="quizStartCon">
             <h1 class="q-s-heading">Quiz Time!</h1>
 
             <p class="q-s-subheading">Test your Knowledge with these fun question</p>
-            <button class="start-q-btn">Start Quiz</button>
+            <button class="start-q-btn" id="quizStartBtn">Start Quiz</button>
         </div>
 
-        <div class="q-question-con quiz-section ">
+        <div class="q-question-con quiz-section " id="quizQuestionCon">
             <h3 class="q-question" id="question">What is the capital of France?</h3>
             <div class="q-status-con">
                 <p class="ques-numbering">Question <span class="question-num" id="QuestionNum">1</span> of <span
@@ -42,4 +42,6 @@
         </div>
     </div>
 </main>
+
+<script src="/js/index.js"></script>
 </body>

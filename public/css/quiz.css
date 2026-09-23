@@ -49,6 +49,10 @@ body {
     font-weight: bold;
 }
 
+.start-q-btn:hover {
+    background-color: rgba(244, 108, 60, 0.99);
+}
+
 .q-question {
     font-weight: bold;
     margin-bottom: 1rem;
