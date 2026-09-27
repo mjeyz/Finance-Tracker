@@ -5,18 +5,19 @@
     font-family: sans-serif;
 }
 
-.quiz-main {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 body {
     display: flex;
+    background-color: #FFF6DE;
+    min-height: 100vh;
+}
+
+.quiz-main {
+   flex: 1;
+    margin: 0;
+    display: flex;
     justify-content: center;
     align-items: center;
+    padding: 2rem;
 }
 
 .quiz-container {
@@ -25,7 +26,8 @@ body {
     text-align: center;
     padding: 2rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 700px;
+    width: 100%;
+    max-width: 800px;
 }
 
 .quiz-section{display: none;}
@@ -47,6 +49,8 @@ body {
     color: white;
     border: none;
     font-weight: bold;
+    transition: background-color 0.3s ease;
+
 }
 
 .start-q-btn:hover {
@@ -64,20 +68,54 @@ body {
     color: #A8A492;
 }
 
-.option {
+.answer-btn {
     background-color: #F7EFE5;
     margin-bottom: 10px;
     border-radius: 10px;
     border-color: #e2e8f0;
     padding: 10px 20px;
     text-align: left;
+    width: 100%;
+    border: 1px solid #e2e8f0;
+    transition: background-color 0.3s ease;
+}
+
+.answer-btn:hover {
+    background-color: #f3e5c6;
+    border-color: #d1d5db;
+}
+
+.answer-btn:not(.correct):not(.incorrect):hover {
+  background-color: #f3e5c6;
+  border-color: #d1d5db;
+}
+
+.answer-btn.correct {
+  background-color: #4CAF50;
+  color: white;
+  border-color: #4CAF50;
+}
+
+.answer-btn.incorrect {
+  background-color: #F44336;
+  color: white;
+  border-color: #F44336;
 }
 
 .quiz-per {
-    padding: 5px;
-    background-color: #F7EFE5;
-    border-radius: 20px;
-    margin-top: 20px;
+  height: 12px;
+  padding: 0;
+  overflow: hidden;
+  background-color: #F7EFE5;
+  border-radius: 20px;
+  margin-top: 20px;
+}
+
+#progressBar {
+  background-color: #FF9D50;
+  height: 100%;
+  border-radius: 20px;
+  transition: width 0.3s ease;
 }
 
 .result-heading {
@@ -109,6 +147,11 @@ body {
     background-color: #FF7F50;
     color: white;
     border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.restart-quiz:hover {
+    background-color: rgba(244, 108, 60, 0.99);
 }
 
 

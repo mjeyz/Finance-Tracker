@@ -977,27 +977,128 @@ const quizStartBtn = document.getElementById("quizStartBtn");
 const quizQuestionCon = document.getElementById("quizQuestionCon");
 const quizStartCon = document.getElementById("quizStartCon");
 const question = document.getElementById("question");
-const optionBox = document.querySelectorAll(".option");
+const scoreSpan = document.getElementById("scoreNum");
+const currentQuestionSpan = document.getElementById("currentQuestionSpan");
+const progressBar = document.getElementById("progressBar");
+const answerContainer = document.getElementById("answerContainer");
+const resultContainer = document.getElementById("resultContainer")
+const finalResultScore = document.getElementById("gainedScore")
+const resultQut = document.getElementById("resultQut")
+const restartQuizBtn = document.getElementById("restartQuizBtn")
+const totalScore = document.getElementById("totalScore")
+const totalQuestion = document.getElementById("totalQuestion")
 
-function activeQuizQuestionCon() {
-    quizQuestionCon.classList.add("active");
-    quizStartCon.classList.remove("active");
-}
+let currentQuestionIndex = 0;
+let score = 0;
+let answersDisabled = false;
 
 
 function startQuiz() {
+    console.log(answerContainer.children)
+    currentQuestionIndex = 0;
+    score = 0
+    scoreSpan.textContent = 0;
+
+
+    quizQuestionCon.classList.add("active");
+    quizStartCon.classList.remove("active");
+    showQuestion();
 }
 
-quizStartBtn.addEventListener("click", function (event) {
-    activeQuizQuestionCon()
-});
+function showQuestion() {
+    const currentQuestion = questions[currentQuestionIndex];
+    answersDisabled = false;
 
-if (quizStartCon.classList.contains("active")) {
-    for(let i=0; i<=questions.length; i++) {
+    totalQuestion.textContent = questions.length;
+    currentQuestionSpan.textContent = currentQuestionIndex + 1;
 
-        question.innerText = questions[i].question;
-        optionBox.forEach(box => {
-            box.innerHTML = questions[i].options[0];
-        })
+    const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100;
+    progressBar.style.width = progressPercentage + "%";
+
+    question.textContent = currentQuestion.question;
+
+
+
+    answerContainer.innerHTML = "";
+
+    currentQuestion.options.forEach(answer => {
+        const button = document.createElement("button");
+        button.classList.add("answer-btn");
+        button.textContent = answer;
+
+         const isCorrect = answer === currentQuestion.answer;
+        button.dataset.correct = isCorrect ? "true" : "false";
+
+        button.addEventListener("click", selectAnswer);
+
+        answerContainer.appendChild(button);
+    });
+}
+
+function selectAnswer(event) {
+    if (answersDisabled) return;
+
+    answersDisabled = true;
+
+    const selectedBtn = event.target;
+    const isCorrect = selectedBtn.dataset.correct === "true";
+
+    Array.from(answerContainer.children).forEach(button => {
+        if (button.dataset.correct === "true") {
+            button.classList.add("correct");
+        } else if (button === selectedBtn) {
+            button.classList.add("incorrect");
+        }
+    });
+
+    if (isCorrect) {
+        score++;
+        scoreSpan.textContent = score;
+    }
+
+    setTimeout(() => {
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < questions.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }, 1000);
+}
+
+function showResults() {
+    quizQuestionCon.classList.remove("active");
+    resultContainer.classList.add("active");
+
+    totalScore.textContent = questions.length;
+    finalResultScore.textContent = score;
+
+    const percentage = (score / questions.length) * 100;
+
+    if (percentage === 100) {
+        resultQut.textContent = "Perfect! you're a genius!";
+    } else if (percentage >= 80) {
+        resultQut.textContent = "Great job! You know your stuff!";
+    } else if (percentage >= 60 ) {
+        resultQut.textContent = "Good effort! Keep learning!";
+    } else if (percentage >= 40) {
+        resultQut.textContent = "Not bad! Try again to improve!";
+    } else {
+        resultQut.textContent = "Keep studying! You'll get better!";
     }
 }
+
+function restartQuiz() {
+    resultContainer.classList.remove('active');
+    startQuiz();
+}
+
+
+quizStartBtn.addEventListener("click", function () {
+    startQuiz();
+});
+
+restartQuizBtn.addEventListener("click", function () {
+    restartQuiz();
+});
