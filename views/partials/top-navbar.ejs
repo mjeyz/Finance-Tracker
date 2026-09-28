@@ -13,17 +13,15 @@
                 class="search-input"
                 aria-label="Search dashboard items"/>
     </div>
-    <div
-            class="user-menu"
-            style="display: flex; align-items: center; gap: 1rem">
+    <div class="user-menu">
         <div class="notifications">
-            <i class="bx bx-bell" style="font-size: 1.25rem; color: #6b7280"></i>
+            <i class="bx bx-bell" aria-hidden="true"></i>
         </div>
         <div class="profile">
             <div class="avatar">
                 <%= user.name[0].toUpperCase() %>
             </div>
-            <span style="font-weight: 500"><%= user.email %></span>
+            <span class="profile-email"><%= user.email %></span>
         </div>
     </div>
 </header>

@@ -1,5 +1,6 @@
 <%- include ("partials/base.ejs") %>
 <%- include ("partials/sidebar.ejs") %>
+<%- include ("partials/top-navbar.ejs") %>
 
 <%
 const rows = Array.isArray(transaction) ? transaction : [];
@@ -109,7 +110,7 @@ const sampleTransactions = [
 ];
 
 const transactionRows = rows.length
-        ? rows.slice(0, 6).map((row, index) => {
+    ? rows.map((row, index) => {
             const formattedDate = formatDate(row.date);
             const type = String(row.type || "Expense").toLowerCase();
             const amountValue = Number(row.amount) || 0;
@@ -228,13 +229,13 @@ const summaryCards = rows.length
                     <input id="transactionSearch" type="search" placeholder="Search transactions..."/>
                 </label>
 
-                <select class="transaction-select" aria-label="Transaction type filter">
-                    <option disabled selected>All Types</option>
+                <select class="transaction-select" id="transactionTypeFilter" aria-label="Transaction type filter">
+                    <option value="" disabled selected>All Types</option>
                     <option>Income</option>
                     <option>Expense</option>
                 </select>
 
-                <select class="transaction-select" aria-label="Category filter">
+                <select class="transaction-select" id="transactionCategoryFilter" aria-label="Category filter">
                     <option value="" disabled selected>All Categories</option>
                     <option value="Food">Food and dining</option>
                     <option value="Transportation">Transportation</option>
@@ -247,7 +248,7 @@ const summaryCards = rows.length
                     <option value="Other">Other</option>
                 </select>
 
-                <button class="transaction-action transaction-action--ghost transaction-filter-btn" type="button">
+                <button class="transaction-action transaction-action--ghost transaction-filter-btn" id="transactionFilterBtn" type="button" aria-pressed="false">
                     <i class="bx bx-filter-alt"></i>
                     Filter
                 </button>
@@ -273,7 +274,7 @@ const summaryCards = rows.length
                     </thead>
                     <tbody>
                     <% transactionRows.forEach((row) => { %>
-                        <tr class="transaction-row" data-id="<%= row.id %>">
+                        <tr class="transaction-row" data-id="<%= row.id %>" data-category="<%= row.category %>" data-type="<%= row.type %>">
                             <td>
                                 <div class="date-cell">
                                     <strong><%= row.date %></strong>
@@ -330,16 +331,15 @@ const summaryCards = rows.length
             </div>
 
             <div class="table-footer">
-                <p>Showing 1 to <%= Math.min(transactionRows.length, 6) %> of <%= totalTransactions %> transactions</p>
+                <p id="transactionRange">Showing 1 to <%= Math.min(transactionRows.length, 6) %> of <%= totalTransactions %> transactions</p>
                 <nav class="pagination" aria-label="Transaction pagination">
-                    <button type="button" aria-label="Previous page">
+                    <button type="button" class="pagination-prev" aria-label="Previous page">
                         <i class="bx bx-chevron-left"></i>
                     </button>
-                    <button type="button" class="is-active">1</button>
-                    <button type="button">2</button>
-                    <button type="button">3</button>
-                    <button type="button">4</button>
-                    <button type="button" aria-label="Next page">
+                    <% for (let page = 1; page <= Math.max(1, Math.ceil(transactionRows.length / 6)); page++) { %>
+                        <button type="button" class="pagination-page <%= page === 1 ? 'is-active' : '' %>" data-page="<%= page %>"><%= page %></button>
+                    <% } %>
+                    <button type="button" class="pagination-next" aria-label="Next page">
                         <i class="bx bx-chevron-right"></i>
                     </button>
                 </nav>

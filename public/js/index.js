@@ -337,6 +337,104 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+    const transactionSearch = document.getElementById("transactionSearch");
+    const transactionTypeFilter = document.getElementById("transactionTypeFilter");
+    const transactionCategoryFilter = document.getElementById("transactionCategoryFilter");
+    const transactionFilterBtn = document.getElementById("transactionFilterBtn");
+    const transactionRows = document.querySelectorAll(".transaction-row");
+    const transactionRange = document.getElementById("transactionRange");
+    const paginationPages = document.querySelectorAll(".pagination-page");
+    const paginationPrevious = document.querySelector(".pagination-prev");
+    const paginationNext = document.querySelector(".pagination-next");
+    const pageSize = 6;
+    let currentPage = 1;
+
+    if (!transactionSearch || !transactionTypeFilter || !transactionCategoryFilter || !transactionRows.length) {
+        return;
+    }
+
+    function applyTransactionFilters() {
+        const searchValue = transactionSearch.value.trim().toLowerCase();
+        const typeValue = transactionTypeFilter.value.toLowerCase();
+        const categoryValue = transactionCategoryFilter.value.toLowerCase();
+        const hasActiveFilter = Boolean(searchValue || typeValue || categoryValue);
+        const matchingRows = Array.from(transactionRows).filter((row) => {
+            const rowText = row.textContent.toLowerCase();
+            const rowType = (row.dataset.type || "").toLowerCase();
+            const rowCategory = (row.dataset.category || "").toLowerCase();
+
+            return (!searchValue || rowText.includes(searchValue))
+                && (!typeValue || rowType === typeValue)
+                && (!categoryValue || rowCategory.includes(categoryValue));
+        });
+        const pageCount = Math.max(1, Math.ceil(matchingRows.length / pageSize));
+
+        currentPage = Math.min(currentPage, pageCount);
+        const firstVisibleIndex = (currentPage - 1) * pageSize;
+        const visibleRows = new Set(matchingRows.slice(firstVisibleIndex, firstVisibleIndex + pageSize));
+
+        transactionRows.forEach((row) => {
+            row.hidden = !visibleRows.has(row);
+        });
+
+        if (transactionFilterBtn) {
+            transactionFilterBtn.classList.toggle("active", hasActiveFilter);
+            transactionFilterBtn.setAttribute("aria-pressed", String(hasActiveFilter));
+        }
+
+        paginationPages.forEach((pageButton) => {
+            const page = Number(pageButton.dataset.page);
+            pageButton.hidden = page > pageCount;
+            pageButton.classList.toggle("is-active", page === currentPage);
+        });
+
+        if (paginationPrevious) {
+            paginationPrevious.disabled = currentPage === 1;
+        }
+
+        if (paginationNext) {
+            paginationNext.disabled = currentPage === pageCount;
+        }
+
+        if (transactionRange) {
+            const firstResult = matchingRows.length ? firstVisibleIndex + 1 : 0;
+            const lastResult = Math.min(firstVisibleIndex + pageSize, matchingRows.length);
+            transactionRange.textContent = `Showing ${firstResult} to ${lastResult} of ${matchingRows.length} transactions`;
+        }
+    }
+
+    transactionSearch.addEventListener("input", () => {
+        currentPage = 1;
+        applyTransactionFilters();
+    });
+    transactionTypeFilter.addEventListener("change", () => {
+        currentPage = 1;
+        applyTransactionFilters();
+    });
+    transactionCategoryFilter.addEventListener("change", () => {
+        currentPage = 1;
+        applyTransactionFilters();
+    });
+    transactionFilterBtn?.addEventListener("click", applyTransactionFilters);
+    paginationPages.forEach((pageButton) => {
+        pageButton.addEventListener("click", () => {
+            currentPage = Number(pageButton.dataset.page);
+            applyTransactionFilters();
+        });
+    });
+    paginationPrevious?.addEventListener("click", () => {
+        currentPage -= 1;
+        applyTransactionFilters();
+    });
+    paginationNext?.addEventListener("click", () => {
+        currentPage += 1;
+        applyTransactionFilters();
+    });
+
+    applyTransactionFilters();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".delete").forEach(button => {
         button.addEventListener("click", async function (event) {
             const eventItem = this.closest(".event-item");
@@ -434,12 +532,12 @@ const toggleBtn = document.getElementById("toggleBtn");
 const sidebarOverlay = document.getElementById("sidebarOverlay");
 
 function toggleSidebar() {
-    if (!sidebar || !sidebarOverlay || !toggleBtn) {
+    if (!sidebar || !toggleBtn) {
         return;
     }
 
     const isOpen = sidebar.classList.toggle("open");
-    sidebarOverlay.classList.toggle("active", isOpen);
+    sidebarOverlay?.classList.toggle("active", isOpen);
 
     const icon = toggleBtn.querySelector("i");
     if (icon) {
@@ -447,9 +545,9 @@ function toggleSidebar() {
     }
 }
 
-if (toggleBtn && sidebarOverlay) {
+if (toggleBtn) {
     toggleBtn.addEventListener("click", toggleSidebar);
-    sidebarOverlay.addEventListener("click", toggleSidebar);
+    sidebarOverlay?.addEventListener("click", toggleSidebar);
 }
 
 document.querySelectorAll(".sidebar-manu a, .logout-sidebar-btn a").forEach((item) => {
@@ -904,7 +1002,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             try {
-                const response = await fetch(`api/delete/event?id=${goalId}`, {
+                const response = await fetch(`/api/delete/event?id=${goalId}`, {
                     method: "DELETE",
                     headers: {
                         "content-type": "application/json"
@@ -971,6 +1069,8 @@ const questions = [
         answer: "Central Processing Unit"
     }
 ];
+
+
 
 // Quiz
 const quizStartBtn = document.getElementById("quizStartBtn");

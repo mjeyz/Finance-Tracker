@@ -23,5 +23,9 @@
   "type": "module",
   "scripts": {
     "start": "node app.js"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.9",
+    "prettier-plugin-jinja-template": "^2.2.0"
   }
 }

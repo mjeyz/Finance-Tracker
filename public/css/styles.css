@@ -120,6 +120,31 @@ body {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    min-width: 0;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: 1rem;
+    min-width: 0;
+}
+
+.notifications {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    font-size: 1.25rem;
+}
+
+.profile-email {
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
 }
 
 .avatar {
@@ -156,6 +181,7 @@ body {
     align-items: center;
     flex: 1 1 360px;
     max-width: 560px;
+    min-width: 0;
 }
 
 .search-input {
@@ -224,8 +250,8 @@ body {
     }
 
     .user-menu {
-        /*margin-left: auto;*/
         order: 1;
+        margin-left: auto;
     }
 
     .main-content {
@@ -972,7 +998,11 @@ body {
     }
 
     .search-input {
+        font-size: 14px;
+    }
 
+    .profile-email {
+        max-width: 140px;
     }
 
     .dashboard-subtitle {
@@ -1145,6 +1175,12 @@ body {
 
 .transaction-action--ghost {
     background: #fff;
+}
+
+.transaction-filter-btn.active {
+    background: #eaf8f1;
+    border-color: #9bd9b8;
+    color: #168354;
 }
 
 .transaction-chevron {

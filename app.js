@@ -1363,10 +1363,10 @@ app.delete("/api/v1/goal/:id", async (req, res) => {
     }
 });
 
-
 app.get("/quiz", async (req, res) => {
-    res.render("quiz.ejs");
+    res.render("quiz.ejs", {user: req.user});
 });
+
 
 app.get("/api/quiz", async (req, res) => {
     const URL = "https://opentdb.com/api.php";

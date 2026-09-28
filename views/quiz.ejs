@@ -1,5 +1,6 @@
 <%- include ('partials/base.ejs') %>
 <%- include('partials/sidebar.ejs') %>
+<%- include ("partials/top-navbar.ejs") %>
 
 <link rel="stylesheet" href="css/quiz.css">
 
@@ -41,4 +42,14 @@
 </main>
 
 <script src="/js/index.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var sidebarLink = document.querySelector('.sidebar .nav-link[href="/quiz"]');
+
+        if (sidebarLink) {
+            sidebarLink.classList.add("active");
+        }
+    });
+</script>
 </body>
