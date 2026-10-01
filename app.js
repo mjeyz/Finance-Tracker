@@ -214,6 +214,234 @@ app.get("/logout", (req, res) => {
     });
 });
 
+app.get("/add-transaction", (req, res) => {
+    if (req.isAuthenticated()) {
+        res.render("create-transaction.ejs", {is_edit: false, transaction: ""});
+    } else {
+        res.redirect("/login");
+    }
+});
+
+app.get("/add-saving", (req, res) => {
+    if (req.isAuthenticated()) {
+        res.render("create-saving.ejs", {is_edit: false, goal: ""});
+    } else {
+        res.redirect("/login");
+    }
+});
+
+app.get("/add-event", (req, res) => {
+    if (req.isAuthenticated()) {
+        res.render("create-event.ejs", {is_edit: false, event: ""});
+    } else {
+        res.redirect("/login");
+    }
+});
+
+app.get("/edit/event/:id", async (req, res) => {
+    if (req.isAuthenticated()) {
+        const id = req.params.id;
+
+        const result = await db.query("SELECT * FROM events WHERE id = $1", [id]);
+        const event = result.rows[0];
+        console.log(event)
+
+        const timeValue = await db.query("SELECT TO_CHAR(time, 'HH24:MI:SS') AS html_time FROM events WHERE id = $1", [id])
+        console.log(`Formated Time :  ${timeValue.rows[0].html_time}`)
+
+        const year = event.date.getFullYear();
+        const month = String(event.date.getMonth() + 1).padStart(2, '0');
+        const day = String(event.date.getDate()).padStart(2, "0");
+        const formatedDate = `${year}-${month}-${day}`;
+        const formatedTime = new Date(event.time)
+        console.log(event.time)
+        res.render("create-event.ejs", {
+            event: event,
+            is_edit: true,
+            formatedDate: formatedDate,
+            timeValue: timeValue.rows[0].html_time
+        });
+    } else {
+        res.redirect("/login");
+    }
+});
+
+app.get("/edit/goal/:id", async (req, res) => {
+    if (req.isAuthenticated()) {
+        const id = req.params.id;
+
+        const result = await db.query("SELECT * FROM saving WHERE id = $1", [id]);
+        console.log(result.rows)
+
+        const goal = result.rows[0]
+        // Convert to YYYY-MM-DD (respects local timezone)
+        const year = goal.date.getFullYear();
+        const month = String(goal.date.getMonth() + 1).padStart(2, '0');
+        const day = String(goal.date.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+
+        console.log(formattedDate)
+
+        res.render("create-saving.ejs", {is_edit: true, goal: goal, formattedDate: formattedDate});
+    } else {
+        res.redirect("/login");
+    }
+});
+
+app.get("/edit/transaction/:id", async (req, res) => {
+    if (req.isAuthenticated()) {
+        const id = req.params.id;
+        const result = await db.query("SELECT * FROM transaction WHERE id = $1", [id]);
+        const transaction = result.rows[0];
+
+        const year = transaction.date.getFullYear();
+        const month = String(transaction.date.getMonth() + 1).padStart(2, '0');
+        const day = String(transaction.date.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+
+        res.render("create-transaction.ejs", {is_edit: true, transaction: transaction, formattedDate: formattedDate});
+    } else {
+        res.redirect("/login");
+    }
+});
+
+app.get("/api/transaction/charts", async (req, res) => {
+    try {
+        const result = await db.query("SELECT  category, SUM(amount) AS total_amount FROM transaction WHERE user_id = $1 GROUP BY category ORDER BY total_amount DESC", [req.user.id])
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({error: 'Transaction not found or unauthorized'});
+        }
+        res.json(result.rows)
+    } catch (err) {
+        console.error("Database error : ", err.message);
+        res.status(500).send("Server Error.");
+    }
+});
+
+app.get("/api/graph", async (req, res) => {
+    try {
+        const result = await db.query(
+            `SELECT TO_CHAR(date, 'Mon') AS month_label,
+                    SUM(amount) ::FLOAT AS total
+             FROM transaction
+             WHERE user_id = $1
+               AND type = 'expense'
+               AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)
+             GROUP BY TO_CHAR(date, 'Mon')
+             ORDER BY MIN(EXTRACT(MONTH FROM date));`,
+            [req.user.id]
+        );
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: "Server error"});
+    }
+});
+
+app.get("/transaction", async (req, res) => {
+    if (req.isAuthenticated()) {
+        const result = await db.query("SELECT * FROM transaction WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
+
+        if (result.rows > 0) {
+            return res.status(200).json(result)
+        }
+
+        res.render("transactions.ejs", {user: req.user, transaction: result.rows})
+    } else {
+        res.redirect("login")
+    }
+
+});
+
+app.get("/events", async (req, res) => {
+    if (req.isAuthenticated()) {
+        const result = await db.query("SELECT * FROM events WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
+        res.render("event.ejs", {user: req.user, events: result.rows})
+    } else {
+        res.redirect("login");
+    }
+});
+
+app.get("/saving", async (req, res) => {
+    if (req.isAuthenticated()) {
+        const result = await db.query("SELECT * FROM saving WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
+        res.render("saving.ejs", {user: req.user, saving: result.rows})
+    } else {
+        res.redirect("/login");
+    }
+});
+
+app.get("/transaction/export/to/csv", async (req, res) => {
+    const {rows} = await db.query("SELECT * FROM transaction WHERE user_id = $1", [req.user.id]);
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Transaction");
+    const buf = XLSX.write(wb, {type: "buffer", bookType: "xlsx"});
+    res.attachment('FinTrack_Export.xlsx');
+    res.status(200).end(buf);
+});
+
+// --------------POSTMAN API Implementation---------------------------
+
+// get Specific transaction
+app.get("/api/v1/transaction/:id", async (req, res) => {
+    const id = req.params.id;
+
+    const result = await db.query("SELECT * FROM transaction WHERE id = $1", [id]);
+
+    if (result.rows.length === 0) {
+        return res.status(404).json({message: "Transaction Not Found."});
+    }
+
+    res.json({success: true, data: result.rows})
+});
+
+app.get("/api/v1/event/:id", async (req, res) => {
+    const id = req.params.id;
+
+    const result = await db.query("SELECT * FROM events WHERE id = $1", [id]);
+    if (result.rows === 0) {
+        res.status(404).json({success: false, message: "Event Not Found."});
+    }
+
+    res.status(200).json({success: true, data: result.rows});
+});
+
+app.get("/api/v1/goal/:id", async (req, res) => {
+    const id = req.params.id;
+
+    const result = await db.query("SELECT * FROM saving WHERE id = $1", [id]);
+
+    if (result.rows === 0) {
+        res.status(404).json({success: false, message: "Event not found."});
+    }
+
+    res.status(200).json({success: true, data: result.rows})
+});
+
+app.get("/quiz", async (req, res) => {
+    res.render("quiz.ejs", {user: req.user});
+});
+
+
+app.get("/api/quiz", async (req, res) => {
+    const URL = "https://opentdb.com/api.php";
+    const amount = 10;
+    const type = "multiple";
+    const category = 18;
+    const difficulty = "easy";
+
+    const response = await axios(`${URL}?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`);
+    res.json(response.data)
+});
+
+// Health checkup for deployment web hosting platform use this URL to test web health
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 app.get("/auth/github", passport.authenticate("Github", {
     scope: ["user:email"]
 }));
@@ -461,7 +689,6 @@ app.post("/change-password", async (req, res) => {
     }
 });
 
-
 app.post("/send-otp", sendOtpLimiter, async (req, res) => {
     try {
         const {email} = req.body;
@@ -556,31 +783,6 @@ app.post("/varify-email", verifyOtpLimiter, async (req, res) => {
         res.redirect("/varify-email");
     }
 });
-
-app.get("/add-transaction", (req, res) => {
-    if (req.isAuthenticated()) {
-        res.render("create-transaction.ejs", {is_edit: false, transaction: ""});
-    } else {
-        res.redirect("/login");
-    }
-});
-
-app.get("/add-saving", (req, res) => {
-    if (req.isAuthenticated()) {
-        res.render("create-saving.ejs", {is_edit: false, goal: ""});
-    } else {
-        res.redirect("/login");
-    }
-});
-
-app.get("/add-event", (req, res) => {
-    if (req.isAuthenticated()) {
-        res.render("create-event.ejs", {is_edit: false, event: ""});
-    } else {
-        res.redirect("/login");
-    }
-});
-
 
 app.post("/add-transaction", async (req, res) => {
     try {
@@ -699,74 +901,6 @@ app.post("/add-saving", async (req, res) => {
         }
 
         return res.redirect("/add-saving");
-    }
-});
-
-
-app.get("/edit/transaction/:id", async (req, res) => {
-    if (req.isAuthenticated()) {
-        const id = req.params.id;
-        const result = await db.query("SELECT * FROM transaction WHERE id = $1", [id]);
-        const transaction = result.rows[0];
-
-        const year = transaction.date.getFullYear();
-        const month = String(transaction.date.getMonth() + 1).padStart(2, '0');
-        const day = String(transaction.date.getDate()).padStart(2, '0');
-        const formattedDate = `${year}-${month}-${day}`;
-
-        res.render("create-transaction.ejs", {is_edit: true, transaction: transaction, formattedDate: formattedDate});
-    } else {
-        res.redirect("/login");
-    }
-});
-
-app.get("/edit/event/:id", async (req, res) => {
-    if (req.isAuthenticated()) {
-        const id = req.params.id;
-
-        const result = await db.query("SELECT * FROM events WHERE id = $1", [id]);
-        const event = result.rows[0];
-        console.log(event)
-
-        const timeValue = await db.query("SELECT TO_CHAR(time, 'HH24:MI:SS') AS html_time FROM events WHERE id = $1", [id])
-        console.log(`Foemated Time :  ${timeValue.rows[0].html_time}`)
-
-        const year = event.date.getFullYear();
-        const month = String(event.date.getMonth() + 1).padStart(2, '0');
-        const day = String(event.date.getDate()).padStart(2, "0");
-        const formatedDate = `${year}-${month}-${day}`;
-        const formatedTime = new Date(event.time)
-        console.log(event.time)
-        res.render("create-event.ejs", {
-            event: event,
-            is_edit: true,
-            formatedDate: formatedDate,
-            timeValue: timeValue.rows[0].html_time
-        });
-    } else {
-        res.redirect("/login");
-    }
-});
-
-app.get("/edit/goal/:id", async (req, res) => {
-    if (req.isAuthenticated()) {
-        const id = req.params.id;
-
-        const result = await db.query("SELECT * FROM saving WHERE id = $1", [id]);
-        console.log(result.rows)
-
-        const goal = result.rows[0]
-        // Convert to YYYY-MM-DD (respects local timezone)
-        const year = goal.date.getFullYear();
-        const month = String(goal.date.getMonth() + 1).padStart(2, '0');
-        const day = String(goal.date.getDate()).padStart(2, '0');
-        const formattedDate = `${year}-${month}-${day}`;
-
-        console.log(formattedDate)
-
-        res.render("create-saving.ejs", {is_edit: true, goal: goal, formattedDate: formattedDate});
-    } else {
-        res.redirect("/login");
     }
 });
 
@@ -932,126 +1066,6 @@ app.delete("/api/delete/goal", async (req, res) => {
         console.log(err);
     }
 })
-
-
-app.get("/api/transaction/charts", async (req, res) => {
-    try {
-        const result = await db.query("SELECT  category, SUM(amount) AS total_amount FROM transaction WHERE user_id = $1 GROUP BY category ORDER BY total_amount DESC", [req.user.id])
-
-        if (result.rowCount === 0) {
-            return res.status(404).json({error: 'Transaction not found or unauthorized'});
-        }
-        res.json(result.rows)
-    } catch (err) {
-        console.error("Database error : ", err.message);
-        res.status(500).send("Server Error.");
-    }
-});
-
-app.get("/api/graph", async (req, res) => {
-    try {
-        const result = await db.query(
-            `SELECT TO_CHAR(date, 'Mon') AS month_label,
-                    SUM(amount) ::FLOAT AS total
-             FROM transaction
-             WHERE user_id = $1
-               AND type = 'expense'
-               AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)
-             GROUP BY TO_CHAR(date, 'Mon')
-             ORDER BY MIN(EXTRACT(MONTH FROM date));`,
-            [req.user.id]
-        );
-        res.json(result.rows);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({error: "Server error"});
-    }
-});
-
-app.get("/transaction", async (req, res) => {
-    if (req.isAuthenticated()) {
-        const result = await db.query("SELECT * FROM transaction WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
-
-        if (result.rows > 0) {
-            return res.status(200).json(result)
-        }
-
-        res.render("transactions.ejs", {user: req.user, transaction: result.rows})
-    } else {
-        res.redirect("login")
-    }
-
-});
-
-app.get("/events", async (req, res) => {
-    if (req.isAuthenticated()) {
-        const result = await db.query("SELECT * FROM events WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
-        res.render("event.ejs", {user: req.user, events: result.rows})
-    } else {
-        res.redirect("login");
-    }
-});
-
-app.get("/saving", async (req, res) => {
-    if (req.isAuthenticated()) {
-        const result = await db.query("SELECT * FROM saving WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
-        res.render("saving.ejs", {user: req.user, saving: result.rows})
-    } else {
-        res.redirect("/login");
-    }
-});
-
-
-app.get("/transaction/export/to/csv", async (req, res) => {
-    const {rows} = await db.query("SELECT * FROM transaction WHERE user_id = $1", [req.user.id]);
-
-    const ws = XLSX.utils.json_to_sheet(rows);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Transaction");
-    const buf = XLSX.write(wb, {type: "buffer", bookType: "xlsx"});
-    res.attachment('FinTrack_Export.xlsx');
-    res.status(200).end(buf);
-});
-
-
-// --------------POSTMAN API Implementation---------------------------
-
-// get Specific transaction
-app.get("/api/v1/transaction/:id", async (req, res) => {
-    const id = req.params.id;
-
-    const result = await db.query("SELECT * FROM transaction WHERE id = $1", [id]);
-
-    if (result.rows.length === 0) {
-        return res.status(404).json({message: "Transaction Not Found."});
-    }
-
-    res.json({success: true, data: result.rows})
-});
-
-app.get("/api/v1/event/:id", async (req, res) => {
-    const id = req.params.id;
-
-    const result = await db.query("SELECT * FROM events WHERE id = $1", [id]);
-    if (result.rows === 0) {
-        res.status(404).json({success: false, message: "Event Not Found."});
-    }
-
-    res.status(200).json({success: true, data: result.rows});
-});
-
-app.get("/api/v1/goal/:id", async (req, res) => {
-    const id = req.params.id;
-
-    const result = await db.query("SELECT * FROM saving WHERE id = $1", [id]);
-
-    if (result.rows === 0) {
-        res.status(404).json({success: false, message: "Event not found."});
-    }
-
-    res.status(200).json({success: true, data: result.rows})
-});
-
 
 // basic Authentication Required because user_id is required in order to insert Transaction
 
@@ -1362,46 +1376,6 @@ app.delete("/api/v1/goal/:id", async (req, res) => {
         res.status(500).json({success: false, message: "Error Deleting your saving."});
     }
 });
-
-app.get("/quiz", async (req, res) => {
-    res.render("quiz.ejs", {user: req.user});
-});
-
-
-app.get("/api/quiz", async (req, res) => {
-    const URL = "https://opentdb.com/api.php";
-    const amount = 10;
-    const type = "multiple";
-    const category = 18;
-    const difficulty = "easy";
-
-    const response = await axios(`${URL}?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`);
-    res.json(response.data)
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

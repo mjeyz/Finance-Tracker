@@ -22,7 +22,8 @@
   },
   "type": "module",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "build": "npm install"
   },
   "devDependencies": {
     "prettier": "^3.9.9",
