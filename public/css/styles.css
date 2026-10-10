@@ -1734,6 +1734,21 @@ body {
         color: #2fb67c;
     }
 
+    .birthday-event {
+        background-color: #fff1df;
+        color: #f59e0b;
+    }
+
+    .bill-reminder__event {
+        background-color: #fdeeee;
+        color: #ef4444;
+    }
+
+    .total-event {
+        background-color: #f0eaff;
+        color: #7c3aed;
+    }
+
     .event-summary-content {
         display: grid;
         gap: 0.35rem;
@@ -1905,7 +1920,9 @@ body {
     border: 1px solid #dbe3ee;
     border-radius: 5px;
     padding: 0.5rem 1rem;
-    display: flex;
+    display: grid;
+    grid-template-columns: 150px minmax(250px, 1fr) auto auto 30px;
+    gap: 16px;
     align-items: center;
     justify-content: space-between;
     margin-top: 1rem;

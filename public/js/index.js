@@ -462,7 +462,7 @@ document.addEventListener("DOMContentLoaded", function () {
         button.addEventListener("click", async function (event) {
             const goalItem = this.closest(".goal-card");
             const goalId = goalItem.dataset.id;
-            if (!confirm(`Are you sure you want to delete this transaction?`)) {
+            if (!confirm(`Are you sure you want to delete this Goql?`)) {
                 return;
             }
             try {

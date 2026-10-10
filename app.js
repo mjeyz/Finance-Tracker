@@ -15,6 +15,7 @@ import crypto from "crypto";
 import rateLimit from "express-rate-limit";
 import XLSX from 'xlsx';
 import axios from "axios"
+const { Pool } = pg;
 
 
 const app = express();
@@ -64,16 +65,25 @@ app.use((req, res, next) => {
     next();
 });
 
-const db = new pg.Client({
+// Check if we are running locally or in the cloud
+const isLocal = process.env.POSTGRES_HOST === 'localhost' || process.env.POSTGRES_HOST === '127.0.0.1';
+
+const db = new Pool({
     user: process.env.POSTGRES_USER,
     port: Number(process.env.POSTGRES_PORT || 5432),
     host: process.env.POSTGRES_HOST,
     database: process.env.POSTGRES_DATABASE,
-    password: process.env.POSTGRES_PASSWORD
+    password: process.env.POSTGRES_PASSWORD,
+    // Only use SSL if we are NOT local (i.e., connecting to Neon)
+    ssl: isLocal ? false : { rejectUnauthorized: false },
+    keepAlive: true,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 10000,
+    max: 5
 });
 
-db.on("error", (err) => {
-    console.error("PostgreSQL client error:", err.message);
+db.on("error", (err, client) => {
+    console.error("Unexpected error on idle client", err);
 });
 
 
@@ -597,8 +607,6 @@ passport.use(
             const name = profile.displayName || profile.name?.givenName || "Google User";
 
             console.log("Email : ", email, "Name : ", name);
-            console.log(profile);
-
             try {
                 const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
 
@@ -628,8 +636,6 @@ passport.use(
             const name = profile.displayName;
 
             console.log("Email: ", email, "Name : ", name);
-            console.log(profile);
-
             try {
                 const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
 
@@ -1054,6 +1060,7 @@ app.delete("/api/delete/event", async (req, res) => {
         console.log(err);
     }
 });
+
 
 app.delete("/api/delete/goal", async (req, res) => {
     const goalId = req.query.id;
