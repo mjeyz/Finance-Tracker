@@ -53,8 +53,7 @@ body {
 }
 
 .sidebar-brand {
-    font-size: 2rem;
-    font-weight: bold;
+    height: 50px;
     margin-bottom: 2rem;
     display: flex;
     align-items: center;
