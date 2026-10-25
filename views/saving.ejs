@@ -23,8 +23,8 @@
     <section class="event-summary-grid" aria-label="Events summaries">
         <!--         Total saving-->
         <article class="upcoming-event-summray-card event-summary-card total-saving">
-            <div class="event-summary__icon">
-                <i class="bx bx-calender"></i>
+            <div class="event-summary__icon upcoming-event-summary-icon">
+                <i class="fa-solid fa-dollar-sign"></i>
             </div>
             <div class="event-summary-content">
                 <span class="event-card-label saving-card-label">Total Saving</span>
@@ -38,8 +38,8 @@
         </article>
         <!--            Birthdays-->
         <article class="birthday-event-summray-card event-summary-card">
-            <div class="event-summary__icon">
-                <i class="bx bx-gift"></i>
+            <div class="event-summary__icon moth-saved">
+                <i class="fa-solid fa-piggy-bank"></i>
             </div>
             <div class="event-summary-content">
                 <span class="event-card-label">This Month Saved</span>
@@ -52,8 +52,8 @@
         </article>
         <!--            Bill Reminder-->
         <article class="bill-reminder-event-summray-card event-summary-card">
-            <div class="event-summary__icon">
-                <i class="bx bx-bill"></i>
+            <div class="event-summary__icon total-goal">
+                <i class="fa-solid fa-bullseye"></i>
             </div>
             <div class="event-summary-content">
                 <span class="event-card-label">Saving goals</span>
@@ -65,7 +65,7 @@
             </div>
         </article>
         <article class="total-event-summray-card event-summary-card">
-            <div class="event-summary__icon summary-card__icon">
+            <div class="event-summary__icon summary-card__icon birthday-event">
                 <i class="bx bx-flag"></i>
             </div>
             <div class="event-summary-content">
@@ -87,7 +87,7 @@
             </div>
             <div class="active-saving">
 
-                <% if ( saving ) { %>
+                <% if ( saving.length > 0 ) { %>
                     <% saving.forEach(sv => { %>
 
                         <%
@@ -132,7 +132,11 @@
                             </div>
                         </div>
                     <% }) %>
-                <% } %>
+                <% } else { %>
+                <div class="empty-message" style="height: 100px">
+                    <span>No Saving has been added</span>
+                </div>
+            <% }%>
             </div>
         </div>
 
@@ -167,9 +171,14 @@
                                 <span class="target-date"><%= sv.date %></span>
                             </div>
                         </div>
-                    <% } %>
+                    <% } else { %>
+                <div class="empty-message" style="height: 100px">
+                    <span>No goals have been completed yet.</span>
+                </div>
+            <% }%>
                 <% }) %>
             <% } %>
+
         </div>
     </section>
     <div class="tip">
