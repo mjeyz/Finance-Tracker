@@ -31,11 +31,13 @@
 body {
     background-color: var(--bg-primary);
     min-height: 100vh;
-    padding: 2rem;
+    min-height: 100dvh;
+    padding: clamp(1rem, 3vw, 2rem);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .form-card {
@@ -45,6 +47,7 @@ body {
     display: flex;
     flex-direction: column;
     padding: 2rem;
+    margin: auto;
     border-radius: 20px;
     box-shadow: var(--card-shadow);
     border: 1px solid var(--border);
@@ -52,7 +55,7 @@ body {
     z-index: 1;
     animation: liftCard 1.6s cubic-bezier(0.6, 1, 0.3, 1) forwards;
     border-top: 2px solid #4f6ef7;
-
+    flex-shrink: 0;
 }
 
 .flash-stack {
@@ -61,12 +64,28 @@ body {
     margin-bottom: 1rem;
 }
 
+.form-card .flash-stack {
+    position: fixed;
+    top: max(1rem, env(safe-area-inset-top));
+    right: 1rem;
+    z-index: 1200;
+    width: min(360px, calc(100vw - 2rem));
+    margin-bottom: 0;
+    pointer-events: none;
+}
+
 .flash-message {
     border-radius: 12px;
     padding: 0.9rem 1rem;
     font-size: 0.9rem;
     font-weight: 600;
     line-height: 1.4;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.flash-message-hide {
+    opacity: 0;
+    transform: translateY(-8px);
 }
 
 .flash-success {
@@ -85,6 +104,19 @@ body {
     background: rgba(37, 99, 235, 0.1);
     color: #1d4ed8;
     border: 1px solid rgba(37, 99, 235, 0.25);
+}
+
+.form-card .flash-message {
+    pointer-events: auto;
+}
+
+@media (max-width: 600px) {
+    .form-card .flash-stack {
+        top: max(0.75rem, env(safe-area-inset-top));
+        right: 0.75rem;
+        left: 0.75rem;
+        width: auto;
+    }
 }
 
 .form-header {
@@ -155,6 +187,12 @@ body {
     resize: vertical;
 }
 
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
 .form-card input:focus {
     border-color: var(--border-focus);
     box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
@@ -183,9 +221,14 @@ body {
 
 @media (max-width: 680px) {
     .form-card {
-        padding: 32px 20px;
+        padding: 1.5rem 1rem;
         border-radius: 16px;
-        margin: 0;
+        margin: 0 auto;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
     }
 
     .social-buttons {
@@ -311,6 +354,8 @@ body {
     padding: 2rem;
     width: 100%;
     max-width: 700px;
+    margin: auto;
+    flex-shrink: 0;
     border-radius: 1rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
@@ -351,6 +396,12 @@ body {
 
 @media (max-width: 400px) {
     .form-card {
-    width: 100%;
-        }
+        width: 100%;
+    }
+}
+
+@media (max-width: 680px) {
+    .change-password-container {
+        padding: 1.5rem 1rem;
+    }
 }

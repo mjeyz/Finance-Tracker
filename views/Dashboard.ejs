@@ -1,25 +1,6 @@
 <%- include('partials/base.ejs') %>
 
 <body>
-<div class="flash-stack page-flash-stack">
-    <% if (error && error.length > 0) { %>
-        <% error.forEach(function (msg) { %>
-            <div class="flash-message flash-error"><%= msg %></div>
-        <% }) %>
-    <% } %>
-    <% if (success && success.length > 0) { %>
-        <% success.forEach(function (msg) { %>
-            <div class="flash-message flash-success"><%= msg %></div>
-        <% }) %>
-    <% } %>
-    <% if (info && info.length > 0) { %>
-        <% info.forEach(function (msg) { %>
-            <div class="flash-message flash-info"><%= msg %></div>
-        <% }) %>
-    <% } %>
-</div>
-
-
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 <!--Sidebar-->
 <%- include ("partials/sidebar") %>

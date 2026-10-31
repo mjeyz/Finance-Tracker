@@ -146,7 +146,7 @@
                 <span class="com-title">Recent saving activity</span>
                 <a href="#" class="com-view-all">View all</a>
             </div>
-            <% if ( saving ) { %>
+            <% if ( saving.length > 0 ) { %>
                 <% saving.forEach(sv => { %>
 
                     <%
@@ -177,7 +177,11 @@
                 </div>
             <% }%>
                 <% }) %>
-            <% } %>
+            <% } else { %>
+                <div class="empty-message" style="height: 100px">
+                    <span>No Saving has been added</span>
+                </div>
+            <% }%>
 
         </div>
     </section>

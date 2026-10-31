@@ -160,8 +160,11 @@
                             </div>
                         </div>
                     <% }) %>
-                <% } %>
-
+                <% } else { %>
+                <div class="empty-message" style="height: 100px">
+                    <span>No Event has been added</span>
+                </div>
+            <% }%>
             </div>
         </section>
         <div class="tip">

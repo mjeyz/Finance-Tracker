@@ -272,6 +272,7 @@ body {
     right: 1.5rem;
     z-index: 1200;
     width: min(360px, calc(100vw - 3rem));
+    pointer-events: none;
 }
 
 .flash-stack {
@@ -286,6 +287,16 @@ body {
     font-weight: 600;
     line-height: 1.4;
     box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.page-flash-stack .flash-message {
+    pointer-events: auto;
+}
+
+.flash-message-hide {
+    opacity: 0;
+    transform: translateY(-8px);
 }
 
 .flash-success {
@@ -621,8 +632,12 @@ body {
     border-radius: 28px;
     width: 520px;
     max-width: 92%;
+    max-height: calc(100vh - 2rem);
+    max-height: calc(100dvh - 2rem);
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.25);
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
     transform: scale(0.92) translateY(20px);
     cursor: default;
     user-select: none;
@@ -663,6 +678,8 @@ body {
 
 .update-income-model-body {
     padding: 1.8rem 1.8rem 2rem;
+    overflow-y: auto;
+    min-height: 0;
 }
 
 .overlay {
@@ -689,8 +706,12 @@ body {
     border-radius: 28px;
     width: 520px;
     max-width: 92%;
+    max-height: calc(100vh - 2rem);
+    max-height: calc(100dvh - 2rem);
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.25);
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
     transform: scale(0.92) translateY(20px);
     cursor: default;
     user-select: none;
@@ -731,6 +752,9 @@ body {
 
 .model-body {
     padding: 1.8rem 1.8rem 2rem;
+    overflow-y: auto;
+    min-height: 0;
+    overscroll-behavior: contain;
 }
 
 .form-group {
@@ -786,6 +810,7 @@ body {
     margin-top: 1.8rem;
     padding-top: 1.2rem;
     border-top: 1px solid #e9edf4;
+    background: #ffffff;
 }
 
 .form-action .btn {
@@ -826,12 +851,19 @@ body {
 }
 
 .varify-email-container {
-    width: 600px;
+    width: min(600px, 100%);
+    max-height: none;
+    margin: auto;
     background-color: #ffffff;
     padding: 2rem;
     border-radius: 1rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     animation: liftCard 1.6s cubic-bezier(0.6, 1, 0.3, 1) forwards;
+}
+
+.verification-page {
+    align-items: flex-start;
+    overflow-y: auto;
 }
 
 .varify-heading {
@@ -861,16 +893,45 @@ body {
 
 @media (max-width: 600px) {
 
+    .update-income-model,
+    .model {
+        width: calc(100% - 1rem);
+        max-width: none;
+        max-height: calc(100vh - 1rem);
+        max-height: calc(100dvh - 1rem);
+        border-radius: 18px;
+    }
+
+    .varify-email-container {
+        padding: 1.25rem 1rem;
+    }
+
+    .varify-heading {
+        font-size: 1.5rem;
+    }
+
     .form-row {
         grid-template-columns: 1fr;
     }
 
     .model-body {
-        padding: 1.2rem;
+        padding: 1.2rem 1rem;
     }
 
     .model-header {
         padding: 1rem 1.2rem;
+    }
+
+    .update-income-model-body {
+        padding: 1.2rem 1rem;
+    }
+
+    .form-action {
+        flex-wrap: wrap;
+    }
+
+    .form-action .btn {
+        flex: 1 1 120px;
     }
 }
 
@@ -1897,8 +1958,13 @@ body {
 
 .legend-dot {
     height: 10px;
-    width: 1px;
+    width: 10px;
+    display: inline-block;
     border-radius: 50%;
+}
+
+.legend-dot.orange {
+    background: #f59e0b;
 }
 
 .legend-dot.blue {
@@ -2064,4 +2130,13 @@ body {
 
 .main-calender .other-month {
     color: #b8bdc9;
+}
+
+@media (max-width: 600px) {
+    .page-flash-stack {
+        top: 72px;
+        right: 1rem;
+        left: 1rem;
+        width: auto;
+    }
 }

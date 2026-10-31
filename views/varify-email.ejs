@@ -11,6 +11,8 @@
             crossorigin="anonymous"/>
     <link rel="stylesheet" href="css/styles.css"/>
     <link rel="stylesheet" href="css/login.css"/>
+        <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+
 
     <link
             href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -23,7 +25,7 @@
     />
 
 </head>
-<body style="display: flex;justify-content: center">
+<body class="verification-page">
 
 <div class="varify-email-container" id="varifyEmailContainer">
 
@@ -80,6 +82,7 @@
         </div>
     </form>
 
+    <script src="/js/flash.js"></script>
     <script>
         const sendCodeBtn = document.getElementById("sendCodeBtn");
         const codeSection = document.getElementById("codeSection");
@@ -87,6 +90,7 @@
         const verificationMessage = document.getElementById("verificationMessage");
         const emailInput = document.getElementById("email");
         const form = document.querySelector(".varify-email-form");
+        let verificationMessageTimeout;
 
         function setActive() {
             emailSection.classList.remove("active");
@@ -94,9 +98,17 @@
         }
 
         function showMessage(message, type) {
+            window.clearTimeout(verificationMessageTimeout);
             verificationMessage.textContent = message;
             verificationMessage.className = `flash-message ${type === "success" ? "flash-success" : "flash-error"}`;
             verificationMessage.style.display = "block";
+            verificationMessageTimeout = window.setTimeout(() => {
+                verificationMessage.classList.add("flash-message-hide");
+                window.setTimeout(() => {
+                    verificationMessage.style.display = "none";
+                    verificationMessage.classList.remove("flash-message-hide");
+                }, 250);
+            }, 4500);
         }
 
 

@@ -1,0 +1,17 @@
+<div class="flash-stack page-flash-stack" aria-live="polite" aria-atomic="true">
+    <% if (error && error.length > 0) { %>
+        <% error.forEach(function (msg) { %>
+            <div class="flash-message flash-error"><%= msg %></div>
+        <% }) %>
+    <% } %>
+    <% if (success && success.length > 0) { %>
+        <% success.forEach(function (msg) { %>
+            <div class="flash-message flash-success"><%= msg %></div>
+        <% }) %>
+    <% } %>
+    <% if (info && info.length > 0) { %>
+        <% info.forEach(function (msg) { %>
+            <div class="flash-message flash-info"><%= msg %></div>
+        <% }) %>
+    <% } %>
+</div>

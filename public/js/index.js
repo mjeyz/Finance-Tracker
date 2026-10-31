@@ -319,16 +319,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 if (!response.ok) {
-                    const errorData = await response.json();
+                    const errorData = await response.json().catch(() => null);
+                    window.showFlashMessage?.(errorData?.error || "Unable to delete transaction.", "error");
+                    return;
                 }
 
                 // Success! Remove the transaction row from the UI without refreshing the page
                 transactionItem.remove();
-                console.log('Transaction deleted successfully');
+                window.showFlashMessage?.("Transaction deleted successfully.", "success");
 
             } catch (error) {
                 console.error('Delete error:', error.message);
-                alert('Could not delete transaction: ' + error.message);
+                window.showFlashMessage?.('Could not delete transaction: ' + error.message, "error");
             }
         });
 
@@ -449,9 +451,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         "content-type": "application/json"
                     }
                 });
+                if (!response.ok) {
+                    window.showFlashMessage?.("Unable to delete event.", "error");
+                    return;
+                }
                 eventItem.remove();
+                window.showFlashMessage?.("Event deleted successfully.", "success");
             } catch (err) {
-                console.log(err)
+                console.error(err);
+                window.showFlashMessage?.("Unable to delete event.", "error");
             }
         });
     });
@@ -472,9 +480,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         "content-type": "application/json"
                     }
                 })
+                if (!response.ok) {
+                    window.showFlashMessage?.("Unable to delete saving goal.", "error");
+                    return;
+                }
                 goalItem.remove();
+                window.showFlashMessage?.("Saving goal deleted successfully.", "success");
             } catch (err) {
-                console.log(err);
+                console.error(err);
+                window.showFlashMessage?.("Unable to delete saving goal.", "error");
             }
         });
     });
@@ -955,9 +969,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         "content-type": "application/json"
                     }
                 });
+                if (!response.ok) {
+                    window.showFlashMessage?.("Unable to delete saving goal.", "error");
+                    return;
+                }
                 goalItem.remove();
+                window.showFlashMessage?.("Saving goal deleted successfully.", "success");
             } catch (err) {
-                console.log(err);
+                console.error(err);
+                window.showFlashMessage?.("Unable to delete saving goal.", "error");
             }
         });
     });
@@ -981,9 +1001,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         "content-type": "application/json"
                     }
                 });
+                if (!response.ok) {
+                    window.showFlashMessage?.("Unable to delete transaction.", "error");
+                    return;
+                }
                 goalItem.remove();
+                window.showFlashMessage?.("Transaction deleted successfully.", "success");
             } catch (err) {
-                console.log(err);
+                console.error(err);
+                window.showFlashMessage?.("Unable to delete transaction.", "error");
             }
         });
     });
@@ -1008,9 +1034,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         "content-type": "application/json"
                     }
                 });
+                if (!response.ok) {
+                    window.showFlashMessage?.("Unable to delete event.", "error");
+                    return;
+                }
                 goalItem.remove();
+                window.showFlashMessage?.("Event deleted successfully.", "success");
             } catch (err) {
-                console.log(err);
+                console.error(err);
+                window.showFlashMessage?.("Unable to delete event.", "error");
             }
         });
     });
