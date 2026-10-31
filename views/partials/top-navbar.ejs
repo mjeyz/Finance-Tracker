@@ -5,16 +5,18 @@
         <i class="fas fa-bars"></i>
     </button>
 
-    <div class="search-group">
-        <i class="fas fa-search icon"></i>
-        <input
-                type="search"
-                id="dashboardSearch"
-                placeholder="Search transactions, events, or goals..."
-                name="search"
-                class="search-input"
-                aria-label="Search dashboard items"/>
-    </div>
+    <% if (typeof hideSearch === "undefined" || !hideSearch) { %>
+        <div class="search-group">
+            <i class="fas fa-search icon"></i>
+            <input
+                    type="search"
+                    id="dashboardSearch"
+                    placeholder="Search transactions, events, or goals..."
+                    name="search"
+                    class="search-input"
+                    aria-label="Search dashboard items"/>
+        </div>
+    <% } %>
     <div class="user-menu">
         <div class="notifications">
             <i class="bx bx-bell" aria-hidden="true"></i>

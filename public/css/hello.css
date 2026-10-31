@@ -5,6 +5,25 @@
     width: 100%;
 }
 
+.saving-page {
+    max-width: 1440px;
+}
+
+.saving-main {
+    padding-bottom: 36px;
+}
+
+.saving-card-value {
+    color: #172033;
+    white-space: nowrap;
+}
+
+.saving-card-value > strong {
+    color: #64748b;
+    font-size: 0.7em;
+    letter-spacing: 0.04em;
+}
+
 .saving-can-one {
    padding: 1rem;
     border: 1px solid #dbe3ee;
@@ -20,7 +39,23 @@
     display: flex;
     align-items: center;
     gap: 2rem;
-    justify-content: center;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    background: linear-gradient(135deg, #ffffff, #fbfdff);
+}
+
+.saving-card:hover {
+    transform: translateY(-2px);
+    border-color: #b7e7d0;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.07);
+}
+
+.saving-card .progress-track {
+    height: 8px;
+}
+
+.saving-card .progress-fill {
+    background: linear-gradient(90deg, #2fb67c, #63d69e);
 }
 
 .sv-card-cont {
@@ -34,7 +69,10 @@
 
 .goal-subtitle {
     font-size: 0.8rem;
-    color: dimgrey;
+    color: #8a9bb0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 
@@ -53,6 +91,11 @@
 .saving-header a {
     text-decoration: none;
     color: #2fb67c;
+}
+
+.saving-header a:hover,
+.com-can-header a:hover {
+    color: #20875b;
 }
 
 .saving-pers {
@@ -74,14 +117,17 @@
     background-color: #ffffff;
     border: 1px solid #dbe3ee;
     border-radius: 10px;
-    padding: 15px;
+    padding: 0;
+    overflow: hidden;
 }
 
 .com-can-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1rem;
+    margin-bottom: 0;
+    padding: 1rem 1.15rem;
+    border-bottom: 1px solid #edf1f6;
 }
 
 .com-title {
@@ -98,14 +144,19 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 1rem;
-    border: 1px solid #dbe3ee;
-    border-radius: 10px;
-    padding: 10px;
+    margin: 0 1rem;
+    border: 0;
+    border-bottom: 1px solid #edf1f6;
+    border-radius: 0;
+    padding: 12px 0;
+}
+
+.completed-goal:last-child {
+    border-bottom: 0;
 }
 
 .com-goal-icon {
-    background-color: #4f7a5d;
+    background-color: #e9f9ef;
     border-radius: 50%;
     color: #2fb67c;
     height: 50px;
@@ -149,18 +200,173 @@
     margin-left: 10px;
 }
 
+.saving-empty-state {
+    min-height: 230px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    color: #94a3b8;
+    text-align: center;
+}
+
+.saving-empty-state > i {
+    color: #2fb67c;
+    font-size: 2rem;
+}
+
+.saving-empty-state strong {
+    color: #334155;
+}
+
+.saving-empty-state .event-action {
+    margin-top: 0.5rem;
+}
+
+.saving-empty-state.compact {
+    min-height: 180px;
+}
+
+@media (max-width: 750px) {
+    .saving-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 450px) {
+    .saving-card {
+        gap: 0.75rem;
+        padding: 12px;
+    }
+
+    .sv-card-cont {
+        width: auto;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .saving-pers {
+        flex: 0 0 auto;
+    }
+}
+
 .chart-cantainer {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    align-items: stretch;
+    margin-top: 2rem;
 }
 
 .chart-cantainer .graph {
-    border: 1px solid #dbe3ee;
-    border-radius: 1rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0.5, 0.1);
-    padding: 1rem 0;
-    
+    min-width: 0;
+    min-height: 360px;
+    margin-top: 0;
+    border: 1px solid #e3eaf3;
+    border-radius: 1.25rem;
+    background: #ffffff;
+    box-shadow: 0 10px 24px rgba(31, 52, 86, 0.07);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chart-cantainer .graph:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(31, 52, 86, 0.11);
+}
+
+.chart-cantainer .line-chart {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    height: 360px;
+    min-height: 0;
+    box-sizing: border-box;
+}
+
+.chart-cantainer .line-chart .graph-canvas {
+    min-height: 0;
+}
+
+.chart-cantainer .method-chart {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.graph-header {
+    min-height: 62px;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid #edf1f6;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    color: #102a53;
+}
+
+.graph-header > div {
+    min-width: 0;
+}
+
+.graph-eyebrow {
+    display: block;
+    color: #718096;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+}
+
+.graph-header h3 {
+    margin: 0.25rem 0 0;
+    color: #102a53;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.graph-header > i {
+    flex: 0 0 auto;
+    margin-top: 0.15rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: grid;
+    place-items: center;
+    border-radius: 0.7rem;
+    background: #eef4ff;
+    color: #2563eb;
+}
+
+.graph-canvas {
+    position: relative;
+    flex: 1;
+    width: 100%;
+    min-height: 260px;
+    margin-top: 1rem;
+}
+
+.graph-canvas canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.chart-empty {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    color: #61708a;
+    font-size: 0.9rem;
 }
 
 .dropdown {
@@ -206,7 +412,7 @@
     }
 
     .chart-cantainer {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
@@ -221,9 +427,25 @@
     }
     .chart-cantainer {
         grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .chart-cantainer .line-chart,
+    .chart-cantainer .method-chart {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    .graph-header h3 {
+        white-space: normal;
     }
 
     .event-content {
+        grid-template-columns: 1fr;
+    }
+
+    .saving-content {
         grid-template-columns: 1fr;
     }
 }
@@ -235,6 +457,17 @@
 
     .saving-content {
         grid-template-columns: 1fr;
+    }
+
+    .saving-card {
+        gap: 0.75rem;
+        padding: 12px;
+    }
+
+    .sv-card-cont {
+        width: auto;
+        flex: 1;
+        min-width: 0;
     }
 
     .chart-cantainer {

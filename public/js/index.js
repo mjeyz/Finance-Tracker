@@ -683,100 +683,138 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
+    const pieCanvas = document.getElementById("pieChart");
+    const lineCanvas = document.getElementById("lineChart");
+    const methodCanvas = document.getElementById("methodChart");
+    if (!pieCanvas && !lineCanvas && !methodCanvas) return;
+
     try {
-        // 1. Fetch pie chart data
-        const pieRes = await fetch("/api/transaction/charts");
-        const pieData = await pieRes.json();
+        const [pieRes, graphRes, methodRes] = await Promise.all([
+            fetch("/api/transaction/charts"),
+            fetch("/api/graph"),
+            fetch("/api/transaction/payment-methods")
+        ]);
+        const piePayload = await pieRes.json();
+        const graphPayload = await graphRes.json();
+        const methodPayload = await methodRes.json();
+        const pieData = Array.isArray(piePayload) ? piePayload : [];
+        const graphData = Array.isArray(graphPayload) ? graphPayload : [];
+        const methodData = Array.isArray(methodPayload) ? methodPayload : [];
         const labels = pieData.map(item => item.category);
-        const pieAmounts = pieData.map(item => parseFloat(item.total_amount));
+        const pieAmounts = pieData.map(item => Number(item.total_amount) || 0);
 
-        // 2. Fetch line chart data
-        const graphRes = await fetch("/api/graph");
-        const graphData = await graphRes.json();
-        console.log("Graph data:", graphData);
-
-        // Build a map: month_label -> total
         const monthMap = {};
         graphData.forEach(item => {
-            monthMap[item.month_label] = parseFloat(item.total);
+            monthMap[item.month_label] = Number(item.total) || 0;
         });
 
-        // Full list of months
         const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
             "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        // Fill with 0 if missing
         const monthlyTotals = monthLabels.map(month => monthMap[month] || 0);
 
-        // 3. Render pie chart
-        const pieCanvas = document.getElementById("pieChart");
         if (pieCanvas) {
-            new Chart(pieCanvas.getContext("2d"), {
-                type: "pie",
+            const pieEmpty = document.getElementById("pieChartEmpty");
+            if (!pieData.length) {
+                pieCanvas.hidden = true;
+                if (pieEmpty) pieEmpty.hidden = false;
+            } else {
+                new Chart(pieCanvas.getContext("2d"), {
+                    type: "doughnut",
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: "Total Amount ($)",
                         data: pieAmounts,
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.7)',
-                            'rgba(54, 162, 235, 0.7)',
-                            'rgba(255, 206, 86, 0.7)',
-                            'rgba(75, 192, 192, 0.7)',
-                            'rgba(153, 102, 255, 0.7)',
-                            '#BD5579',
-                            '#EA9D9D',
-                            '#A290B7',
-                            '#BDB2FF',
-                            '#403D88'
+                            "#2fb67c", "#2563eb", "#f59e0b", "#ef4444",
+                            "#7c3aed", "#06b6d4", "#ec4899", "#64748b"
                         ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            '#BD5579',
-                            '#EA9D9D',
-                            '#A290B7',
-                            '#BDB2FF',
-                            '#403D88'
-                        ],
-                        borderWidth: 1
+                        borderWidth: 3,
+                        borderColor: "#ffffff"
                     }]
                 },
                 options: {
                     responsive: true,
-                    plugins: {
-                        legend: {position: "top"},
-                        title: {
-                            display: true,
-                            text: "Expense Breakdown by Category"
-                        }
-                    }
+                    maintainAspectRatio: false,
+                    cutoutPercentage: 64,
+                    legend: {position: "top", labels: {padding: 12, usePointStyle: true}}
                 }
-            });
+                });
+            }
         }
 
-        // 4. Render line chart
-        const lineCanvas = document.getElementById("lineChart");
+        if (methodCanvas) {
+            const methodEmpty = document.getElementById("methodChartEmpty");
+            if (!methodData.length) {
+                methodCanvas.hidden = true;
+                if (methodEmpty) methodEmpty.hidden = false;
+            } else {
+                new Chart(methodCanvas.getContext("2d"), {
+                    type: "bar",
+                    data: {
+                        labels: methodData.map(item => item.method),
+                        datasets: [{
+                            data: methodData.map(item => Number(item.total_amount) || 0),
+                            backgroundColor: ["#2fb67c", "#2563eb", "#f59e0b", "#7c3aed", "#ef4444", "#06b6d4"],
+                            borderRadius: 6,
+                            borderWidth: 0,
+                            maxBarThickness: 42
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        legend: {display: false},
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: value => `PKR ${Number(value).toLocaleString()}`
+                                },
+                                gridLines: {color: "#edf1f6"}
+                            }],
+                            xAxes: [{gridLines: {display: false}}]
+                        }
+                    }
+                });
+            }
+        }
+
         if (lineCanvas) {
-            new Chart(lineCanvas.getContext("2d"), {
+            const lineEmpty = document.getElementById("lineChartEmpty");
+            if (!graphData.length) {
+                lineCanvas.hidden = true;
+                if (lineEmpty) lineEmpty.hidden = false;
+            } else new Chart(lineCanvas.getContext("2d"), {
                 type: "line",
                 data: {
                     labels: monthLabels,
                     datasets: [{
                         label: "Monthly Expenses",
                         data: monthlyTotals,
-                        backgroundColor: "rgba(0, 0, 255, 0.2)",
-                        borderColor: "rgba(0, 0, 255, 1)",
-                        borderWidth: 2,
-                        tension: 0.4
+                        backgroundColor: "rgba(47, 182, 124, 0.12)",
+                        borderColor: "#2fb67c",
+                        borderWidth: 3,
+                        pointBackgroundColor: "#ffffff",
+                        pointBorderColor: "#2fb67c",
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        lineTension: 0.35,
+                        fill: true
                     }]
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {display: false},
                     scales: {
-                        y: {beginAtZero: true}
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                callback: value => `PKR ${Number(value).toLocaleString()}`
+                            },
+                            gridLines: {color: "#edf1f6"}
+                        }],
+                        xAxes: [{gridLines: {display: false}}]
                     }
                 }
             });
@@ -784,6 +822,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     } catch (error) {
         console.error("Error loading chart data:", error);
+        document.querySelectorAll(".chart-empty").forEach(empty => {
+            empty.hidden = false;
+            empty.textContent = "Charts are unavailable right now.";
+        });
     }
 });
 
@@ -810,8 +852,23 @@ document.addEventListener("DOMContentLoaded", function () {
     const pad = n => String(n).padStart(2, "0");
     const dateKey = (year, month, day) => `${year}-${pad(month + 1)}-${pad(day)}`;
 
-// Placeholder for event storage. Replace with real data-fetch when available.
-    const EVENTS_BY_DATE = {}; // e.g. { '2026-08-08': [{type: 'green', title: 'Pay bill'}] }
+const eventsData = document.getElementById("eventsData");
+const EVENTS_BY_DATE = {};
+if (eventsData) {
+    try {
+        const events = JSON.parse(eventsData.textContent || "[]");
+        events.forEach(event => {
+            const eventDate = new Date(event.date);
+            if (Number.isNaN(eventDate.getTime())) return;
+            const key = dateKey(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+            const type = event.priority === "High Priority" ? "orange" :
+                event.priority === "Mid Priority" ? "purple" : "green";
+            (EVENTS_BY_DATE[key] ||= []).push({type, title: event.name});
+        });
+    } catch (error) {
+        console.error("Unable to load event calendar data:", error);
+    }
+}
 
     function getEventForDate(year, month, day) {
         const key = dateKey(year, month, day);
@@ -908,6 +965,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (prevMonthBtn) prevMonthBtn.addEventListener('click', goToPrevMonth);
     if (nextMonthBtn) nextMonthBtn.addEventListener('click', goToNextMonth);
+    const todayBtn = document.getElementById("todayBtn");
+    if (todayBtn) todayBtn.addEventListener("click", () => {
+        currentYear = today.getFullYear();
+        currentMonth = today.getMonth();
+        renderCalendar(currentYear, currentMonth);
+    });
 
 // Keyboard shortcuts (optional)
     document.addEventListener('keydown', (e) => {

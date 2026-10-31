@@ -1,42 +1,50 @@
 <%- include ('partials/base.ejs') %>
+<link rel="stylesheet" href="/css/quiz.css">
+
+<body class="quiz-page">
 <%- include('partials/sidebar.ejs') %>
 <%- include ("partials/top-navbar.ejs") %>
 
-<link rel="stylesheet" href="css/quiz.css">
-
-<body>
 <main class="quiz-main">
     <div class="quiz-container">
         <div class="quiz-section quiz-start active" id="quizStartCon">
-            <h1 class="q-s-heading">Quiz Time!</h1>
-
-            <p class="q-s-subheading">Test your Knowledge with these fun question</p>
-            <button class="start-q-btn" id="quizStartBtn">Start Quiz</button>
+            <div class="quiz-hero-icon"><i class="fa-solid fa-lightbulb"></i></div>
+            <span class="quiz-eyebrow">Financial learning</span>
+            <h1 class="q-s-heading">Quiz time</h1>
+            <p class="q-s-subheading">Test your knowledge with a quick set of questions and keep learning as you go.</p>
+            <div class="quiz-start-meta">
+                <span><i class="fa-solid fa-list-check"></i> 10 questions</span>
+                <span><i class="fa-regular fa-clock"></i> Quick practice</span>
+            </div>
+            <button class="start-q-btn" id="quizStartBtn"><i class="fa-solid fa-play"></i> Start quiz</button>
         </div>
 
         <div class="q-question-con quiz-section " id="quizQuestionCon">
-            <h3 class="q-question" id="question">What is the capital of France?</h3>
             <div class="q-status-con">
-                <p class="ques-numbering">Question <span class="question-num" id="currentQuestionSpan">1</span> of <span
-                            class="total-question" id="totalQuestion">5</span></p>
-                 <p class="score">Score <span class="score-num" id="scoreNum">0</span></p>
+                <p class="ques-numbering"><span class="status-label">Question</span> <span class="question-num" id="currentQuestionSpan">1</span> of <span
+                            class="total-question" id="totalQuestion">10</span></p>
+                <p class="score"><span class="status-label">Score</span> <span class="score-num" id="scoreNum">0</span></p>
             </div>
+            <div class="question-divider"></div>
+            <h3 class="q-question" id="question">What is the capital of France?</h3>
 
             <div class="quiz-options" id="answerContainer"></div>
 
             <div class="quiz-per" id="progressCon">
                 <div id="progressBar"></div>
             </div>
+            <p class="quiz-helper"><i class="fa-solid fa-circle-info"></i> Choose the best answer to continue.</p>
         </div>
 
         <div class="q-result-con quiz-section" id="resultContainer">
+            <div class="result-icon"><i class="fa-solid fa-trophy"></i></div>
             <h1 id="resultHeading" class="result-heading">Quiz Results</h1>
             <div class="quiz-status-con">
                 <p class="result-score" id="resultScore">You scored <span class="gained-score" id="gainedScore">3</span> out of <span class="r-total-score" id="totalScore">5</span></p>
                 <h2 class="result-qut" id="resultQut">Good effort Keep learning!</h2>
             </div>
 
-            <button class="restart-quiz" id="restartQuizBtn">Restart Quiz</button>
+            <button class="restart-quiz" id="restartQuizBtn"><i class="fa-solid fa-rotate-right"></i> Try again</button>
         </div>
     </div>
 </main>

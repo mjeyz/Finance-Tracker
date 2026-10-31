@@ -57,23 +57,23 @@
     <div class="status">
         <div class="stat-card total-income">
             <span class="card-subtitle">Total Income</span>
-            <% if (user.income) { %>
-                <p class="amount income"><%= user.income %> PKR</p>
-            <% } else { %>
-                <p class="amount income">0 PKR</p>
-            <% } %>
+            <p class="amount income"><%= Number(dashboardMetrics.totalIncome).toLocaleString() %> PKR</p>
         </div>
         <div class="stat-card current-balance">
-            <span class="card-subtitle">Current Balance</span>
-            <p class="amount balance">PKR 0</p>
+            <span class="card-subtitle">Remaining Balance</span>
+            <p class="amount balance"><%= Number(dashboardMetrics.currentBalance).toLocaleString() %> PKR</p>
         </div>
         <div class="stat-card expenses">
-            <span class="card-subtitle">Expenses</span>
-            <% if (user.expenses) { %>
-                <p class="amount expense"><%= user.expenses %></p>
-            <% } else { %>
-                <p class="amount expense">0 PKR</p>
-            <% } %>
+            <span class="card-subtitle">Total Spent</span>
+            <p class="amount expense"><%= Number(dashboardMetrics.totalSpent).toLocaleString() %> PKR</p>
+        </div>
+        <div class="stat-card monthly-expenses">
+            <span class="card-subtitle">This Month</span>
+            <p class="amount month-expense"><%= Number(dashboardMetrics.monthlyExpenses).toLocaleString() %> PKR</p>
+        </div>
+        <div class="stat-card savings-rate">
+            <span class="card-subtitle">Savings Rate</span>
+            <p class="amount saving-rate"><%= dashboardMetrics.savingsRate %>%</p>
         </div>
     </div>
 
@@ -105,11 +105,45 @@
         <div class="chart-cantainer">
 
             <div class="pie-chart graph">
-                <canvas id="pieChart" style="width:100%;max-width:700px;height: 400px"></canvas>
+                <div class="graph-header">
+                    <div>
+                        <span class="graph-eyebrow">Spending overview</span>
+                        <h3>Expense breakdown</h3>
+                    </div>
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <div class="graph-canvas">
+                    <canvas id="pieChart"></canvas>
+                    <p class="chart-empty" id="pieChartEmpty" hidden>No expense data yet.</p>
+                </div>
             </div>
 
             <div class="line-chart graph">
-                <canvas id="lineChart" style="width:100%;max-width:700px;height: 400px"></canvas>
+                <div class="graph-header">
+                    <div>
+                        <span class="graph-eyebrow">Yearly trend</span>
+                        <h3>Monthly expenses</h3>
+                    </div>
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div class="graph-canvas">
+                    <canvas id="lineChart"></canvas>
+                    <p class="chart-empty" id="lineChartEmpty" hidden>No expense data yet.</p>
+                </div>
+            </div>
+
+            <div class="method-chart graph">
+                <div class="graph-header">
+                    <div>
+                        <span class="graph-eyebrow">Payment habits</span>
+                        <h3>Spending by method</h3>
+                    </div>
+                    <i class="fa-solid fa-credit-card"></i>
+                </div>
+                <div class="graph-canvas">
+                    <canvas id="methodChart"></canvas>
+                    <p class="chart-empty" id="methodChartEmpty" hidden>No payment data yet.</p>
+                </div>
             </div>
         </div>
 </main>

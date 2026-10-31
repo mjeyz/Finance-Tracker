@@ -7,7 +7,7 @@
         <header class="event-header">
             <div class="event-heading">
                 <h1 class="event-title">Events</h1>
-                <p class="event-subtitle">Stay organize and never miss important date</p>
+                <p class="event-subtitle">Stay organized and never miss an important date.</p>
             </div>
 
             <div class="event-actions">
@@ -26,10 +26,10 @@
                 </div>
                 <div class="event-summary-content ">
                     <span class="event-card-label">Upcoming Events</span>
-                    <strong class="event-card-value">5</strong>
+                    <strong class="event-card-value"><%= upcomingCount %></strong>
                     <div class="event-card-mete">
-                        <span>This Month</span>
-                        <span class="event-card-delta">+12</span>
+                        <span>From today</span>
+                        <span class="event-card-delta"><i class="fa-solid fa-arrow-trend-up"></i></span>
                     </div>
                 </div>
             </article>
@@ -39,11 +39,11 @@
                     <i class="bx bx-gift"></i>
                 </div>
                 <div class="event-summary-content">
-                    <span class="event-card-label">Birthdays</span>
-                    <strong class="event-card-value">2</strong>
+                    <span class="event-card-label">High Priority</span>
+                    <strong class="event-card-value"><%= highPriorityCount %></strong>
                     <div class="event-card-mete">
-                        <span>This Month</span>
-                        <span class="event-card-delta">+12</span>
+                        <span>Needs attention</span>
+                        <span class="event-card-delta"><i class="fa-solid fa-bolt"></i></span>
                     </div>
                 </div>
             </article>
@@ -53,11 +53,11 @@
                     <i class="fa-solid fa-money-bill-1"></i>
                 </div>
                 <div class="event-summary-content">
-                    <span class="event-card-label">Bill Reminders</span>
-                    <strong class="event-card-value">3</strong>
+                    <span class="event-card-label">This Month</span>
+                    <strong class="event-card-value"><%= thisMonthCount %></strong>
                     <div class="event-card-mete">
                         <span>This Month</span>
-                        <span class="event-card-delta">+10</span>
+                        <span class="event-card-delta"><i class="fa-regular fa-calendar"></i></span>
                     </div>
                 </div>
             </article>
@@ -68,10 +68,10 @@
                 </div>
                 <div class="event-summary-content">
                     <span class="event-card-label">Total</span>
-                    <strong class="event-card-value">2</strong>
+                    <strong class="event-card-value"><%= totalCount %></strong>
                     <div class="event-card-mete">
-                        <span>This Month</span>
-                        <span class="event-card-delta">__</span>
+                        <span>All events</span>
+                        <span class="event-card-delta"><i class="fa-solid fa-check"></i></span>
                     </div>
                 </div>
             </article>
@@ -81,7 +81,7 @@
             <div class="event-calender">
                 <div class="calender-header">
                     <div class="calender-title">
-                        <span class="c-title">Calender</span>
+                        <span class="c-title">Calendar</span>
                     </div>
                     <div class="calender-main">
                         <button class="nav-btn" id="prevMonthBtn" aria-label="Previous month">
@@ -96,7 +96,7 @@
                             <i class="fas fa-chevron-right"></i>
                         </button>
 
-                        <div class="today">Today</div>
+                        <button class="today" type="button" id="todayBtn">Today</button>
                     </div>
                 </div>
 
@@ -136,11 +136,11 @@
 
                         <div class="event" data-id="<%= ev.id %>" data-event-date="<%= ev.date %>">
                             <div class="event-div-1">
-                                <div class="event-icon"><i class="fas fa-bank"></i></div>
+                                <div class="event-icon"><i class="fa-regular fa-calendar-check"></i></div>
 
                                 <div class="event-labels">
                                     <span class="title"><%= ev.name %></span>
-                                    <span class="subtitle"><%= ev.location %></span>
+                                    <span class="subtitle"><i class="fa-solid fa-location-dot"></i> <%= ev.location || "No location added" %></span>
                                 </div>
                             </div>
                             <div class="event-div-2">
@@ -149,7 +149,7 @@
                                     <span class="event-day js-event-day">--</span>
                                 </div>
 
-                                <div class="event-time js-event-time"><%= ev.time %></div>
+                                <div class="event-time js-event-time"><%= ev.time || "All day" %></div>
                             </div>
                             <div class="dropdown">
                                 <div class="more-action" onclick="activeGoalDropdown(this)"><i class="fa-solid fa-ellipsis-vertical"></i></div>
@@ -161,8 +161,11 @@
                         </div>
                     <% }) %>
                 <% } else { %>
-                <div class="empty-message" style="height: 100px">
-                    <span>No Event has been added</span>
+                <div class="empty-message event-empty-state">
+                    <i class="fa-regular fa-calendar-plus"></i>
+                    <strong>No events yet</strong>
+                    <span>Add your first event to keep your plans in one place.</span>
+                    <a class="event-action event-action-primary" href="/add-event">Create an event</a>
                 </div>
             <% }%>
             </div>
@@ -174,7 +177,8 @@
     </section>
 </main>
 
-<script src="js/index.js"></script>
+<script id="eventsData" type="application/json"><%- JSON.stringify(events).replace(/</g, '\\u003c') %></script>
+<script src="/js/index.js"></script>
 
 <script>
 
@@ -186,4 +190,3 @@
         }
     });
 </script>
-

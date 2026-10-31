@@ -185,8 +185,43 @@ app.get("/", async (req, res) => {
 
 
             const saving = savingResult.rows
+            const now = new Date();
+            const totalIncomeFromTransactions = transaction
+                .filter((row) => String(row.type || "").toLowerCase() === "income")
+                .reduce((sum, row) => sum + Math.abs(Number(row.amount) || 0), 0);
+            const totalSpent = transaction
+                .filter((row) => String(row.type || "").toLowerCase() === "expense")
+                .reduce((sum, row) => sum + Math.abs(Number(row.amount) || 0), 0);
+            const totalIncome = Number(req.user.income) || totalIncomeFromTransactions;
+            const currentBalance = totalIncome - totalSpent;
+            const monthlyExpenses = transaction
+                .filter((row) => {
+                    if (String(row.type || "").toLowerCase() !== "expense" || !row.date) {
+                        return false;
+                    }
 
-            res.render("Dashboard.ejs", {user: req.user, transaction: transaction, events: events, saving: saving});
+                    const expenseDate = new Date(row.date);
+                    return expenseDate.getMonth() === now.getMonth() &&
+                        expenseDate.getFullYear() === now.getFullYear();
+                })
+                .reduce((sum, row) => sum + Math.abs(Number(row.amount) || 0), 0);
+            const savingsRate = totalIncome > 0
+                ? Math.round((currentBalance / totalIncome) * 100)
+                : 0;
+
+            res.render("Dashboard.ejs", {
+                user: req.user,
+                transaction,
+                events,
+                saving,
+                dashboardMetrics: {
+                    totalIncome,
+                    totalSpent,
+                    currentBalance,
+                    monthlyExpenses,
+                    savingsRate
+                }
+            });
         } catch (err) {
             console.log(err)
         }
@@ -329,6 +364,25 @@ app.get("/api/transaction/charts", async (req, res) => {
     }
 });
 
+app.get("/api/transaction/payment-methods", async (req, res) => {
+    try {
+        const result = await db.query(
+            `SELECT COALESCE(NULLIF(method, ''), 'Cash') AS method,
+                    SUM(ABS(amount))::FLOAT AS total_amount
+             FROM transaction
+             WHERE user_id = $1
+               AND LOWER(type) = 'expense'
+             GROUP BY COALESCE(NULLIF(method, ''), 'Cash')
+             ORDER BY total_amount DESC`,
+            [req.user.id]
+        );
+        res.json(result.rows);
+    } catch (err) {
+        console.error("Payment method chart error:", err.message);
+        res.status(500).json({error: "Unable to load payment method data."});
+    }
+});
+
 app.get("/api/graph", async (req, res) => {
     try {
         const result = await db.query(
@@ -351,13 +405,8 @@ app.get("/api/graph", async (req, res) => {
 
 app.get("/transaction", async (req, res) => {
     if (req.isAuthenticated()) {
-        const result = await db.query("SELECT * FROM transaction WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
-
-        if (result.rows > 0) {
-            return res.status(200).json(result)
-        }
-
-        res.render("transactions.ejs", {user: req.user, transaction: result.rows})
+        const result = await db.query("SELECT * FROM transaction WHERE user_id = $1 ORDER BY id DESC", [req.user.id]);
+        res.render("transactions.ejs", {user: req.user, transaction: result.rows});
     } else {
         res.redirect("login")
     }
@@ -367,7 +416,25 @@ app.get("/transaction", async (req, res) => {
 app.get("/events", async (req, res) => {
     if (req.isAuthenticated()) {
         const result = await db.query("SELECT * FROM events WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
-        res.render("event.ejs", {user: req.user, events: result.rows})
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+        const events = result.rows;
+        const thisMonthEvents = events.filter((event) => {
+            const eventDate = new Date(event.date);
+            return eventDate.getMonth() === currentMonth && eventDate.getFullYear() === currentYear;
+        });
+        const upcomingEvents = events.filter((event) => new Date(event.date) >= new Date(now.setHours(0, 0, 0, 0)));
+        const highPriorityEvents = events.filter((event) => event.priority === "High Priority");
+
+        res.render("event.ejs", {
+            user: req.user,
+            events,
+            upcomingCount: upcomingEvents.length,
+            thisMonthCount: thisMonthEvents.length,
+            highPriorityCount: highPriorityEvents.length,
+            totalCount: events.length
+        })
     } else {
         res.redirect("login");
     }
@@ -375,8 +442,22 @@ app.get("/events", async (req, res) => {
 
 app.get("/saving", async (req, res) => {
     if (req.isAuthenticated()) {
-        const result = await db.query("SELECT * FROM saving WHERE user_id = $1 ORDER BY id DESC", [req.user.id])
-        res.render("saving.ejs", {user: req.user, saving: result.rows})
+        const result = await db.query("SELECT * FROM saving WHERE user_id = $1 ORDER BY id DESC", [req.user.id]);
+        const saving = result.rows;
+        const totalSaved = saving.reduce((sum, goal) => sum + Number(goal.savedamount || 0), 0);
+        const totalTarget = saving.reduce((sum, goal) => sum + Number(goal.targetamount || 0), 0);
+        const completedCount = saving.filter((goal) => Number(goal.targetamount || 0) > 0 &&
+            Number(goal.savedamount || 0) >= Number(goal.targetamount)).length;
+        const averageProgress = totalTarget > 0 ? Math.min(100, Math.round((totalSaved / totalTarget) * 100)) : 0;
+
+        res.render("saving.ejs", {
+            user: req.user,
+            saving,
+            totalSaved,
+            totalTarget,
+            completedCount,
+            averageProgress
+        });
     } else {
         res.redirect("/login");
     }
@@ -432,7 +513,7 @@ app.get("/api/v1/goal/:id", async (req, res) => {
 });
 
 app.get("/quiz", async (req, res) => {
-    res.render("quiz.ejs", {user: req.user});
+    res.render("quiz.ejs", {user: req.user, hideSearch: true});
 });
 
 
@@ -1420,5 +1501,3 @@ async function startServer() {
 }
 
 startServer();
-
-
