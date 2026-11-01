@@ -11,26 +11,28 @@
 }
 
 .quiz-main {
-    min-height: calc(100vh - 64px);
+    height: calc(100vh - 70px); 
     margin-left: 250px;
-    margin-top: 64px;
+    margin-top: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: clamp(2rem, 5vw, 4rem);
+    box-sizing: border-box; 
+    padding: clamp(1rem, 3vw, 2rem);
+    overflow-y: auto; 
 }
 
 .quiz-container {
     width: min(100%, 760px);
-    min-height: 450px;
+    min-height: auto; 
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
     background: rgba(255, 255, 255, 0.96);
     border: 1px solid #e1e8f2;
     border-radius: 1.5rem;
     text-align: center;
-    padding: clamp(1.5rem, 5vw, 3.5rem);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
     box-shadow: 0 20px 50px rgba(31, 52, 86, 0.1);
 }
 

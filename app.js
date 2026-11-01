@@ -518,14 +518,24 @@ app.get("/quiz", async (req, res) => {
 
 
 app.get("/api/quiz", async (req, res) => {
-    const URL = "https://opentdb.com/api.php";
-    const amount = 10;
-    const type = "multiple";
-    const category = 18;
-    const difficulty = "easy";
+    try {
+        const URL = "https://opentdb.com/api.php";
+        const params = new URLSearchParams({
+            amount: "10",
+            category: "18",
+            type: "multiple"
+        });
+        const response = await axios.get(`${URL}?${params.toString()}`);
 
-    const response = await axios(`${URL}?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`);
-    res.json(response.data)
+        if (response.data.response_code !== 0 || !Array.isArray(response.data.results)) {
+            return res.status(502).json({error: "Unable to load quiz questions."});
+        }
+
+        res.json(response.data);
+    } catch (error) {
+        console.error("Quiz API error:", error.message);
+        res.status(502).json({error: "Unable to load quiz questions."});
+    }
 });
 
 // Health checkup for deployment web hosting platform use this URL to test web health
@@ -651,7 +661,7 @@ passport.use(
     new GithubStrategy({
             clientID: process.env.GITGUB_CLIENT_ID,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
-            callbackURL: "http://localhost:3000/api/auth/callback/github",
+            callbackURL: "https://fintrack.wisp.uno/api/auth/callback/github",
             userProfileURL: "https://api.github.com/user",
         },
         async (accessToken, refreshToken, profile, cb) => {
@@ -680,7 +690,7 @@ passport.use(
     new GoogleStrategy({
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: "http://localhost:3000/auth/google/callback",
+            callbackURL: "https://fintrack.wisp.uno/api/auth/google/callback",
             userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
         },
         async (accessToken, refreshToken, profile, cb) => {
@@ -709,7 +719,7 @@ passport.use(
     new FacebookStrategy({
             clientID: process.env.FACEBOOK_APP_ID,
             clientSecret: process.env.FACEBOOK_SECRET,
-            callbackURL: "http://localhost:3000/auth/facebook/callback",
+            callbackURL: "https://fintrack.wisp.uno/api/auth/facebook/callback",
             profileFields: ["id", "displayName", "photos", "email"]
         },
         async (accessToken, refreshToken, profile, cb) => {

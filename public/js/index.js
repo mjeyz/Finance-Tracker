@@ -1112,61 +1112,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-const questions = [
-    {
-        question: "What is the domain name for the country Tuvalu?",
-        options: [".tv", ".tu", ".tt", ".tl"],
-        answer: ".tv"
-    },
-    {
-        question: "What does GHz stand for?",
-        options: ["Gigahertz", "Gigahotz", "Gigahetz", "Gigahatz"],
-        answer: "Gigahertz"
-    },
-    {
-        question: "What is the name of Layer 7 of the OSI model?",
-        options: ["Application", "Session", "Network", "Present"],
-        answer: "Application"
-    },
-    {
-        question: "How long is an IPv6 address?",
-        options: ["128 bits", "32 bits", "64 bits", "128 bytes"],
-        answer: "128 bits"
-    },
-    {
-        question: "What amount of bits commonly equals one byte?",
-        options: ["8", "1", "2", "64"],
-        answer: "8"
-    },
-    {
-        question: "Which programming language shares its name with an island in Indonesia?",
-        options: ["Java", "Python", "C", "Jakarta"],
-        answer: "Java"
-    },
-    {
-        question: "What language does Node.js use?",
-        options: ["JavaScript", "Java", "Java Source", "Joomla Source Code"],
-        answer: "JavaScript"
-    },
-    {
-        question: "What does the computer software acronym JVM stand for?",
-        options: ["Java Virtual Machine", "Java Vendor Machine", "Java Visual Machine", "Just Virtual Machine"],
-        answer: "Java Virtual Machine"
-    },
-    {
-        question: "In web design, what does CSS stand for?",
-        options: ["Cascading Style Sheet", "Counter Strike: Source", "Corrective Style Sheet", "Computer Style Sheet"],
-        answer: "Cascading Style Sheet"
-    },
-    {
-        question: "What does CPU stand for?",
-        options: ["Central Processing Unit", "Central Process Unit", "Computer Personal Unit", "Central Processor Unit"],
-        answer: "Central Processing Unit"
-    }
-];
-
-
-
 // Quiz
 const quizStartBtn = document.getElementById("quizStartBtn");
 const quizQuestionCon = document.getElementById("quizQuestionCon");
@@ -1186,17 +1131,69 @@ const totalQuestion = document.getElementById("totalQuestion")
 let currentQuestionIndex = 0;
 let score = 0;
 let answersDisabled = false;
+let questions = [];
 
+function shuffle(items) {
+    const shuffledItems = [...items];
 
-function startQuiz() {
-    console.log(answerContainer.children)
+    for (let index = shuffledItems.length - 1; index > 0; index--) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [shuffledItems[index], shuffledItems[randomIndex]] = [shuffledItems[randomIndex], shuffledItems[index]];
+    }
+
+    return shuffledItems;
+}
+
+function decodeHtmlEntities(value) {
+    const decoder = document.createElement("textarea");
+    decoder.innerHTML = value;
+    return decoder.value;
+}
+
+async function loadQuestions() {
+    const response = await fetch("/api/quiz");
+
+    if (!response.ok) {
+        throw new Error("Quiz questions could not be loaded.");
+    }
+
+    const data = await response.json();
+
+    if (!Array.isArray(data.results) || data.results.length === 0) {
+        throw new Error("Quiz questions could not be loaded.");
+    }
+
+    questions = shuffle(data.results.map(item => ({
+        question: decodeHtmlEntities(item.question),
+        options: shuffle([
+            item.correct_answer,
+            ...item.incorrect_answers
+        ].map(decodeHtmlEntities)),
+        answer: decodeHtmlEntities(item.correct_answer)
+    })));
+}
+
+async function startQuiz() {
+    quizStartBtn.disabled = true;
+    quizStartBtn.textContent = "Loading questions...";
+
+    try {
+        await loadQuestions();
+    } catch (error) {
+        console.error("Quiz loading error:", error);
+        quizStartBtn.disabled = false;
+        quizStartBtn.innerHTML = '<i class="fa-solid fa-play"></i> Start quiz';
+        window.showFlashMessage?.("Unable to load quiz questions. Please try again.", "error");
+        return;
+    }
+
     currentQuestionIndex = 0;
-    score = 0
+    score = 0;
     scoreSpan.textContent = 0;
-
-
     quizQuestionCon.classList.add("active");
     quizStartCon.classList.remove("active");
+    quizStartBtn.disabled = false;
+    quizStartBtn.innerHTML = '<i class="fa-solid fa-play"></i> Start quiz';
     showQuestion();
 }
 
