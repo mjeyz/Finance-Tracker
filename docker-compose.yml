@@ -1,0 +1,26 @@
+
+services:
+  Finance-Tracker:
+
+    # Build image using our Dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # Give the container a name
+    container_name: fintrack-api
+
+    # Load environment variables
+    env_file:
+      - .env
+
+    # Set container port
+    environment:
+      PORT: 3000
+
+    # Host port : Container port
+    ports:
+      - "11089:3000"
+
+    # Restart if application crashes
+    restart: unless-stopped
